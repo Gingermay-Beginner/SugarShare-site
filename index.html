@@ -443,6 +443,130 @@ const GL = {
 };
 
 const CARDS = {
+  unh:{
+    "name": "联合健康",
+    "mkt": "美股 · UNH",
+    "currency": "美元",
+    "one": "UnitedHealthcare 做医疗保险，Optum 提供诊疗、药房福利管理和健康数据服务。",
+    "scene": [
+      [
+        "谁在付钱",
+        "雇主、个人、政府医保项目和购买 Optum 服务的保险机构"
+      ],
+      [
+        "买什么",
+        "医疗保险、诊疗和处方药相关服务"
+      ],
+      [
+        "在哪接触",
+        "雇主医保、Medicare Advantage、Optum 诊所和药房服务"
+      ]
+    ],
+    "pieTitle": "2025 年合并收入约 4,476 亿美元，按年报收入科目拆分",
+    "pie": [
+      [
+        "保费",
+        79
+      ],
+      [
+        "产品销售（主要与药品有关）",
+        12
+      ],
+      [
+        "服务收入",
+        8
+      ],
+      [
+        "投资及其他收入",
+        1
+      ]
+    ],
+    "per100": [
+      81.5,
+      15.8,
+      2.7
+    ],
+    "per100Labels": [
+      "医疗成本和产品成本",
+      "其余支出及调整"
+    ],
+    "per100Note": "按 2025 年年报，每 100 美元收入中，约 81.5 美元是医疗和产品成本，约 15.8 美元是其余支出及调整（含运营费用、利息和税等），约 2.7 美元是归普通股股东的净利润。",
+    "years": [
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "rev": [
+      2875.97,
+      3241.62,
+      3716.22,
+      4002.78,
+      4475.67
+    ],
+    "prof": [
+      172.85,
+      201.2,
+      223.81,
+      144.05,
+      120.56
+    ],
+    "growNote": "图表单位为亿美元。2021–2025 年收入年均增长约 11.7%。2025 年收入同比增长约 12%，归普通股股东的净利润却下降约 16%。医疗成本上升是利润承压的原因之一。",
+    "risk": [
+      "医疗成本上升",
+      "如果成员看病或用药比预想更多，或每次服务更贵，医疗成本就可能涨得比保费快。政府医保支付规则变化也会影响收入和利润。"
+    ],
+    "moat": "它有大量医保成员，也有由医生、诊所和药房服务组成的网络。雇主要更换医保时，需要重新考虑员工常用的医生和药品是否仍在覆盖范围内。",
+    "quiz": [
+      [
+        "联合健康最大的收入来源是什么？",
+        [
+          "保费",
+          "产品销售",
+          "投资及其他收入"
+        ],
+        0,
+        "对。保费约占 2025 年合并收入的 79%。"
+      ],
+      [
+        "2025 年每 100 美元收入，约有多少是归普通股股东的净利润？",
+        [
+          "约 2.7 美元",
+          "约 27 美元",
+          "约 79 美元"
+        ],
+        0,
+        "对。约 2.7 美元，对应无糖。"
+      ],
+      [
+        "如果医疗成本涨得比保费快，会怎样？",
+        [
+          "利润可能被挤压",
+          "利润一定增加",
+          "成本对利润没有影响"
+        ],
+        0,
+        "对。医疗保险公司要用保费支付医疗成本。"
+      ]
+    ],
+    "three": [
+      "联合健康的收入大头是保费，Optum 还做医疗和药房相关服务。",
+      "2025 年每 100 美元收入约留下 2.7 美元归普通股股东。",
+      "2025 年收入继续增长，利润却下降了，医疗成本是需要留意的一项。"
+    ],
+    "sources": [
+      [
+        "2025 年 10-K",
+        "https://www.sec.gov/Archives/edgar/data/731766/000073176626000062/unh-20251231.htm"
+      ],
+      [
+        "2023 年 10-K",
+        "https://www.sec.gov/Archives/edgar/data/731766/000073176624000081/unh-20231231.htm"
+      ]
+    ]
+  },
+
   popmart:{name:"泡泡玛特",mkt:"港股",
     one:"做潮流玩具和盲盒的公司，LABUBU 就是它家的。",
     scene:[["谁在买","年轻人、收藏爱好者，越来越多海外顾客"],["买什么","盲盒、毛绒挂件、手办"],["在哪买","门店、机器人商店、网店"]],
@@ -595,7 +719,7 @@ const CARDS = {
       ["别人为什么很难抢走它的生意？",["它的芯片最便宜","AI 程序大多用它的 CUDA 写，换芯片很麻烦","有政府规定"],1,"对。软件生态是它的招牌秘方。"]],
     three:["英伟达将近九成收入来自卖给大公司的 AI 芯片，游戏显卡反而是小头。","每卖 100 美元，大约留下 56 美元利润，非常甜。","它最怕大客户少买，或者自己造芯片。"]}
 };
-const CARD_ORDER=["popmart","mxbc","laopu","tencent","xiaomi","meituan","byd","mt","nvda"];
+const CARD_ORDER=["popmart","mxbc","laopu","tencent","xiaomi","meituan","byd","mt","nvda","unh"];
 
 /* ---------------- helpers ---------------- */
 const $=s=>document.querySelector(s);
@@ -710,7 +834,7 @@ function miniBars(vals,years,color,title){
 }
 
 /* ---------------- cards：每家公司是一杯奶茶 ---------------- */
-const BASE={popmart:"潮玩盲盒",mxbc:"奶茶原料供应",laopu:"古法金饰",tencent:"社交和游戏",xiaomi:"手机和智能硬件",meituan:"外卖和本地生活",byd:"电动车和电池",mt:"高端白酒",nvda:"AI 芯片"};
+const BASE={popmart:"潮玩盲盒",mxbc:"奶茶原料供应",laopu:"古法金饰",tencent:"社交和游戏",xiaomi:"手机和智能硬件",meituan:"外卖和本地生活",byd:"电动车和电池",mt:"高端白酒",nvda:"AI 芯片",unh:"医疗保险与健康服务"};
 const LAYER_C=["#BDB4D0","#DCC59C","#A7B08C","#D99AA0","#B89C84"];
 const SUGAR_BANDS=[["无糖","不到 3 元"],["三分糖","3–8 元"],["五分糖","8–15 元"],["七分糖","15–30 元"],["全糖","30 元以上"]];
 const SIZE_BANDS=[["小杯","不到 5%"],["中杯","5–15%"],["大杯","15–40%"],["超大杯","40% 以上"]];
@@ -802,7 +926,7 @@ function quizHTML(id){
 function renderCardDetail(id){
   const k=CARDS[id],c=ALL[id],d=secsDone(id),sg=sugarOf(k),sz=sizeOf(k);
   $("#learnHead").innerHTML=`<a class="back" href="#learn">‹ 全部奶茶</a>`;
-  const [cost,exp,prof]=k.per100;
+  const [cost,exp,prof]=k.per100;const unit=k.currency||"块";
   $("#cards").innerHTML=`<article class="card" id="card-${id}">
     <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
     <p class="one">${esc(k.one)}</p>
@@ -818,11 +942,11 @@ function renderCardDetail(id){
       <p class="src">每一层的厚度，就是这块收入占多少。${esc(k.pieTitle)}。</p>
       <div class="chkwrap">${checkHTML(id,1)}</div></div>
 
-    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="糖分"><path d="M12 2.5 21 7l-9 4.5L3 7Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8" opacity=".5"/><path d="M3 7v10l9 4.5v-10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8"/><path d="M21 7v10l-9 4.5v-10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8" opacity=".78"/><path d="M7 13.2h.01M8.5 16.8h.01M16 14.6h.01" stroke="var(--surface)" stroke-width="1.8"/></svg>每卖 100 块，能留下多少？</h3>
-      <div class="coins-row"><div class="coins" role="img" aria-label="100 块里：利润 ${prof} 块，成本 ${cost} 块，费用和税 ${exp} 块">${Array.from({length:100},(_,i)=>`<i class="${i<prof?"pr":i<prof+cost?"co":"ex"}"></i>`).join("")}</div>
-        <div class="coin-k"><div class="ck pr"><i></i><div><b>${prof}</b> 块<span>留下来，变成利润</span></div></div><div class="ck co"><i></i><div><b>${cost}</b> 块<span>做东西的成本</span></div></div><div class="ck ex"><i></i><div><b>${exp}</b> 块<span>开店、营销、员工和交税</span></div></div></div></div>
+    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="糖分"><path d="M12 2.5 21 7l-9 4.5L3 7Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8" opacity=".5"/><path d="M3 7v10l9 4.5v-10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8"/><path d="M21 7v10l-9 4.5v-10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8" opacity=".78"/><path d="M7 13.2h.01M8.5 16.8h.01M16 14.6h.01" stroke="var(--surface)" stroke-width="1.8"/></svg>每 100 ${unit}收入，能留下多少？</h3>
+      <div class="coins-row"><div class="coins" role="img" aria-label="100 ${unit}里：利润 ${prof} ${unit}，成本 ${cost} ${unit}，其余 ${exp} ${unit}">${Array.from({length:100},(_,i)=>`<i class="${i<prof?"pr":i<prof+cost?"co":"ex"}"></i>`).join("")}</div>
+        <div class="coin-k"><div class="ck pr"><i></i><div><b>${prof}</b> ${unit}<span>留下来，变成利润</span></div></div><div class="ck co"><i></i><div><b>${cost}</b> ${unit}<span>${esc(k.per100Labels?.[0] ?? "做东西的成本")}</span></div></div><div class="ck ex"><i></i><div><b>${exp}</b> ${unit}<span>${esc(k.per100Labels?.[1] ?? "开店、营销、员工和交税")}</span></div></div></div></div>
       <p class="note">${esc(k.per100Note)}</p>
-      ${bandCheck(id,2,SUGAR_BANDS,sg.b,"留下的利润越多，这杯就越甜。",`每卖 100 块留下约 ${sg.p} 元，点一下：这杯是几分糖？`)}</div>
+      ${bandCheck(id,2,SUGAR_BANDS,sg.b,"留下的利润越多，这杯就越甜。",`每 100 ${unit}收入留下约 ${sg.p} ${unit}，点一下：这杯是几分糖？`)}</div>
 
     <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="杯型"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M5 8h14" stroke="var(--accent)" stroke-width="2.5"/><path d="m12 8 1-6h2" stroke="var(--accent)" stroke-width="2"/><path d="M8 15a6.47 6.47 0 0 1 4 0 6.47 6.47 0 0 0 4 0" stroke="var(--surface)" stroke-width="1.6"/></svg>它在变大吗？</h3>
       <div class="grow">${miniBars(k.rev,k.years,"var(--c1)","收入")}${miniBars(k.prof,k.years,"var(--grape)","利润")}</div>
@@ -835,6 +959,7 @@ function renderCardDetail(id){
       <div class="chkwrap">${checkHTML(id,4)}</div></div>
 
     <p class="src">数字按公司年报估算并四舍五入，标「示例价」的是为了好算。糖分和杯型的刻度是我们为了好懂自己定的。仅供理解，不构成任何投资建议。</p>
+    ${k.sources ? `<p class="src">数据来源：${k.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join(" · ")}</p>` : ""}
     <div class="quiz" data-q="${id}"><h3 class="qh">封口：答对最后 3 题</h3><div class="qbody">${quizHTML(id)}</div></div>
   </article>`;
 }
