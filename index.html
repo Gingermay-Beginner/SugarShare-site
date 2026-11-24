@@ -1292,10 +1292,10 @@ function miniBars(vals,years,color,title,range=[Math.min(...vals,0),Math.max(...
     else{ // 每根柱子画成一杯奶茶：直筒杯身 + 杯盖，最后一杯插吸管
       const hh=exactHeight?h:Math.max(h,3),ins=0,r=Math.min(3,hh/2),f=n=>n.toFixed(exactHeight?3:1);
       s+=`<g opacity="${op}"><path d="M${f(x)} ${f(y)} L${f(x+bw)} ${f(y)} L${f(x+bw-ins)} ${f(y+hh-r)} Q${f(x+bw-ins)} ${f(y+hh)} ${f(x+bw-ins-r)} ${f(y+hh)} L${f(x+ins+r)} ${f(y+hh)} Q${f(x+ins)} ${f(y+hh)} ${f(x+ins)} ${f(y+hh-r)} Z" fill="${color}"/><rect x="${f(x-2.5)}" y="${f(y-2.2)}" width="${f(bw+5)}" height="2.2" rx="1.1" fill="${color}"/>${i===n-1?`<line x1="${f(x+bw*0.58)}" y1="${f(y-2)}" x2="${f(x+bw*0.78)}" y2="${f(y-15)}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`:""}</g>`}
-    s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-num)">${"'"+years[i].slice(2)}</text>`});
+    if(years[i])s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-num)">${"'"+years[i].slice(2)}</text>`});
   const up=vals[n-1]>vals[0];
   const cropTop=exactHeight?Math.max(0,y0-Math.max(...vals,0)/sp*ch-top):0;
-  return `<div class="mb"><div class="mb-t">${title}<b class="${up?"up":"dn"}">${up?"变大了":"变小了"}</b></div><svg viewBox="0 ${cropTop} ${W} ${H-cropTop}" role="img" aria-label="${title}${up?"变大了":"变小了"}"><line x1="0" x2="${W}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--line)"/>${s}</svg></div>`;
+  return `<div class="mb"><div class="mb-t">${title}${n>1?`<b class="${up?"up":"dn"}">${up?"变大了":"变小了"}</b>`:""}</div><svg viewBox="0 ${cropTop} ${W} ${H-cropTop}" role="img" aria-label="${title}${n>1?(up?"变大了":"变小了"):""}"><line x1="0" x2="${W}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--line)"/>${s}</svg></div>`;
 }
 
 /* ---------------- cards：每家公司是一杯奶茶 ---------------- */
@@ -1406,9 +1406,11 @@ function updateCompareOffset(){
 }
 new ResizeObserver(updateCompareOffset).observe($(".topbar"));
 const COMPARE_CNY_PER_USD=6.677;
+function compareInCNY(value,currency){
+  return currency==="美元"?value*COMPARE_CNY_PER_USD:value;
+}
 function revenueInCNY(card){
-  const rate=compareCurrency(card)==="美元"?COMPARE_CNY_PER_USD:1;
-  return card.rev.map(value=>value*rate);
+  return card.rev.map(value=>compareInCNY(value,compareCurrency(card)));
 }
 function compareCurrency(card){return card.mkt.startsWith("美股")?"美元":"元";}
 function compareRange(cards,key){
@@ -1423,6 +1425,9 @@ function renderCompareResults(){
   if(cards.length<2){results.innerHTML='<p class="empty compare-empty">选满 2 家后，就能并排看图。</p>';return;}
   const cell=(content,extra="")=>'<div class="compare-cell'+extra+'">'+content+'</div>';
   const revenueRange=[0,Math.max(...cards.flatMap(revenueInCNY))];
+  const caps=[...compareSelection].map(id=>ALL[id]);
+  const capValue=company=>compareInCNY(company.cap,company.region==="cn"?"元":"美元");
+  const capRange=[0,Math.max(...caps.map(capValue))];
   const mixedCurrencies=new Set(cards.map(compareCurrency)).size>1;
   const chartCell=(card,key,color,title)=>{
     const currency=compareCurrency(card);
@@ -1434,11 +1439,12 @@ function renderCompareResults(){
     return cell('<p class="sub">'+esc(card.years[last])+' 年／财年 · 亿'+currency+'</p><strong class="compare-value">'+compareAmount(card[key][last])+'</strong>'+miniBars(values,card.years,color,title,scale,revenue),revenue?" compare-revenue":"");
   };
   results.style.setProperty("--companies",cards.length);
-  results.innerHTML='<p class="note">营收杯身共用零线与刻度，金额按原币显示。'+(mixedCurrencies?'跨币种营收杯身按 <a href="https://alfred.stlouisfed.org/series?seid=DEXCHUS" target="_blank" rel="noopener noreferrer">2026-11-20 汇率（1 美元 = 6.677 元）</a> 统一换算。利润图按币种分别定刻度。':'')+'窄屏可横向滑动。</p>'+
+  results.innerHTML='<p class="note">市值和营收各自共用零线与刻度，金额按原币显示。'+(mixedCurrencies?'跨币种市值与营收的杯身按 <a href="https://alfred.stlouisfed.org/series?seid=DEXCHUS" target="_blank" rel="noopener noreferrer">2026-11-20 汇率（1 美元 = 6.677 元）</a> 统一换算。利润图按币种分别定刻度。':'')+'窄屏可横向滑动。</p>'+
     '<div class="compare-heading"><div class="compare-heading-scroll"><div class="compare-table">'+
     [...compareSelection].map(id=>'<div class="compare-company"><a href="#c-'+id+'">'+esc(CARDS[id].name)+'</a><div class="sub">'+esc(CARDS[id].mkt)+'</div></div>').join('')+
     '</div></div></div>'+
     '<div class="compare-scroll" tabindex="0" role="region" aria-label="公司对比图表"><div class="compare-table">'+
+    '<h2>市值</h2>'+caps.map(company=>cell('<p class="sub">地图市值 · 示例约数</p><strong class="compare-value">'+esc(fmtCap(company))+'</strong>'+miniBars([capValue(company)],[""],"var(--c2)","市值",capRange,true)," compare-revenue")).join('')+
     '<h2>钱从哪来</h2>'+cards.map(card=>cell(incomeLayers(card)+'<p class="src">'+esc(card.pieTitle)+'</p>')).join('')+
     '<h2>利润率</h2>'+cards.map(card=>cell('<strong class="compare-value">'+card.per100[2]+'%</strong>'+profitGrid(card,compareCurrency(card)))).join('')+
     '<h2>营收</h2>'+cards.map(card=>chartCell(card,"rev","var(--c1)","营收")).join('')+
