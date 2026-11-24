@@ -657,7 +657,7 @@ function drawMap(){
       const showN=w>30&&h>22, showP=h>fs*2.9&&w>36;
       const nm=w<fs*c.name.length*1.05&&c.name.length>2?c.name.slice(0,2):c.name;
       const lv=CARDS[c.id]?(sealed(c.id)?10:(stepCount(c.id)?1:0)):-1;const pill=lv===10&&w>46&&h>34;
-      html+=`<button class="tile${CARDS[c.id]&&!pill?" has-card"+(lv>0?" lv":""):""}" data-id="${c.id}" aria-label="${esc(c.name)}，今天${fmtPct(c.chg)}" style="left:${t.x+gap/2}px;top:${t.y+gap/2}px;width:${w}px;height:${h}px;background:${tileColor(c.chg)};border-radius:${Math.min(10,Math.min(w,h)/4)}px">`+
+      html+=`<button class="tile${CARDS[c.id]&&!pill?" has-card"+(lv>0?" lv":""):""}" data-id="${c.id}" title="${esc(c.name)}" aria-label="${esc(c.name)}，今天${fmtPct(c.chg)}" style="left:${t.x+gap/2}px;top:${t.y+gap/2}px;width:${w}px;height:${h}px;background:${tileColor(c.chg)};border-radius:${Math.min(10,Math.min(w,h)/4)}px">`+
         (showN?`<span class="n" style="font-size:${fs}px">${esc(nm)}</span>`:"")+(showP?`<span class="p" style="font-size:${fs*0.72}px">${fmtPct(c.chg)}</span>`:"")+(pill?`<span class="sw">看懂</span>`:"")+`</button>`;
     });
   });
