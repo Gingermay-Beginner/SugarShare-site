@@ -273,7 +273,10 @@ section[hidden]{display:none}
 .compare-options label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:6px 10px;cursor:pointer;font-size:13px}
 .compare-options label:has(:checked){background:var(--accent-soft);border-color:var(--accent)}
 .compare-options label:has(:disabled){opacity:.55;cursor:default}
-.compare-scroll{overflow-x:auto;margin-top:10px;padding-bottom:6px}
+.compare-heading{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--compare-topbar,0px));z-index:4;background:var(--bg);padding:6px 0}
+.compare-heading-scroll{overflow-x:hidden}
+.compare-scroll{overflow-x:auto;padding-bottom:6px}
+.compare-growth{font-size:18px}
 .compare-table{display:grid;grid-template-columns:repeat(var(--companies),minmax(205px,1fr));gap:10px;min-width:calc(var(--companies)*215px - 10px);align-items:stretch}
 .compare-table h2{grid-column:1/-1;margin:10px 0 0}
 .compare-company,.compare-cell{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
@@ -1382,6 +1385,10 @@ function profitGrid(k,unit=k.currency||"块"){
 }
 
 const compareSelection=new Set();
+function updateCompareOffset(){
+  $("#compareResults").style.setProperty("--compare-topbar",$(".topbar").getBoundingClientRect().height+"px");
+}
+new ResizeObserver(updateCompareOffset).observe($(".topbar"));
 function compareCurrency(card){return card.mkt.startsWith("美股")?"美元":"元";}
 function compareRange(cards,key){
   const values=cards.flatMap(card=>card[key]);
@@ -1400,13 +1407,29 @@ function renderCompareResults(){
     const last=card.years.length-1;
     return cell('<p class="sub">'+esc(card.years[last])+' 年／财年 · 亿'+currency+'</p><strong class="compare-value">'+compareAmount(card[key][last])+'</strong>'+miniBars(card[key],card.years,color,title,compareRange(peers,key)));
   };
+  results.style.setProperty("--companies",cards.length);
   results.innerHTML='<p class="note">同币种的柱图共用刻度。不同币种各用原币。各家公司沿用图解卡的数据期间。窄屏可横向滑动。</p>'+
-    '<div class="compare-scroll" tabindex="0" role="region" aria-label="公司对比图表"><div class="compare-table" style="--companies:'+cards.length+'">'+
+    '<div class="compare-heading"><div class="compare-heading-scroll"><div class="compare-table">'+
     [...compareSelection].map(id=>'<div class="compare-company"><a href="#c-'+id+'">'+esc(CARDS[id].name)+'</a><div class="sub">'+esc(CARDS[id].mkt)+'</div></div>').join('')+
+    '</div></div></div>'+
+    '<div class="compare-scroll" tabindex="0" role="region" aria-label="公司对比图表"><div class="compare-table">'+
     '<h2>钱从哪来</h2>'+cards.map(card=>cell(incomeLayers(card)+'<p class="src">'+esc(card.pieTitle)+'</p>')).join('')+
     '<h2>利润率</h2>'+cards.map(card=>cell('<strong class="compare-value">'+card.per100[2]+'%</strong>'+profitGrid(card,compareCurrency(card)))).join('')+
     '<h2>营收</h2>'+cards.map(card=>chartCell(card,"rev","var(--c1)","营收")).join('')+
+    '<h2>年收入平均增长率</h2>'+cards.map(card=>cell('<strong class="compare-value compare-growth">'+fmtPct(sizeOf(card).g*100)+'</strong><p class="sub">'+esc(card.years[0])+'–'+esc(card.years[card.years.length-1])+' 年／财年 · 复合年增长率</p>')).join('')+
     '<h2>利润</h2>'+cards.map(card=>chartCell(card,"prof","var(--grape)","利润")).join('')+'</div></div>';
+  const heading=results.querySelector(".compare-heading-scroll");
+  const charts=results.querySelector(".compare-scroll");
+  charts.addEventListener("scroll",()=>{heading.scrollLeft=charts.scrollLeft;},{passive:true});
+  heading.addEventListener("focusin",event=>{
+    const card=event.target.closest(".compare-company");
+    if(!card)return;
+    const viewport=heading.getBoundingClientRect();
+    const bounds=card.getBoundingClientRect();
+    if(bounds.left<viewport.left)charts.scrollLeft+=bounds.left-viewport.left;
+    if(bounds.right>viewport.right)charts.scrollLeft+=bounds.right-viewport.right;
+  });
+  updateCompareOffset();
 }
 function renderCompare(){
   $("#compareOptions").innerHTML=CARD_ORDER.map(id=>'<label><input type="checkbox" value="'+id+'"'+(compareSelection.has(id)?' checked':compareSelection.size===3?' disabled':'')+'>'+esc(CARDS[id].name)+'</label>').join('');
