@@ -790,10 +790,26 @@ function drawMap(){
 $("#map").addEventListener("click",e=>{const b=e.target.closest(".tile");if(b)openSheet(b.dataset.id)});
 function setRegion(r){region=r;$("#segCn").setAttribute("aria-pressed",r==="cn");$("#segGl").setAttribute("aria-pressed",r==="gl");drawMap()}
 $("#segCn").onclick=()=>setRegion("cn");$("#segGl").onclick=()=>setRegion("gl");
-function dayLabel(){$("#dayChip").textContent=S.day===1?"示例行情 · 第 1 天":"示例行情 · 第 "+S.day+" 天"}
+const FIRST_EXAMPLE_DATE=Date.UTC(2026,10,23);
+function exampleDate(day){
+  return new Date(FIRST_EXAMPLE_DATE+(day-1)*86400000).toISOString().slice(0,10);
+}
+function updateExampleQuotes(){
+  Object.values(ALL).forEach(c=>{
+    if(S.day===1){c.chg=BASE_CHG[c.id];return;}
+    let seed=hashN(S.day+":"+c.id);
+    seed=Math.imul(seed^(seed>>>16),0x45d9f3b);
+    seed=Math.imul(seed^(seed>>>16),0x45d9f3b);
+    const sample=((seed^(seed>>>16))>>>0)/4294967296;
+    c.chg=Math.round((sample-0.5)*96)/10;
+  });
+  $("#dayChip").textContent="示例行情 · "+exampleDate(S.day);
+}
 $("#reroll").onclick=()=>{
-  S.day++;Object.values(ALL).forEach(c=>{let v=(Math.random()+Math.random()+Math.random()-1.5)*3.2;c.chg=Math.round(v*10)/10});
-  save();dayLabel();drawMap();toast("换到第 "+S.day+" 天：颜色变了，方块大小没怎么变");
+  S.day++;
+  save();
+  updateExampleQuotes();
+  drawMap();
 };
 let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(drawMap,120)});
 
@@ -1033,7 +1049,7 @@ $("#holds").addEventListener("click",e=>{const b=e.target.closest("[data-out]");
   if(b.dataset.confirm!=="1"){b.dataset.confirm="1";b.textContent="再点一次确认（珍珠不会少，陪伴周数清零）";return}
   const id=b.dataset.out;S.items=S.items.filter(i=>i.id!==id);addLog(ALL[id].name+"拿下来了",0);save();renderJar()});
 $("#resetBtn").onclick=e=>{const b=e.currentTarget;if(b.dataset.confirm!=="1"){b.dataset.confirm="1";b.textContent="再点一次确认清空";return}
-  b.dataset.confirm="";b.textContent="清空重来";S=fresh();save();Object.values(ALL).forEach(c=>c.chg=BASE_CHG[c.id]);dayLabel();renderJar();drawMap();toast("已清空")};
+  b.dataset.confirm="";b.textContent="清空重来";S=fresh();save();updateExampleQuotes();renderJar();drawMap();toast("已清空")};
 
 /* ---------------- routing ---------------- */
 const VIEWS=["map","learn","jar"];
@@ -1048,8 +1064,7 @@ function show(h){
 }
 function go(v,id){const h=id?"c-"+id:v;if(location.hash!=="#"+h)location.hash=h;else show(h)}
 addEventListener("hashchange",()=>show(location.hash.slice(1)));
-if(S.day>1){Object.values(ALL).forEach(c=>{let v=(Math.random()+Math.random()+Math.random()-1.5)*3.2;c.chg=Math.round(v*10)/10})}
-dayLabel();
+updateExampleQuotes();
 show(location.hash.slice(1));
 })();
 </script>
