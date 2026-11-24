@@ -276,6 +276,7 @@ section[hidden]{display:none}
 .compare-heading-scroll{overflow-x:hidden}
 .compare-scroll{overflow-x:auto;padding-bottom:6px}
 .compare-growth{font-size:18px}
+.compare-revenue{align-self:end}
 .compare-table{display:grid;grid-template-columns:repeat(var(--companies),minmax(205px,1fr));gap:10px;min-width:calc(var(--companies)*215px - 10px);align-items:stretch}
 .compare-table h2{grid-column:1/-1;margin:10px 0 0}
 .compare-company,.compare-cell{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
@@ -1291,7 +1292,8 @@ function miniBars(vals,years,color,title,range=[Math.min(...vals,0),Math.max(...
       s+=`<g opacity="${op}"><path d="M${f(x)} ${f(y)} L${f(x+bw)} ${f(y)} L${f(x+bw-ins)} ${f(y+hh-r)} Q${f(x+bw-ins)} ${f(y+hh)} ${f(x+bw-ins-r)} ${f(y+hh)} L${f(x+ins+r)} ${f(y+hh)} Q${f(x+ins)} ${f(y+hh)} ${f(x+ins)} ${f(y+hh-r)} Z" fill="${color}"/><rect x="${f(x-2.5)}" y="${f(y-2.2)}" width="${f(bw+5)}" height="2.2" rx="1.1" fill="${color}"/>${i===n-1?`<line x1="${f(x+bw*0.58)}" y1="${f(y-2)}" x2="${f(x+bw*0.78)}" y2="${f(y-15)}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`:""}</g>`}
     s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-num)">${"'"+years[i].slice(2)}</text>`});
   const up=vals[n-1]>vals[0];
-  return `<div class="mb"><div class="mb-t">${title}<b class="${up?"up":"dn"}">${up?"变大了":"变小了"}</b></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}${up?"变大了":"变小了"}"><line x1="0" x2="${W}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--line)"/>${s}</svg></div>`;
+  const cropTop=exactHeight?Math.max(0,y0-Math.max(...vals,0)/sp*ch-top):0;
+  return `<div class="mb"><div class="mb-t">${title}<b class="${up?"up":"dn"}">${up?"变大了":"变小了"}</b></div><svg viewBox="0 ${cropTop} ${W} ${H-cropTop}" role="img" aria-label="${title}${up?"变大了":"变小了"}"><line x1="0" x2="${W}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--line)"/>${s}</svg></div>`;
 }
 
 /* ---------------- cards：每家公司是一杯奶茶 ---------------- */
@@ -1417,7 +1419,7 @@ function renderCompareResults(){
   $("#compareStatus").textContent="已选 "+cards.length+" 家，最多选 3 家。";
   const results=$("#compareResults");
   if(cards.length<2){results.innerHTML='<p class="empty compare-empty">选满 2 家后，就能并排看图。</p>';return;}
-  const cell=content=>'<div class="compare-cell">'+content+'</div>';
+  const cell=(content,extra="")=>'<div class="compare-cell'+extra+'">'+content+'</div>';
   const revenueRange=[0,Math.max(...cards.flatMap(revenueInCNY))];
   const mixedCurrencies=new Set(cards.map(compareCurrency)).size>1;
   const chartCell=(card,key,color,title)=>{
@@ -1427,7 +1429,7 @@ function renderCompareResults(){
     const revenue=key==="rev";
     const values=revenue?revenueInCNY(card):card[key];
     const scale=revenue?revenueRange:compareRange(peers,key);
-    return cell('<p class="sub">'+esc(card.years[last])+' 年／财年 · 亿'+currency+'</p><strong class="compare-value">'+compareAmount(card[key][last])+'</strong>'+miniBars(values,card.years,color,title,scale,revenue));
+    return cell('<p class="sub">'+esc(card.years[last])+' 年／财年 · 亿'+currency+'</p><strong class="compare-value">'+compareAmount(card[key][last])+'</strong>'+miniBars(values,card.years,color,title,scale,revenue),revenue?" compare-revenue":"");
   };
   results.style.setProperty("--companies",cards.length);
   results.innerHTML='<p class="note">营收杯身共用零线与刻度，金额按原币显示。'+(mixedCurrencies?'跨币种营收杯身按 <a href="https://alfred.stlouisfed.org/series?seid=DEXCHUS" target="_blank" rel="noopener noreferrer">2026-11-20 汇率（1 美元 = 6.677 元）</a> 统一换算。利润图按币种分别定刻度。':'')+'窄屏可横向滑动。</p>'+
