@@ -1279,7 +1279,7 @@ $("#sheet").addEventListener("click",e=>{
 });
 addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
 
-function miniBars(vals,years,color,title,range=[Math.min(...vals,0),Math.max(...vals,0)]){
+function miniBars(vals,years,color,title,range=[Math.min(...vals,0),Math.max(...vals,0)],exactHeight=false){
   const W=150,H=112,top=22,bot=20,ch=H-top-bot;
   const [mn,mx]=range;const sp=(mx-mn)||1;
   const y0=top+mx/sp*ch;const n=vals.length;const bw=Math.min(20,(W-8)/n-8);const step=(W-8)/n;
@@ -1287,7 +1287,7 @@ function miniBars(vals,years,color,title,range=[Math.min(...vals,0),Math.max(...
     const op=i===n-1?1:.55;
     if(v<0){s+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(h,1.5).toFixed(1)}" rx="4" fill="var(--down)" opacity="${op}"/>`}
     else{ // 每根柱子画成一杯奶茶：直筒杯身 + 杯盖，最后一杯插吸管
-      const hh=Math.max(h,3),ins=0,r=Math.min(3,hh/2),f=n=>n.toFixed(1);
+      const hh=exactHeight?h:Math.max(h,3),ins=0,r=Math.min(3,hh/2),f=n=>n.toFixed(exactHeight?3:1);
       s+=`<g opacity="${op}"><path d="M${f(x)} ${f(y)} L${f(x+bw)} ${f(y)} L${f(x+bw-ins)} ${f(y+hh-r)} Q${f(x+bw-ins)} ${f(y+hh)} ${f(x+bw-ins-r)} ${f(y+hh)} L${f(x+ins+r)} ${f(y+hh)} Q${f(x+ins)} ${f(y+hh)} ${f(x+ins)} ${f(y+hh-r)} Z" fill="${color}"/><rect x="${f(x-2.5)}" y="${f(y-2.2)}" width="${f(bw+5)}" height="2.2" rx="1.1" fill="${color}"/>${i===n-1?`<line x1="${f(x+bw*0.58)}" y1="${f(y-2)}" x2="${f(x+bw*0.78)}" y2="${f(y-15)}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`:""}</g>`}
     s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-num)">${"'"+years[i].slice(2)}</text>`});
   const up=vals[n-1]>vals[0];
@@ -1401,6 +1401,11 @@ function updateCompareOffset(){
   $("#compareResults").style.setProperty("--compare-topbar",$(".topbar").getBoundingClientRect().height+"px");
 }
 new ResizeObserver(updateCompareOffset).observe($(".topbar"));
+const COMPARE_CNY_PER_USD=6.677;
+function revenueInCNY(card){
+  const rate=compareCurrency(card)==="美元"?COMPARE_CNY_PER_USD:1;
+  return card.rev.map(value=>value*rate);
+}
 function compareCurrency(card){return card.mkt.startsWith("美股")?"美元":"元";}
 function compareRange(cards,key){
   const values=cards.flatMap(card=>card[key]);
@@ -1413,14 +1418,19 @@ function renderCompareResults(){
   const results=$("#compareResults");
   if(cards.length<2){results.innerHTML='<p class="empty compare-empty">选满 2 家后，就能并排看图。</p>';return;}
   const cell=content=>'<div class="compare-cell">'+content+'</div>';
+  const revenueRange=[0,Math.max(...cards.flatMap(revenueInCNY))];
+  const mixedCurrencies=new Set(cards.map(compareCurrency)).size>1;
   const chartCell=(card,key,color,title)=>{
     const currency=compareCurrency(card);
     const peers=cards.filter(other=>compareCurrency(other)===currency);
     const last=card.years.length-1;
-    return cell('<p class="sub">'+esc(card.years[last])+' 年／财年 · 亿'+currency+'</p><strong class="compare-value">'+compareAmount(card[key][last])+'</strong>'+miniBars(card[key],card.years,color,title,compareRange(peers,key)));
+    const revenue=key==="rev";
+    const values=revenue?revenueInCNY(card):card[key];
+    const scale=revenue?revenueRange:compareRange(peers,key);
+    return cell('<p class="sub">'+esc(card.years[last])+' 年／财年 · 亿'+currency+'</p><strong class="compare-value">'+compareAmount(card[key][last])+'</strong>'+miniBars(values,card.years,color,title,scale,revenue));
   };
   results.style.setProperty("--companies",cards.length);
-  results.innerHTML='<p class="note">同币种的柱图共用刻度。不同币种各用原币。各家公司沿用图解卡的数据期间。窄屏可横向滑动。</p>'+
+  results.innerHTML='<p class="note">营收杯身共用零线与刻度，金额按原币显示。'+(mixedCurrencies?'跨币种营收杯身按 <a href="https://alfred.stlouisfed.org/series?seid=DEXCHUS" target="_blank" rel="noopener noreferrer">2026-11-20 汇率（1 美元 = 6.677 元）</a> 统一换算。利润图按币种分别定刻度。':'')+'窄屏可横向滑动。</p>'+
     '<div class="compare-heading"><div class="compare-heading-scroll"><div class="compare-table">'+
     [...compareSelection].map(id=>'<div class="compare-company"><a href="#c-'+id+'">'+esc(CARDS[id].name)+'</a><div class="sub">'+esc(CARDS[id].mkt)+'</div></div>').join('')+
     '</div></div></div>'+
