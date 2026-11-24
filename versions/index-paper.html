@@ -1,0 +1,973 @@
+<title>糖分 纸本版</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=ZCOOL+KuaiLe&family=Patrick+Hand&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: one phone-width column, mini-program feel — sticky top bar, scrolling view, fixed disclaimer + tab bar at the bottom */
+:root{
+  /* 糖分品牌 v5：米纸底 + 金茶线条 + 草莓/抹茶配料，见 tangfen-brand/brand-board.html */
+  --bg:#F5F1EA; --surface:#FFFDF9; --surface-2:#EDE7DD; --ink:#4A423B; --ink-2:#766A5E; --line:#E2DACD;
+  --accent:#7A5F4B; --accent-soft:#EFE6DC; --grape:#A09487; --kincha:#A09487; --btn:#6E6357;
+  --tile-ink:#4A423B;
+  --c1:#D99AA0; --c2:#DCC59C; --c3:#A7B08C; --c4:#B5C0C9; --c5:#BDB4D0; --milk:#FBF8F2;
+  --ok-soft:#F1E7D6; --up:#C97770; --down:#7F9C8C; --down-ink:#4F6B5E;
+  --glass:rgba(255,253,249,.65); --glass-line:#DCD2C4;
+  --shadow:0 4px 18px rgba(74,66,59,.07);
+  --f-display:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-num:"Manrope","Noto Sans SC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#221F1C; --surface:#2A2623; --surface-2:#34302C; --ink:#F3EEE6; --ink-2:#B5ACA2; --line:#403A35;
+  --accent:#D9BFA8; --accent-soft:#3D342D; --grape:#C2B6A8; --kincha:#C2B6A8; --btn:#D9CBB9;
+  --ok-soft:#3A3229; --down-ink:#A9C2B5;
+  --glass:rgba(255,255,255,.05); --glass-line:#4A433C; --shadow:0 4px 18px rgba(0,0,0,.35); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#221F1C; --surface:#2A2623; --surface-2:#34302C; --ink:#F3EEE6; --ink-2:#B5ACA2; --line:#403A35;
+  --accent:#D9BFA8; --accent-soft:#3D342D; --grape:#C2B6A8; --kincha:#C2B6A8; --btn:#D9CBB9;
+  --ok-soft:#3A3229; --down-ink:#A9C2B5;
+  --glass:rgba(255,255,255,.05); --glass-line:#4A433C; --shadow:0 4px 18px rgba(0,0,0,.35); color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--grape);outline-offset:2px}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:8px}
+.brand svg{width:30px;height:30px;flex:none}
+.brand b{font-family:var(--f-display);font-weight:700;font-size:22px;letter-spacing:.16em;color:var(--ink)}
+.brand span{font-size:12px;color:var(--ink-2)}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:13px;white-space:nowrap}
+
+h1{font-size:20px;line-height:1.35;margin:4px 0 4px;text-wrap:balance}
+h2{font-size:17px;margin:0 0 8px;text-wrap:balance}
+.sub{color:var(--ink-2);font-size:13px;margin:0}
+
+/* ---------- map ---------- */
+.seg{display:flex;background:var(--surface-2);border-radius:999px;padding:3px;gap:3px;margin:12px 0 10px}
+.seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:7px 8px;font-size:13px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.map{position:relative;width:100%;border-radius:10px;overflow:hidden;background:var(--bg)}
+.grp-label{position:absolute;font-size:11px;font-weight:700;color:var(--ink-2);padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.5px}
+.tile{position:absolute;border:0;border-radius:8px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--tile-ink);overflow:hidden;transition:background-color .5s ease,transform .15s}
+.tile:active{transform:scale(.97)}
+.tile .n{font-weight:700;line-height:1.15;word-break:keep-all}
+.tile .p{font-family:var(--f-num);font-weight:500;opacity:.85;line-height:1.2}
+.tile.has-card::after{content:"";position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px rgba(74,66,59,.35)}
+.tile.has-card.lv::after{background:var(--accent);box-shadow:0 0 0 2px #fff}
+.legend{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+.scale{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);font-family:var(--f-num)}
+.scale .bar{flex:1;height:10px;border-radius:999px;background:linear-gradient(90deg,#7FA6DE,#C3D6F1,#EFE6CA,#F0BFCB,#E07D99)}
+.keys{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink-2)}
+.keys i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.btn{border:0;border-radius:999px;padding:10px 18px;font-weight:500;letter-spacing:.04em;font-size:14px;background:var(--btn);color:var(--surface)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.45;cursor:default}
+.tip{background:var(--surface);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:13.5px;color:var(--ink-2);box-shadow:var(--shadow)}
+.tip b{color:var(--ink)}
+
+/* ---------- sheet ---------- */
+.scrim{position:fixed;inset:0;background:rgba(34,31,28,.35);z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-width:480px;margin:0 auto;background:var(--surface);border-radius:16px 22px 0 0;
+  padding:10px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.9,.3,1);max-height:82vh;overflow:auto}
+.sheet.on{transform:none}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 12px}
+.co-head{display:flex;gap:12px;align-items:center}
+.logo{width:48px;height:48px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:20px;color:var(--tile-ink);flex:none}
+.co-head h2{margin:0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:14px 0;font-size:14px}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0;min-width:0}
+.today{border-radius:10px;padding:12px 14px;background:var(--surface-2);font-size:14px}
+.today .big{font-family:var(--f-num);font-size:22px;font-weight:600}
+
+/* ---------- learn cards ---------- */
+.cards{display:flex;flex-direction:column;gap:16px;margin-top:12px}
+.card{background:var(--surface);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.card-top{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.card .one{font-size:15px;margin:6px 0 14px}
+.pie-row{display:flex;gap:14px;align-items:center}
+.pie-row svg{flex:none;width:132px;height:132px}
+.pie-legend{display:flex;flex-direction:column;gap:6px;font-size:13px;min-width:0;flex:1}
+.pie-legend div{display:flex;gap:6px;align-items:flex-start}
+.pie-legend i{width:10px;height:10px;border-radius:3px;flex:none;margin-top:5px}
+.pie-legend em{font-style:normal;font-family:var(--f-num);font-weight:600;margin-left:auto;padding-left:6px}
+.src{font-size:11.5px;color:var(--ink-2);margin:8px 0 0}
+.three{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:10px}
+.three li{display:flex;gap:10px;font-size:14.5px}
+.three li span{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-family:var(--f-num);font-weight:600;display:grid;place-items:center;font-size:13px;margin-top:1px}
+.risk{margin-top:14px;border-radius:10px;padding:12px 14px;background:color-mix(in srgb,var(--c2) 22%,var(--surface));font-size:14px}
+.risk b{display:block;font-size:13px;margin-bottom:2px}
+.quiz{margin-top:14px;border-top:1px dashed var(--line);padding-top:14px}
+.quiz p{margin:0 0 10px;font-weight:700;font-size:14.5px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;text-align:left;font-size:14px}
+.opt.right{border-color:var(--accent);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--line);opacity:.55}
+.fb{font-size:13.5px;margin:10px 0 0;color:var(--ink-2)}
+.done-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+
+/* ---------- card template ---------- */
+.list-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.lc{background:var(--surface);border-radius:10px;padding:14px;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;min-width:0}
+.lc-top{display:flex;justify-content:space-between;align-items:flex-start}
+.lc b{font-size:16px}
+.lc-one{font-size:12.5px;color:var(--ink-2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.logo.sm{width:38px;height:38px;font-size:16px;border-radius:11px}
+.tag{font-size:11px;font-weight:500;border-radius:6px;padding:1px 6px;background:var(--surface-2);color:var(--ink-2);vertical-align:3px;white-space:nowrap}
+.st{font-size:12px;color:var(--accent);font-weight:700;margin-top:auto}
+.st.ok{color:var(--accent)}
+.back{display:inline-block;color:var(--ink-2);text-decoration:none;padding:6px 0 2px;font-size:14px}
+.sec{margin-top:22px}
+.sec h3,.qh{font-size:16px;margin:0 0 10px;display:flex;gap:8px;align-items:center}
+.h-ic{width:22px;height:22px;flex:none}
+.sec h3 span{width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--surface);font-family:var(--f-num);font-size:13px;display:grid;place-items:center;flex:none}
+.scene{display:grid;grid-template-columns:1fr 12px 1fr 12px 1fr;align-items:stretch;gap:2px}
+.sc{border-radius:10px;padding:10px 8px;font-size:13px;line-height:1.45;color:var(--tile-ink);min-width:0}
+.sc small{display:block;font-size:11px;font-weight:700;opacity:.7;margin-bottom:2px}
+.sc0{background:#F7DDE6}.sc1{background:#F6ECBE}.sc2{background:#E6DBF5}
+.arr{display:grid;place-items:center;color:var(--ink-2);font-size:18px}
+.stack{display:flex;height:34px;border-radius:12px;overflow:hidden;gap:2px}
+.stack div{display:grid;place-items:center;font-family:var(--f-num);font-weight:600;color:var(--tile-ink);font-size:14px;min-width:0}
+.stack-k{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink-2);margin-top:8px}
+.stack-k i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.stack-k b{color:var(--ink)}
+.note{font-size:13.5px;color:var(--ink-2);margin:8px 0 0;line-height:1.6}
+.grow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mb{background:var(--surface-2);border-radius:10px;padding:8px 8px 2px;min-width:0}
+.mb svg{width:100%;height:auto;display:block}
+.mb-t{font-size:12.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center;padding:0 2px}
+.mb-t b{font-size:11px;border-radius:999px;padding:0 7px}
+.mb-t b.up{background:var(--accent-soft);color:var(--accent)}
+.mb-t b.dn{background:color-mix(in srgb,var(--down) 18%,var(--surface));color:var(--down-ink)}
+.risk .rtag{display:inline-block;background:var(--c2);color:var(--tile-ink);font-weight:700;font-size:12px;border-radius:6px;padding:0 7px;margin-right:6px}
+.moat{margin-top:10px;border-radius:10px;padding:12px 14px;background:var(--ok-soft);font-size:14px}
+.moat b{display:block;font-size:13px;margin-bottom:2px}
+.qprog{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:12px;color:var(--ink-2)}
+.qprog i{width:26px;height:6px;border-radius:9px;background:var(--line)}
+.qprog i.ok{background:var(--kincha)}.qprog i.now{background:var(--accent)}
+.qprog span{margin-left:4px}
+.qq{margin:0 0 10px;font-weight:700;font-size:14.5px}
+.passed{border-radius:10px;padding:10px 14px;background:var(--ok-soft);font-size:13.5px}
+.passed b{display:block;font-size:14.5px}
+.share{margin-top:12px;border-radius:10px;padding:16px;background:linear-gradient(135deg,#E6DBF5,#FFF8DF);color:var(--tile-ink)}
+.share-h{font-weight:700;font-size:15px;margin-bottom:6px}
+.share ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.share-f{margin-top:10px;font-family:var(--f-display);font-size:14px;letter-spacing:.1em;color:var(--accent);text-align:right}
+
+/* ---------- sweetness ---------- */
+.sweet{display:flex;gap:12px;align-items:center;background:var(--surface-2);border-radius:12px;padding:10px 14px}
+.sweet .cup{flex:none}
+.sw-main{min-width:0;flex:1}
+.sw-now{font-size:13px;color:var(--ink-2)}
+.sw-now b{font-family:var(--f-display);font-weight:700;font-size:20px;color:var(--accent);margin-left:2px}
+.sw-steps{display:flex;gap:4px;margin:4px 0}
+.sw-steps span{flex:1;text-align:center;font-size:11px;border-radius:999px;padding:1px 0;background:var(--surface);color:var(--ink-2)}
+.sw-steps span.on{background:var(--accent);color:var(--surface);font-weight:700}
+.sw-hint{font-size:12px;color:var(--ink-2)}
+.lc-sw{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:auto}
+.lc-sw .full{color:var(--accent)}
+.chkwrap{margin-top:12px}
+.chk{border:1.5px dashed var(--glass-line);border-radius:10px;padding:10px 12px}
+.chk-q{font-size:14px;font-weight:700;margin-bottom:8px}
+.chk-q span{display:inline-block;font-size:11px;background:var(--c5);color:var(--tile-ink);border-radius:6px;padding:0 6px;margin-right:6px;vertical-align:1px}
+.chk-o{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;text-align:left;max-width:100%}
+.pill.wrong{opacity:.5;text-decoration:line-through}
+.chk .fb{margin-top:6px}
+.chk.done{border-style:solid;border-color:transparent;background:var(--ok-soft);font-size:13px;color:var(--ink-2)}
+.chk.done b{color:var(--accent);margin-right:6px}
+.locked{border-radius:10px;padding:12px 14px;background:var(--surface-2);font-size:13.5px;color:var(--ink-2)}
+.tile .sw{position:absolute;top:3px;right:3px;font-size:10px;line-height:1.5;background:#fff;color:var(--accent);border-radius:6px;padding:0 4px;font-weight:700}
+
+/* ---------- milk tea ---------- */
+.make{display:flex;gap:14px;align-items:center;background:var(--surface-2);border-radius:10px;padding:12px 14px}
+.make .cupsvg{flex:none}
+.recipe{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.rc-h{font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.rc-h span{font-family:var(--f-num);font-size:12px;color:var(--accent)}
+.rc{display:flex;gap:8px;font-size:12.5px;color:var(--ink-2);align-items:baseline}
+.rc i{font-style:normal;flex:none;width:34px;border-radius:6px;text-align:center;font-size:11px;background:var(--surface);padding:0 2px}
+.rc span{min-width:0}
+.rc.on{color:var(--ink)}
+.rc.on i{background:var(--accent);color:var(--surface);font-weight:700}
+.layers-row{display:flex;gap:14px;align-items:stretch}
+.layers{width:86px;flex:none;height:170px;display:flex;flex-direction:column-reverse;border:2px solid var(--ink-2);border-top-width:0;border-radius:0 0 18px 18px;overflow:hidden;gap:2px;background:var(--surface)}
+.layers div{min-height:6px}
+.layer-k{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px;font-size:13px}
+.layer-k div{display:flex;gap:6px;align-items:flex-start}
+.layer-k i{width:12px;height:12px;border-radius:4px;flex:none;margin-top:4px}
+.layer-k em{font-style:normal;font-family:var(--f-num);font-weight:600;margin-left:auto;padding-left:6px}
+.bands{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;margin-top:6px}
+.band{border-radius:10px;padding:5px 2px;text-align:center;background:var(--surface-2);font-size:12px;color:var(--ink-2);min-width:0}
+.band b{display:block;font-size:12.5px;color:var(--ink)}
+.band small{font-size:10.5px}
+.band.on{background:var(--accent);color:var(--surface)}
+.band.on b{color:var(--surface)}
+.lc-top .cupsvg{flex:none}
+.lc-sw{font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:auto}
+.lc-sw.full{color:var(--accent)}
+.share-top{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.share-tags{font-size:12.5px;opacity:.8;margin-top:2px}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 8px;margin-top:14px;padding:0 4px}
+.slot{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:11.5px;color:var(--ink-2);border-bottom:8px solid var(--c1);border-radius:0 0 4px 4px;padding-bottom:8px;min-width:0}
+.slot b{font-size:13.5px;color:var(--ink);margin-top:2px}
+.ghost-cup{width:56px;height:84px;margin:18px 0 6px;border:2px dashed var(--glass-line);border-top:0;border-radius:0 0 14px 14px;clip-path:polygon(0 0,100% 0,88% 100%,12% 100%)}
+.empty-slot span{margin-bottom:2px}
+.cmp{margin-top:10px}
+.count{text-align:center;margin-top:14px}
+
+.coins-row{display:flex;gap:16px;align-items:center}
+.coins{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;width:150px;flex:none}
+.coins i{aspect-ratio:1;border-radius:3px;display:block}
+.coins i.co,.ck.co i{background:color-mix(in srgb,var(--ink-2) 22%,var(--surface))}
+.coins i.ex,.ck.ex i{background:var(--c4)}
+.coins i.pr,.ck.pr i{background:var(--c3)}
+.coin-k{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.ck{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-2)}
+.ck i{width:12px;height:12px;border-radius:3px;flex:none;margin-top:5px}
+.ck b{font-family:var(--f-num);font-size:18px;color:var(--ink)}
+.ck span{display:block;font-size:12.5px;line-height:1.4}
+.ck.pr b{font-size:26px;color:var(--accent)}
+/* ---------- jar ---------- */
+.jar-box{display:flex;flex-direction:column;align-items:center;margin-top:8px}
+.jar-svg{width:min(260px,72vw);height:auto;max-width:100%}
+.count{font-family:var(--f-num);font-weight:700;font-size:30px;color:var(--accent);line-height:1}
+.count small{font-family:var(--f-body);font-size:13px;color:var(--ink-2);margin-left:4px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.rule{background:var(--surface);border-radius:10px;padding:10px 8px;text-align:center;font-size:12px;color:var(--ink-2);box-shadow:var(--shadow)}
+.rule b{display:block;font-family:var(--f-num);font-size:18px;color:var(--ink)}
+.holds{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.hold{background:var(--surface);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;box-shadow:var(--shadow)}
+.hold .logo{width:40px;height:40px;font-size:16px;border-radius:12px}
+.hold .meta{min-width:0;font-size:12.5px;color:var(--ink-2)}
+.hold .meta b{display:block;color:var(--ink);font-size:15px}
+.hold svg{width:84px;height:34px}
+.hold .x{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:8px}
+.linkbtn{border:0;background:none;color:var(--ink-2);text-decoration:underline;font-size:12px;padding:2px}
+.log{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.log li{background:var(--surface-2);border-radius:12px;padding:8px 12px}
+.log li b{font-family:var(--f-num);color:var(--accent)}
+.empty{background:var(--surface);border:1.5px dashed var(--glass-line);border-radius:10px;padding:16px;text-align:center;color:var(--ink-2);font-size:14px}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:11px;border-radius:999px;padding:1px 8px;background:var(--accent-soft);color:var(--accent);font-weight:700}
+section[hidden]{display:none}
+.sec-title{display:flex;justify-content:space-between;align-items:baseline;margin-top:22px}
+
+/* ---------- bottom ---------- */
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.disc{max-width:480px;margin:0 auto;font-size:11px;color:var(--ink-2);text-align:center;padding:5px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.tabs{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);padding:2px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px))}
+.tabs a{display:flex;flex-direction:column;align-items:center;gap:1px;text-decoration:none;color:var(--ink-2);font-size:12px;padding:6px 0;border-radius:12px}
+.tabs a svg{width:24px;height:24px}
+.tabs a[aria-current="page"]{color:var(--accent);font-weight:700}
+.toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13.5px;opacity:0;transition:.25s;z-index:30;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@keyframes drop{from{transform:translateY(-140px);opacity:0}to{transform:none;opacity:1}}
+.candy.new{animation:drop .6s cubic-bezier(.3,1.4,.5,1) both}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== 纸本版：奶油纸 + 墨线 + 剪纸按钮 + 胶带 ===== */
+:root{
+  --bg:#EAE5D3; --surface:#FAF7EE; --surface-2:#F1ECDF; --ink:#343329; --ink-2:#67644F; --line:#D9D2BF; --pen:#343329;
+  --accent:#6E52AC; --accent-soft:#E6DBF5; --grape:#6E52AC; --kincha:#EBD77E; --btn:#C7B2E6; --sky:#A9C6F0; --tape:rgba(226,206,118,.9);
+  --tile-ink:#343329;
+  --c1:#E7A9C6; --c2:#EBD77E; --c3:#BFD27A; --c4:#A9C6F0; --c5:#C7B2E6; --milk:#FAF7EE;
+  --ok-soft:#F7EDB8; --up:#E07D99; --down:#7FA6DE; --down-ink:#3D5E93;
+  --glass:rgba(250,247,238,.7); --glass-line:#BDB18A;
+  --shadow:3px 3px 0 rgba(52,51,41,.14);
+  --f-display:"ZCOOL KuaiLe","Noto Sans SC",sans-serif;
+  --f-num:"Patrick Hand","Manrope",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#24224A; --surface:#302D5C; --surface-2:#3A3668; --ink:#FFF8DF; --ink-2:#C9C2E2; --line:#4A4680; --pen:#FFF8DF;
+  --accent:#D3C1F2; --accent-soft:#433E78; --grape:#D3C1F2; --btn:#C7B2E6; --sky:#3A3668;
+  --ok-soft:#3F3A63; --down-ink:#B9CFF3; --glass-line:#5B5690; --shadow:3px 3px 0 rgba(0,0,0,.3) }}
+:root[data-theme="dark"]{
+  --bg:#24224A; --surface:#302D5C; --surface-2:#3A3668; --ink:#FFF8DF; --ink-2:#C9C2E2; --line:#4A4680; --pen:#FFF8DF;
+  --accent:#D3C1F2; --accent-soft:#433E78; --grape:#D3C1F2; --btn:#C7B2E6; --sky:#3A3668;
+  --ok-soft:#3F3A63; --down-ink:#B9CFF3; --glass-line:#5B5690; --shadow:3px 3px 0 rgba(0,0,0,.3) }
+h1,h2,h3,.qh,.brand b,.lc b,.co-head h2{font-family:var(--f-display);font-weight:400;letter-spacing:.04em}
+.brand b{font-size:24px;letter-spacing:.12em}
+body::before,.topbar{background:var(--sky)}
+.topbar{border-bottom:1.5px solid var(--pen);margin-bottom:10px}
+.brand span{color:var(--ink)}
+.chip{border:1.5px solid var(--pen);border-radius:3px 5px 4px 3px;background:var(--c2);color:#343329;transform:rotate(-1deg)}
+.card,.lc,.tip,.hold,.rule,.sheet{border:1.5px solid var(--pen);border-radius:5px 3px 6px 4px;box-shadow:var(--shadow)}
+.sheet{border-bottom:0;border-radius:8px 10px 0 0}
+.seg{background:transparent;border:1.5px solid var(--pen);border-radius:5px;padding:3px}
+.seg button{border-radius:3px}
+.seg button[aria-pressed="true"]{background:var(--c2);color:#343329;box-shadow:none}
+.map{background:var(--bg)}
+.tile{border:1.5px solid #343329;border-radius:3px 5px 3px 4px}
+.btn{position:relative;border:1.5px solid #343329;border-radius:3px 5px 4px 3px;background:var(--btn);color:#343329;font-family:var(--f-display);font-weight:400;letter-spacing:.08em;transform:rotate(-.8deg);box-shadow:2px 2px 0 rgba(52,51,41,.18)}
+.btn::before{content:"";position:absolute;top:-8px;left:50%;width:28px;height:13px;background:var(--tape);transform:translateX(-50%) rotate(3deg);opacity:.9}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--pen);transform:rotate(.6deg)}
+.tools{gap:12px;margin-top:14px}
+.opt,.pill{border:1.5px solid var(--pen);border-radius:4px 6px 4px 5px}
+.pill{border-radius:4px}
+.opt.right{border-color:var(--accent);background:var(--ok-soft)}
+.logo{border:1.5px solid #343329;border-radius:4px 6px 4px 5px}
+.tag,.badge,.rtag{border-radius:3px}
+.sc,.mb,.today,.risk,.moat,.passed,.locked,.make,.sweet,.band{border:1.5px solid var(--pen);border-radius:4px 6px 4px 5px}
+.sc,.risk .rtag{color:#343329}
+.stack{border:1.5px solid var(--pen);border-radius:4px}
+.three li span,.sec h3 span{border:1.5px solid var(--pen);border-radius:3px}
+.chk{border-color:var(--pen);border-radius:4px}
+.share{border:1.5px solid var(--pen);border-radius:4px;color:#343329}
+.share-f{font-family:var(--f-display)}
+.layers{border-color:var(--pen)}
+.bottom{border-top:1.5px solid var(--pen)}
+.tabs{gap:8px;padding-top:6px}
+.tabs a{border:1.5px solid var(--pen);border-radius:4px 6px 4px 5px;background:var(--surface);color:var(--ink)}
+.tabs a:nth-child(2){transform:rotate(.8deg)} .tabs a:nth-child(3){transform:rotate(-.6deg)}
+.tabs a[aria-current="page"]{background:var(--btn);color:#343329}
+.count,.ck.pr b{font-family:var(--f-num)}
+.toast{border-radius:4px}
+</style>
+
+<div class="app">
+  <header class="topbar wrap">
+    <div class="brand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true">
+<defs><clipPath id="brandlogo"><path d="M30 40H90L82.94 98Q82 106 74 106H46Q38 106 37.06 98Z"/></clipPath></defs>
+<rect x="62" y="4" width="4.5" height="22" transform="rotate(14 64 15)" fill="#343329"/>
+<path d="M24 38.5H96Q97 38.5 97 37V35.5Q97 34 95.5 34H89A29 17 0 0 0 31 34H24.5Q23 34 23 35.5V37Q23 38.5 24.5 38.5Z" fill="#343329"/>
+<g clip-path="url(#brandlogo)">
+<rect x="0" y="38" width="120" height="70" fill="#BFD27A"/>
+<path d="M0 66L46 58L62 64L120 46V120H0Z" fill="#FFF8DF"/>
+<path d="M0 88L46 80L62 86L120 68V120H0Z" fill="#E7A9C6"/>
+<circle cx="47" cy="98" r="3.6" fill="#343329"/><circle cx="59" cy="93.5" r="3.6" fill="#343329"/><circle cx="71" cy="97.5" r="3.6" fill="#343329"/>
+</g><path d="M30 40H90L82.94 98Q82 106 74 106H46Q38 106 37.06 98Z" fill="none" stroke="#343329" stroke-width="2.6" stroke-linejoin="round"/></svg><b>糖分</b><span>先看懂，再持有</span></div>
+    <span class="chip" id="dayChip">示例行情</span>
+  </header>
+
+  <!-- ============ MAP ============ -->
+  <section id="v-map" class="wrap">
+    <h1>今天，这些公司在市场上怎么样？</h1>
+    <p class="sub">每一块是一家公司。点一下，看看它是做什么的。</p>
+    <div class="seg" role="group" aria-label="地图范围">
+      <button id="segCn" aria-pressed="true">身边的中国公司</button>
+      <button id="segGl" aria-pressed="false">全球熟面孔</button>
+    </div>
+    <div class="map" id="map" aria-label="公司地图"></div>
+    <div class="legend">
+      <div class="scale"><span>跌 5%</span><div class="bar"></div><span>涨 5%</span></div>
+      <div class="keys">
+        <span><i style="background:#E07D99"></i>暖色：今天价格上涨</span>
+        <span><i style="background:#7FA6DE"></i>冷色：今天价格下跌</span>
+        <span>方块越大，公司在市场上越"大"</span>
+      </div>
+    </div>
+    <div class="tools">
+      <button class="btn ghost" id="reroll">换一天看看</button>
+    </div>
+    <div class="tip"><b>小知识：</b>多换几天看看，颜色会变来变去，但方块的大小几乎不动。一天的涨跌像天气，公司本身的样子要慢慢看。带白点的方块可以做成一杯奶茶；做完封口的，方块上会标「看懂」。</div>
+  </section>
+
+  <!-- ============ LEARN ============ -->
+  <section id="v-learn" class="wrap" hidden>
+    <div id="learnHead"></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- ============ JAR ============ -->
+  <section id="v-jar" class="wrap" hidden>
+    <h1>我的奶茶架</h1>
+    <p class="sub"><b style="color:var(--accent)">先看懂，再持有。</b>这里没有钱，也不能买卖。一杯奶茶看懂、封口了，才能放上架子；放得越久，杯底的珍珠越多。</p>
+    <div class="shelf" id="shelf"></div>
+    <p class="note cmp" id="cmpTip" hidden>并排看看：哪杯更甜（每卖 100 块留下的更多），哪杯更大（收入长得更快）？</p>
+    <div class="count" id="count">0<small>颗珍珠</small></div>
+    <div class="rules">
+      <div class="rule"><b>+3</b>一杯封口看懂</div>
+      <div class="rule"><b>+1</b>陪伴一周</div>
+      <div class="rule"><b>+2</b>下跌那周没拿下来</div>
+    </div>
+    <div class="sec-title"><h2>架上的奶茶</h2><span class="sub" id="weekLbl"></span></div>
+    <div class="holds" id="holds"></div>
+    <div class="tools" style="margin-top:12px">
+      <button class="btn" id="ff1">快进一周（模拟）</button>
+      <button class="btn ghost" id="ff4">快进一个月</button>
+    </div>
+    <div class="sec-title"><h2>珍珠从哪里来</h2><button class="linkbtn" id="resetBtn">清空重来</button></div>
+    <ul class="log" id="log"></ul>
+  </section>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="公司介绍"><div class="grab"></div><div id="sheetBody"></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<nav class="bottom" aria-label="主导航">
+  <div class="disc">仅供学习 · 示例数据，非实时行情 · 不构成任何投资建议</div>
+  <div class="tabs">
+    <a href="#map" data-v="map"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="10" height="11" rx="2.5"/><rect x="15" y="3" width="6" height="6" rx="2"/><rect x="15" y="11" width="6" height="10" rx="2"/><rect x="3" y="16" width="10" height="5" rx="2"/></svg>地图</a>
+    <a href="#learn" data-v="learn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 4.1A8.5 8.5 0 1 0 19.9 13H11z"/><path d="M13 2.1V11h8.9A9 9 0 0 0 13 2.1z"/></svg>图解卡</a>
+    <a href="#jar" data-v="jar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.2 6.5 15.4 1.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="4" y="5.5" width="16" height="3.5" rx="1.75"/><path d="M6 8h12v12a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 6 20z"/><circle cx="10" cy="18.5" r="1.4" fill="var(--surface)"/><circle cx="14" cy="18.5" r="1.4" fill="var(--surface)"/></svg>奶茶架</a>
+  </div>
+</nav>
+
+<script>
+(function(){
+"use strict";
+/* ---------------- data (示例数据：规模为约数，涨跌为模拟) ---------------- */
+// [id, 名称, 规模(亿元 / 亿美元), 今日涨跌%, 它做什么, 你可能见过]
+const CN = {
+  "吃喝":[
+    ["mt","贵州茅台",19000,-0.8,"酿造和卖茅台酒","宴席上的飞天茅台"],
+    ["wly","五粮液",4800,-1.2,"四川的老牌白酒","五粮液、五粮春"],
+    ["nfsq","农夫山泉",4000,0.6,"做瓶装水和饮料","农夫山泉、东方树叶"],
+    ["htwy","海天味业",2500,0.3,"做酱油、蚝油等调味品","厨房里的海天酱油"],
+    ["yl","伊利股份",1800,0.9,"做牛奶、酸奶和奶粉","安慕希、金典"],
+    ["mxbc","蜜雪集团",1700,2.1,"开平价奶茶店，也卖原料给加盟店","蜜雪冰城、幸运咖"],
+    ["dp","东鹏饮料",1500,1.4,"做功能饮料","东鹏特饮"],
+    ["yum","百胜中国",1300,-0.4,"在中国经营肯德基和必胜客","肯德基、必胜客"],
+    ["qd","青岛啤酒",900,-0.6,"酿啤酒","青岛啤酒、崂山啤酒"]],
+  "购物":[
+    ["ali","阿里巴巴",22000,1.1,"做网购平台和云计算","淘宝、天猫、闲鱼"],
+    ["pdd","拼多多",11000,-2.3,"做拼团网购平台","拼多多、Temu"],
+    ["meituan","美团",7000,-1.6,"做外卖和到店生活服务","美团外卖、大众点评"],
+    ["jd","京东",3500,0.4,"做网购和自营物流","京东App、京东快递"],
+    ["anta","安踏体育",2300,0.7,"做运动鞋服","安踏、FILA、始祖鸟"],
+    ["mns","名创优品",500,3.2,"开平价生活好物店","名创优品"],
+    ["ply","珀莱雅",400,-1.9,"做护肤品","珀莱雅精华"],
+    ["laopu","老铺黄金",1300,1.5,"做古法手工黄金首饰","高端商场里的老铺黄金门店"]],
+  "出行":[
+    ["catl","宁德时代",13000,0.5,"造电动车里的电池","很多电动车的电池"],
+    ["byd","比亚迪",9500,1.8,"造电动车和电池","比亚迪秦、海豚"],
+    ["ctrip","携程",3200,0.2,"做订酒店、机票的旅行平台","携程、去哪儿"],
+    ["li","理想汽车",1800,-3.1,"造家庭用的大电动车","理想 L6、L9"],
+    ["geely","吉利汽车",1600,2.6,"造汽油车和电动车","吉利、领克、极氪"],
+    ["xpeng","小鹏汽车",1300,-2.2,"造智能电动车","小鹏 MONA"],
+    ["nio","蔚来",700,-4.0,"造电动车，可以换电池","蔚来换电站"]],
+  "玩乐社交":[
+    ["tencent","腾讯控股",40000,0.8,"做微信、游戏和支付","微信、王者荣耀"],
+    ["netease","网易",5500,1.3,"做游戏和音乐","蛋仔派对、网易云音乐"],
+    ["popmart","泡泡玛特",3000,4.2,"做潮流玩具和盲盒","LABUBU、MOLLY"],
+    ["ks","快手",2500,-0.9,"做短视频和直播平台","快手App"],
+    ["tme","腾讯音乐",2200,0.6,"做音乐App和会员","QQ音乐、酷狗"],
+    ["bili","哔哩哔哩",700,-1.4,"做视频社区","B站"],
+    ["mango","芒果超媒",450,-0.3,"做综艺和视频平台","芒果TV"]],
+  "科技":[
+    ["xiaomi","小米集团",13000,2.4,"做手机、家电和电动车","小米手机、SU7"],
+    ["smic","中芯国际",6000,-1.1,"替别人制造芯片","藏在很多电子产品里"],
+    ["hik","海康威视",2500,-0.5,"做监控摄像头","小区里的摄像头、萤石"]],
+  "家里":[
+    ["midea","美的集团",5500,0.4,"做空调、冰箱和小家电","美的空调、小天鹅"],
+    ["gree","格力电器",2500,-0.2,"做空调","格力空调"],
+    ["haier","海尔智家",2400,0.1,"做冰箱、洗衣机","海尔冰箱、卡萨帝"]],
+  "银行保险":[
+    ["cmb","招商银行",10000,0.3,"存钱、贷款、信用卡","招行信用卡"],
+    ["pingan","中国平安",9500,-0.7,"卖保险，也做银行","平安保险、平安好医生"]]
+};
+const GL = {
+  "美股七姐妹":[
+    ["nvda","英伟达",45000,1.9,"做AI芯片和显卡","游戏显卡、AI服务器"],
+    ["aapl","苹果",40000,0.5,"做 iPhone、Mac 和应用商店","iPhone、AirPods"],
+    ["msft","微软",37000,0.8,"做 Windows、Office 和云计算","Windows、Word、Excel"],
+    ["googl","谷歌",35000,1.2,"做搜索、YouTube 和安卓，靠广告赚钱","谷歌搜索、YouTube"],
+    ["amzn","亚马逊",24000,-0.6,"做网购和云计算","亚马逊、Kindle"],
+    ["meta","Meta",17000,-1.1,"做 Facebook、Instagram、WhatsApp，靠广告赚钱","Instagram、WhatsApp"],
+    ["tsla","特斯拉",14000,-3.4,"造电动车和储能电池","Model 3、Model Y"]],
+  "生活":[
+    ["cola","可口可乐",3000,0.1,"做汽水和饮料","可口可乐、雪碧"],
+    ["mcd","麦当劳",2200,0.4,"开汉堡快餐店，很多店是加盟的","麦当劳"],
+    ["sbux","星巴克",1000,-1.3,"开咖啡店","星巴克拿铁"],
+    ["nke","耐克",1000,-2.0,"做运动鞋服","Air Force 1"]],
+  "美与时尚":[
+    ["hermes","爱马仕",2700,0.2,"做奢侈皮具和丝巾","丝巾、皮包"],
+    ["loreal","欧莱雅",2300,-0.8,"做化妆品和护肤品","兰蔻、科颜氏"]],
+  "玩乐":[
+    ["dis","迪士尼",2000,1.0,"做电影、乐园和视频平台","迪士尼乐园"],
+    ["ntdo","任天堂",900,2.7,"做游戏机和游戏","Switch、马力欧"]]
+};
+
+const CARDS = {
+  popmart:{name:"泡泡玛特",mkt:"港股",
+    one:"做潮流玩具和盲盒的公司，LABUBU 就是它家的。",
+    scene:[["谁在买","年轻人、收藏爱好者，越来越多海外顾客"],["买什么","盲盒、毛绒挂件、手办"],["在哪买","门店、机器人商店、网店"]],
+    pieTitle:"2024 年收入约 130 亿元，按形象拆分",
+    pie:[["THE MONSTERS（LABUBU）",23],["MOLLY",16],["SKULLPANDA",10],["CRYBABY",9],["其他形象",42]],
+    per100:[33,43,24],
+    per100Note:"拿一个 69 元的盲盒来算（示例价）：约 23 元是做玩具的成本，约 30 元花在开店、营销、员工和交税上，最后约 16 元留下来变成利润。",
+    years:["2020","2021","2022","2023","2024"],rev:[25,45,46,63,130],prof:[5.2,8.5,4.8,10.8,31.3],
+    growNote:"收入四年涨了五倍多。2022 年停了一下，2024 年因为 LABUBU 大火猛涨。",
+    risk:["靠爆款","很依赖少数几个形象。大家的热情一旦退了，收入可能掉得很快。"],
+    moat:"它手里有一批自己养大的形象。别人也能做盲盒，但做不出 LABUBU。",
+    quiz:[
+      ["泡泡玛特能赚钱，最关键的是什么？",["很多人喜欢它的形象","它卖的饮料好喝","它收快递费"],0,"对。形象受欢迎，盲盒和挂件才卖得动。"],
+      ["一个盲盒卖 100 元，大约多少能留下来变成利润？",["约 5 元","约 24 元","约 80 元"],1,"对。做玩具本身不贵，开店和营销花得多，最后剩下两成多。"],
+      ["哪件事最可能让它变差？",["LABUBU 不火了，又没有新爆款","夏天太热","快递变慢"],0,"对。它很靠爆款，所以要看它能不能一直养出新形象。"]],
+    three:["泡泡玛特靠自己养的形象赚钱，LABUBU 是现在最火的一个。","一个盲盒卖 100 元，大约能留下 24 元利润。","它最怕的是大家对形象的热情退了。"]},
+
+  mxbc:{name:"蜜雪冰城",mkt:"港股",
+    one:"开平价奶茶店的公司。不过它的钱，主要不是从你的奶茶钱里来的。",
+    scene:[["谁在买","全国和海外的加盟店老板"],["买什么","糖、奶、果酱、茶叶、杯子和设备"],["在哪买","蜜雪自己的工厂和仓库，送到 4 万多家门店"]],
+    pieTitle:"2024 年收入约 248 亿元，按来源拆分",
+    pie:[["卖给加盟店的原料和包材",97],["加盟费和相关服务",3]],
+    per100:[68,14,18],
+    per100Note:"你买一杯 4 元的柠檬水，钱先给了加盟店。蜜雪赚的是卖给加盟店的原料：每卖给加盟店 100 元原料，约 68 元是做原料的成本，最后约 18 元是利润。",
+    years:["2021","2022","2023","2024"],rev:[104,136,203,248],prof:[19,20,32,44.5],
+    growNote:"门店越开越多，收入和利润都在一年年变大。",
+    risk:["门店太密","门店开得太密，加盟店之间会抢生意；食品安全出一次问题，影响也很大。"],
+    moat:"原料是自己工厂做的，量又大，成本压得很低。所以一杯柠檬水卖 4 元还能赚钱。",
+    quiz:[
+      ["蜜雪集团的钱主要从哪来？",["卖原料和设备给加盟店","直接收你的奶茶钱","卖广告"],0,"对。它更像一家给几万家奶茶店供货的公司。"],
+      ["为什么它的奶茶能卖得那么便宜？",["亏本在卖","原料自己做，量又大，成本低","有政府补贴"],1,"对。规模大加上自己做原料，是它最难被抢走的地方。"],
+      ["哪件事最可能让它变差？",["门店太密互相抢生意，或者出了食品安全问题","天气太冷","手机支付太方便"],0,"对。门店越多，越要管好质量和间距。"]],
+    three:["蜜雪冰城主要靠给几万家加盟店卖原料赚钱，不是靠你的奶茶钱。","原料自己做、量又大，所以奶茶能卖得很便宜。","它最怕门店太密互相抢生意，或者出食品安全问题。"]},
+
+  laopu:{name:"老铺黄金",mkt:"港股",
+    one:"做古法手工黄金首饰的公司，门店开在高端商场里。",
+    scene:[["谁在买","有消费力的女性，以及送礼的人"],["买什么","古法手工金饰，按件一口价"],["在哪买","高端商场里的门店，也有网店"]],
+    pieTitle:"2024 年收入约 85 亿元，按渠道拆分",
+    pie:[["线下门店",88],["网上店铺",12]],
+    per100:[59,24,17],
+    per100Note:"拿一件 1 万元的金饰来算（示例价）：约 5900 元是黄金和工费成本，约 2400 元花在门店、员工和交税上，最后约 1700 元是利润。",
+    years:["2022","2023","2024"],rev:[13,32,85],prof:[0.9,4.2,14.7],
+    growNote:"这两年涨得非常快，收入两年翻了六倍多。",
+    risk:["金价波动","金价大起大落时，成本和顾客的购买意愿都会跟着变。"],
+    moat:"古法工艺加上高端门店，让它能按件一口价卖，不用像普通金店那样按克算钱。",
+    quiz:[
+      ["老铺黄金和普通金店最大的不同是什么？",["只卖金条","按件一口价卖，不按克算","只在网上卖"],1,"对。按件定价，让它比按克卖的金店多赚一些。"],
+      ["它的大部分收入来自哪里？",["高端商场里的门店","菜市场的小摊","海外批发"],0,"对。将近九成收入来自线下门店。"],
+      ["哪件事最可能让它变差？",["金价大起大落","下雨天","手机没电"],0,"对。黄金是它最主要的成本，金价一变，利润就会跟着变。"]],
+    three:["老铺黄金卖古法手工金饰，按件一口价，不按克算钱。","它的门店开在高端商场里，九成左右的收入来自门店。","它最怕金价大起大落。"]},
+
+  tencent:{name:"腾讯控股",mkt:"港股",
+    one:"做微信和游戏的公司，也帮商家收款、帮品牌打广告。",
+    scene:[["谁在买","玩家、用微信的人、商家和品牌"],["买什么","游戏道具、会员、支付服务、广告位"],["在哪买","微信、QQ、王者荣耀这些 App 里"]],
+    pieTitle:"2024 年收入约 6600 亿元，按业务拆分",
+    pie:[["游戏和会员等增值服务",48],["微信支付、云等企业服务",32],["广告",18],["其他",2]],
+    per100:[47,19,34],
+    per100Note:"腾讯每收 100 元，约 47 元是服务器、带宽、内容版权这些成本，约 19 元是研发、营销和交税，最后约 34 元留下来（经调整口径）。",
+    years:["2020","2021","2022","2023","2024"],rev:[4821,5601,5546,6090,6603],prof:[1227,1238,1156,1576,2227],
+    growNote:"收入 2022 年停了一下，之后继续变大；利润这两年涨得更快。",
+    risk:["政策","游戏收入受政策影响大。防沉迷规则、新游戏审批的节奏一变，收入就会跟着起伏。"],
+    moat:"十几亿人每天都在用微信，朋友都在上面，很难整体搬走。",
+    quiz:[
+      ["腾讯最大的一块收入来自哪里？",["朋友圈里的广告","游戏和会员等增值服务","卖手机"],1,"对。游戏和会员加起来接近一半，广告其实不到两成。"],
+      ["你用微信支付付款时，谁付给腾讯手续费？",["你自己","收款的商家","银行"],1,"对。手续费由商家付，金额很小，但次数非常多。"],
+      ["别人为什么很难抢走微信？",["微信最便宜","朋友都在上面，搬不走","规定只能用微信"],1,"对。大家都在用，这就是它最难被抢走的地方。"]],
+    three:["腾讯最大的收入是游戏和会员，广告其实不到两成。","你用微信支付，商家会付一点点手续费给它。","它最怕游戏政策变化，最不怕的是有人抢走微信。"]},
+
+  xiaomi:{name:"小米集团",mkt:"港股",
+    one:"做手机、家电，现在也造电动车的公司。",
+    scene:[["谁在买","普通家庭和年轻人"],["买什么","手机、电视、扫地机、电动车"],["在哪买","小米之家、网店，还有手机里的应用和服务"]],
+    pieTitle:"2024 年收入约 3660 亿元，按业务拆分",
+    pie:[["手机",52],["家电和生活用品",28],["互联网服务",9],["电动车等新业务",9],["其他",2]],
+    per100:[79,14,7],
+    per100Note:"拿一台 2000 元的手机来算（示例价）：约 1580 元是零件和制造，约 280 元花在研发、营销和交税上，最后约 140 元是利润。",
+    years:["2020","2021","2022","2023","2024"],rev:[2459,3283,2800,2710,3659],prof:[130,220,85,193,272],
+    growNote:"中间两年手机卖得不好，收入往下走；2024 年加上汽车，又重新变大。",
+    risk:["造车烧钱","造车要花很多钱，手机市场竞争也很激烈，利润本来就薄。"],
+    moat:"手机、家电、汽车都连在一个小米生态里，家里小米的东西越多，越不容易换。",
+    quiz:[
+      ["小米最大的一块收入是什么？",["电动车","手机","广告"],1,"对。手机仍然占一半左右。"],
+      ["小米每卖 100 元东西，大约留下多少利润？",["约 7 元","约 50 元","约 90 元"],0,"对。卖硬件利润很薄，所以它很看重手机里的互联网服务。"],
+      ["哪件事最可能让它变差？",["造车花钱太多，手机又卖不动","家电太耐用","天气变冷"],0,"对。汽车是它现在最大的赌注。"]],
+    three:["小米一半左右的收入来自手机，家电和汽车越来越重要。","卖硬件利润很薄，每卖 100 元大约只留下 7 元。","它最大的赌注是造车，最怕的是花钱太多又卖不动。"]},
+
+  meituan:{name:"美团",mkt:"港股",
+    one:"做外卖、团购和订酒店的平台公司。",
+    scene:[["谁在买","想吃饭、想出去玩的人，还有餐厅和商家"],["买什么","外卖配送、团购券、酒店门票、商家广告"],["在哪买","美团和大众点评 App"]],
+    pieTitle:"2024 年收入约 3380 亿元，按业务拆分",
+    pie:[["外卖、到店、酒店等核心业务",74],["买菜、海外等新业务",26]],
+    per100:[62,25,13],
+    per100Note:"美团每收 100 元（商家佣金、配送费、广告费），约 62 元花在骑手配送和服务成本上，约 25 元是营销、研发和交税，最后约 13 元是利润（经调整口径）。",
+    years:["2020","2021","2022","2023","2024"],rev:[1148,1791,2200,2768,3376],prof:[31,-156,28,233,438],
+    growNote:"收入一直在变大。2021 年在新业务上花了很多钱，所以亏了，之后利润慢慢回来。",
+    risk:["价格战","外卖价格战一打起来，补贴花得多，利润会被吃掉。"],
+    moat:"几百万商家和骑手都在上面。用的人越多，商家越离不开，这张网很难被替代。",
+    quiz:[
+      ["美团的钱主要从哪来？",["商家付的佣金、配送费和广告费","它自己卖菜","骑手交的钱"],0,"对。它赚的是帮商家和顾客牵线、送货的钱。"],
+      ["2021 年美团为什么亏钱？",["没人点外卖","在新业务上花了很多钱","骑手罢工"],1,"对。收入还在涨，但花在新业务上的钱更多。"],
+      ["哪件事最可能让它变差？",["外卖价格战","大家都在家做饭","下雨天"],0,"对。补贴大战会直接吃掉利润。"]],
+    three:["美团赚的是商家付的佣金、配送费和广告费。","2021 年它在新业务上花太多钱亏过，后来利润回来了。","它最怕的是外卖价格战。"]},
+
+  byd:{name:"比亚迪",mkt:"A股",
+    one:"造电动车和电池的公司，也帮别的品牌做手机零件。",
+    scene:[["谁在买","买车的家庭、出租车公司、海外买家"],["买什么","电动车、混动车、电池"],["在哪买","比亚迪门店，越来越多在海外"]],
+    pieTitle:"2024 年收入约 7770 亿元，按业务拆分",
+    pie:[["汽车和电池",79],["手机零件和组装",21]],
+    per100:[81,14,5],
+    per100Note:"拿一辆 10 万元的车来算（示例价）：约 8.1 万元是电池、钢材和制造成本，约 1.4 万元花在研发、销售和交税上，最后约 5000 元是利润。",
+    years:["2020","2021","2022","2023","2024"],rev:[1566,2161,4241,6023,7771],prof:[42,30,166,300,403],
+    growNote:"电动车卖爆之后，收入四年涨了快五倍，利润也跟着涨。",
+    risk:["价格战","汽车行业价格战很激烈，降价会让本来就薄的利润更薄。"],
+    moat:"电池、芯片、电机都能自己造，成本比很多对手低。",
+    quiz:[
+      ["比亚迪大部分收入来自哪里？",["卖车和电池","卖手机","收停车费"],0,"对。汽车和电池占了将近八成。"],
+      ["它每卖 100 元，大约留下多少利润？",["约 5 元","约 40 元","约 80 元"],0,"对。造车很费钱，利润很薄，靠卖得多来赚钱。"],
+      ["为什么它能把车卖得比较便宜？",["电池等零件自己造","不交税","不做研发"],0,"对。自己造关键零件，成本更低。"]],
+    three:["比亚迪将近八成收入来自卖车和电池。","造车利润薄，每卖 100 元大约只留下 5 元。","它能便宜，是因为电池等零件都自己造；最怕价格战。"]},
+
+  mt:{name:"贵州茅台",mkt:"A股",
+    one:"在贵州茅台镇酿酒、卖酒的公司。",
+    scene:[["谁在买","过年过节送礼和请客吃饭的人"],["买什么","飞天茅台和其他系列酒"],["在哪买","经销商、专卖店和 i茅台 App"]],
+    pieTitle:"2024 年营业收入约 1740 亿元，按产品拆分",
+    pie:[["茅台酒（飞天等）",84],["系列酒（如茅台 1935）",14],["其他",2]],
+    per100:[8,42,50],
+    per100Note:"拿一瓶 1499 元的飞天来算（指导价）：约 120 元是酿造和包装成本，约 640 元是各种税和费用，最后约 740 元是利润。",
+    years:["2020","2021","2022","2023","2024"],rev:[980,1095,1276,1506,1741],prof:[467,525,627,747,862],
+    growNote:"收入和利润每年都在稳稳地变大，变化不快，但很少往回走。",
+    risk:["需求变化","喝白酒的人变少、送礼习惯改变，或者酒价往下走，增长就会放慢。"],
+    moat:"茅台镇的水土和要花五年左右的酿造工艺，别处很难照着做。",
+    quiz:[
+      ["为什么茅台酒没法想卖多少就卖多少？",["没有人买","酿造要好几年，产量有限","瓶子不够用"],1,"对。好酒要时间，产量只能慢慢涨。"],
+      ["一瓶 1499 元的飞天，大约多少是利润？",["约 50 元","约 740 元","约 1400 元"],1,"对。酿造成本很低，税交得多，利润也很高。"],
+      ["哪件事最可能让它变差？",["送礼和请客的习惯变了","茅台镇下雨","快递涨价"],0,"对。它最大的需求来自送礼和宴请。"]],
+    three:["茅台一瓶酒的成本很低，大约一半的售价都是利润。","酿一瓶飞天要五年左右，产量没法一下子变多。","它最怕的是送礼和请客的习惯变了。"]},
+  nvda:{name:"英伟达",mkt:"美股",
+    one:"做 AI 芯片和游戏显卡的公司。现在全世界训练 AI，大多用的是它的芯片。",
+    scene:[["谁在买","微软、谷歌、Meta 等科技大公司，还有游戏玩家"],["买什么","AI 芯片、整台 AI 服务器、游戏显卡"],["在哪买","直接卖给大公司；显卡在电脑店和网店"]],
+    pieTitle:"2025 财年收入约 1305 亿美元，按业务拆分",
+    pie:[["数据中心（AI 芯片）",88],["游戏显卡",9],["专业图形、汽车等",3]],
+    per100:[25,19,56],
+    per100Note:"英伟达每卖 100 美元，约 25 美元是造芯片的成本（主要交给台积电代工），约 19 美元花在研发和交税上，最后约 56 美元是利润。一块卖几万美元的 AI 芯片，大半都是利润。",
+    years:["2021","2022","2023","2024","2025"],rev:[167,269,270,609,1305],prof:[43,97,44,297,729],
+    growNote:"2023 财年停了一下，AI 热潮来了以后，收入两年涨了快五倍。（英伟达的财年在每年 1 月底结束。）",
+    risk:["客户集中","收入集中在几家科技大公司。它们一旦少买或者自己做芯片，收入会掉得很快；出口限制也会影响它在中国的生意。"],
+    moat:"很多 AI 程序都是用它的 CUDA 软件写的，换成别家的芯片就要重写，很麻烦。",
+    quiz:[
+      ["英伟达现在最大的收入来自哪里？",["游戏显卡","数据中心的 AI 芯片","卖手机"],1,"对。将近九成来自 AI 芯片，游戏显卡反而是小头。"],
+      ["它每卖 100 美元，大约留下多少利润？",["约 5 美元","约 56 美元","约 95 美元"],1,"对。比茅台还甜，是这几杯里最甜的。"],
+      ["别人为什么很难抢走它的生意？",["它的芯片最便宜","AI 程序大多用它的 CUDA 写，换芯片很麻烦","有政府规定"],1,"对。软件生态是它的招牌秘方。"]],
+    three:["英伟达将近九成收入来自卖给大公司的 AI 芯片，游戏显卡反而是小头。","每卖 100 美元，大约留下 56 美元利润，非常甜。","它最怕大客户少买，或者自己造芯片。"]}
+};
+const CARD_ORDER=["popmart","mxbc","laopu","tencent","xiaomi","meituan","byd","mt","nvda"];
+
+/* ---------------- helpers ---------------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ALL={};
+function index(set,region){Object.entries(set).forEach(([sec,arr])=>arr.forEach(r=>{ALL[r[0]]={id:r[0],name:r[1],cap:r[2],chg:r[3],does:r[4],seen:r[5],sec,region}}))}
+index(CN,"cn");index(GL,"gl");
+const BASE_CHG={};Object.values(ALL).forEach(c=>BASE_CHG[c.id]=c.chg);
+
+function mix(a,b,t){const pa=a.match(/\w\w/g).map(h=>parseInt(h,16)),pb=b.match(/\w\w/g).map(h=>parseInt(h,16));return"#"+pa.map((v,i)=>Math.round(v+(pb[i]-v)*t).toString(16).padStart(2,"0")).join("")}
+function tileColor(chg){
+  const t=Math.min(Math.abs(chg)/4.5,1);
+  if(Math.abs(chg)<0.15) return "#EFE6CA";
+  return chg>0 ? mix("#F7DDE3","#E07D99",t) : mix("#DDE8F7","#7FA6DE",t);
+}
+const LOGO_COLORS=["#E7A9C6","#EBD77E","#C7B2E6","#A9C6F0","#F2B98A","#D7E3A6"];
+function logoColor(id){let h=0;for(const ch of id)h=(h*31+ch.charCodeAt(0))>>>0;return LOGO_COLORS[h%LOGO_COLORS.length]}
+function fmtCap(c){const u=c.region==="cn"?"元":"美元";return c.cap>=10000?(c.cap/10000).toFixed(1).replace(/\.0$/,"")+" 万亿"+u:"约 "+c.cap+" 亿"+u}
+function fmtPct(v){return (v>0?"+":"")+v.toFixed(1)+"%"}
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2200)}
+
+/* ---------------- state ---------------- */
+const KEY="tangguan-v4";
+const fresh=()=>({candies:0,understood:[],secs:{},items:[],week:0,log:[],day:1});
+let S=fresh();
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(fresh(),JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function addLog(text,n){S.log.unshift({t:text,n});S.log=S.log.slice(0,30)}
+
+/* ---------------- treemap ---------------- */
+function squarify(items,rect){
+  const total=items.reduce((s,i)=>s+i.v,0);if(!total)return[];
+  const sc=rect.w*rect.h/total;
+  const nodes=items.map(i=>Object.assign({},i,{a:i.v*sc})).sort((a,b)=>b.a-a.a);
+  const out=[];const r=Object.assign({},rect);let row=[];
+  const worst=(row,side)=>{const s=row.reduce((t,n)=>t+n.a,0);let mx=0,mn=Infinity;row.forEach(n=>{mx=Math.max(mx,n.a);mn=Math.min(mn,n.a)});return Math.max(side*side*mx/(s*s),(s*s)/(side*side*mn))};
+  const lay=row=>{const s=row.reduce((t,n)=>t+n.a,0);
+    if(r.w>=r.h){const cw=s/r.h;let y=r.y;row.forEach(n=>{const h=n.a/cw;out.push(Object.assign(n,{x:r.x,y,w:cw,h}));y+=h});r.x+=cw;r.w-=cw}
+    else{const rh=s/r.w;let x=r.x;row.forEach(n=>{const w=n.a/rh;out.push(Object.assign(n,{x,y:r.y,w,h:rh}));x+=w});r.y+=rh;r.h-=rh}};
+  let i=0;while(i<nodes.length){const side=Math.min(r.w,r.h),n=nodes[i];
+    if(!row.length||worst(row.concat(n),side)<=worst(row,side)){row.push(n);i++}else{lay(row);row=[]}}
+  if(row.length)lay(row);return out;
+}
+let region="cn";
+function drawMap(){
+  const el=$("#map");const W=el.clientWidth||360;const H=Math.round(Math.min(W*1.5,640));
+  el.style.height=H+"px";
+  const set=region==="cn"?CN:GL;
+  const groups=Object.entries(set).map(([sec,arr])=>({sec,v:arr.reduce((s,r)=>s+r[2],0)}));
+  let html="";
+  squarify(groups,{x:0,y:0,w:W,h:H}).forEach(g=>{
+    const gap=2;const hasLabel=g.h>70&&g.w>54;const top=hasLabel?18:gap;
+    if(hasLabel)html+=`<div class="grp-label" style="left:${g.x+gap}px;top:${g.y}px;width:${g.w-gap*2}px">${esc(g.sec)}</div>`;
+    const inner={x:g.x+gap,y:g.y+top,w:Math.max(g.w-gap*2,1),h:Math.max(g.h-top-gap,1)};
+    const items=set[g.sec].map(r=>({id:r[0],v:r[2]}));
+    squarify(items,inner).forEach(t=>{
+      const c=ALL[t.id];const w=t.w-gap,h=t.h-gap;
+      const fs=Math.max(10,Math.min(20,Math.sqrt(w*h)/5.2));
+      const showN=w>30&&h>22, showP=h>fs*2.9&&w>36;
+      const nm=w<fs*c.name.length*1.05&&c.name.length>2?c.name.slice(0,2):c.name;
+      const lv=CARDS[c.id]?(sealed(c.id)?10:(stepCount(c.id)?1:0)):-1;const pill=lv===10&&w>46&&h>34;
+      html+=`<button class="tile${CARDS[c.id]&&!pill?" has-card"+(lv>0?" lv":""):""}" data-id="${c.id}" aria-label="${esc(c.name)}，今天${fmtPct(c.chg)}" style="left:${t.x+gap/2}px;top:${t.y+gap/2}px;width:${w}px;height:${h}px;background:${tileColor(c.chg)};border-radius:${Math.min(10,Math.min(w,h)/4)}px">`+
+        (showN?`<span class="n" style="font-size:${fs}px">${esc(nm)}</span>`:"")+(showP?`<span class="p" style="font-size:${fs*0.72}px">${fmtPct(c.chg)}</span>`:"")+(pill?`<span class="sw">看懂</span>`:"")+`</button>`;
+    });
+  });
+  el.innerHTML=html;
+}
+$("#map").addEventListener("click",e=>{const b=e.target.closest(".tile");if(b)openSheet(b.dataset.id)});
+function setRegion(r){region=r;$("#segCn").setAttribute("aria-pressed",r==="cn");$("#segGl").setAttribute("aria-pressed",r==="gl");drawMap()}
+$("#segCn").onclick=()=>setRegion("cn");$("#segGl").onclick=()=>setRegion("gl");
+function dayLabel(){$("#dayChip").textContent=S.day===1?"示例行情 · 第 1 天":"示例行情 · 第 "+S.day+" 天"}
+$("#reroll").onclick=()=>{
+  S.day++;Object.values(ALL).forEach(c=>{let v=(Math.random()+Math.random()+Math.random()-1.5)*3.2;c.chg=Math.round(v*10)/10});
+  save();dayLabel();drawMap();toast("换到第 "+S.day+" 天：颜色变了，方块大小没怎么变");
+};
+let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(drawMap,120)});
+
+/* ---------------- sheet ---------------- */
+function openSheet(id){
+  const c=ALL[id];const up=c.chg>0.15,down=c.chg<-0.15;
+  const word=up?`比昨天高了 ${c.chg.toFixed(1)}%`:down?`比昨天低了 ${Math.abs(c.chg).toFixed(1)}%`:"和昨天差不多";
+  $("#sheetBody").innerHTML=`
+    <div class="co-head"><div class="logo" style="background:${logoColor(id)}">${esc(c.name[0])}</div>
+      <div><h2>${esc(c.name)}</h2><div class="sub">${esc(c.sec)} · ${c.region==="cn"?"中国公司":"海外公司"}</div></div></div>
+    <dl class="kv"><dt>它做什么</dt><dd>${esc(c.does)}</dd><dt>你可能见过</dt><dd>${esc(c.seen)}</dd><dt>有多大</dt><dd>市值${esc(fmtCap(c))}（示例约数）</dd></dl>
+    <div class="today" style="background:${tileColor(c.chg)};color:var(--tile-ink)"><span class="big">${fmtPct(c.chg)}</span><br>今天它在市场上的价格${word}。一天的涨跌常常像天气，说明不了公司本身好不好。</div>
+    <div class="tools" style="margin-top:14px">${CARDS[id]?`<button class="btn" data-go="${id}">看懂它</button>`:`<span class="sub">这家公司的图解卡还在制作中。</span>`}
+    <button class="btn ghost" data-close>知道了</button></div>`;
+  $("#scrim").classList.add("on");$("#sheet").classList.add("on");
+}
+function closeSheet(){$("#scrim").classList.remove("on");$("#sheet").classList.remove("on")}
+$("#scrim").onclick=closeSheet;
+$("#sheet").addEventListener("click",e=>{
+  if(e.target.closest("[data-close]"))closeSheet();
+  const g=e.target.closest("[data-go]");if(g){closeSheet();go("learn",g.dataset.go)}
+});
+addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+
+function miniBars(vals,years,color,title){
+  const W=150,H=112,top=22,bot=20,ch=H-top-bot;
+  const mx=Math.max(...vals,0),mn=Math.min(...vals,0),sp=(mx-mn)||1;
+  const y0=top+mx/sp*ch;const n=vals.length;const bw=Math.min(20,(W-8)/n-8);const step=(W-8)/n;
+  let s="";vals.forEach((v,i)=>{const x=4+i*step+(step-bw)/2;const h=Math.abs(v)/sp*ch;const y=v>=0?y0-h:y0;
+    const op=i===n-1?1:.55;
+    if(v<0){s+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(h,1.5).toFixed(1)}" rx="4" fill="var(--down)" opacity="${op}"/>`}
+    else{ // 每根柱子画成一杯奶茶：直筒杯身 + 杯盖，最后一杯插吸管
+      const hh=Math.max(h,3),ins=0,r=Math.min(3,hh/2),f=n=>n.toFixed(1);
+      s+=`<g opacity="${op}"><path d="M${f(x)} ${f(y)} L${f(x+bw)} ${f(y)} L${f(x+bw-ins)} ${f(y+hh-r)} Q${f(x+bw-ins)} ${f(y+hh)} ${f(x+bw-ins-r)} ${f(y+hh)} L${f(x+ins+r)} ${f(y+hh)} Q${f(x+ins)} ${f(y+hh)} ${f(x+ins)} ${f(y+hh-r)} Z" fill="${color}"/><rect x="${f(x-2.5)}" y="${f(y-2.2)}" width="${f(bw+5)}" height="2.2" rx="1.1" fill="${color}"/>${i===n-1?`<line x1="${f(x+bw*0.58)}" y1="${f(y-2)}" x2="${f(x+bw*0.78)}" y2="${f(y-15)}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`:""}</g>`}
+    s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-num)">${"'"+years[i].slice(2)}</text>`});
+  const up=vals[n-1]>vals[0];
+  return `<div class="mb"><div class="mb-t">${title}<b class="${up?"up":"dn"}">${up?"变大了":"变小了"}</b></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}${up?"变大了":"变小了"}"><line x1="0" x2="${W}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--line)"/>${s}</svg></div>`;
+}
+
+/* ---------------- cards：每家公司是一杯奶茶 ---------------- */
+const BASE={popmart:"潮玩盲盒",mxbc:"奶茶原料供应",laopu:"古法金饰",tencent:"社交和游戏",xiaomi:"手机和智能硬件",meituan:"外卖和本地生活",byd:"电动车和电池",mt:"高端白酒",nvda:"AI 芯片"};
+const LAYER_C=["#C7B2E6","#EBD77E","#BFD27A","#E7A9C6","#A9C6F0"];
+const SUGAR_BANDS=[["无糖","不到 3 元"],["三分糖","3–8 元"],["五分糖","8–15 元"],["七分糖","15–30 元"],["全糖","30 元以上"]];
+const SIZE_BANDS=[["小杯","不到 5%"],["中杯","5–15%"],["大杯","15–40%"],["超大杯","40% 以上"]];
+function sizeOf(k){const n=k.rev.length;const g=Math.pow(k.rev[n-1]/k.rev[0],1/(n-1))-1;const b=g<0.05?0:g<0.15?1:g<0.4?2:3;return {g,b,name:SIZE_BANDS[b][0],scale:[0.7,0.82,0.92,1][b]}}
+function sugarOf(k){const p=k.per100[2];const b=p<3?0:p<8?1:p<15?2:p<30?3:4;return {p,b,name:SUGAR_BANDS[b][0]}}
+function secsDone(id){return (S.secs&&S.secs[id])||[]}
+function sealed(id){return S.understood.includes(id)}
+function stepCount(id){return secsDone(id).length+(sealed(id)?1:0)}
+function hashN(s){let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0;return h}
+let cupSeq=0;
+function cupSVG(id,w,opt){
+  opt=opt||{};const k=CARDS[id],d=secsDone(id);
+  const st=opt.full?{b:1,l:1,s:1,z:1,n:1,c:1}:{b:d.includes(0),l:d.includes(1),s:d.includes(2),z:d.includes(3),n:d.includes(4),c:sealed(id)};
+  const sz=sizeOf(k),sg=sugarOf(k);const sc=st.z?sz.scale:0.82;
+  const cx=60,bot=164,H=120*sc,tw=86*sc,bw=64*sc,top=bot-H;
+  const half=y=>bw/2+(tw-bw)/2*(bot-y)/H;
+  const r=10*sc,f1=v=>v.toFixed(1); // 杯底圆角，与 logo 一致
+  const body=`M${f1(cx-half(top))} ${f1(top)} L${f1(cx+half(top))} ${f1(top)} L${f1(cx+half(bot-r))} ${f1(bot-r)} Q${f1(cx+bw/2)} ${bot} ${f1(cx+bw/2-r)} ${bot} L${f1(cx-bw/2+r)} ${bot} Q${f1(cx-bw/2)} ${bot} ${f1(cx-half(bot-r))} ${f1(bot-r)} Z`;
+  const liqTop=top+H*0.12,cid="cup"+(++cupSeq);let fill="";
+  if(st.l){let y=bot;k.pie.forEach((p,i)=>{const h=(bot-liqTop)*p[1]/100;fill+=`<rect x="0" y="${(y-h).toFixed(1)}" width="120" height="${(h+0.6).toFixed(1)}" fill="${LAYER_C[i%5]}"/>`;if(i<k.pie.length-1)fill+=`<line x1="0" x2="120" y1="${(y-h).toFixed(1)}" y2="${(y-h).toFixed(1)}" stroke="#fff" stroke-opacity=".8" stroke-width="1.2"/>`;y-=h})}
+  else if(st.b)fill=`<rect x="0" y="${liqTop.toFixed(1)}" width="120" height="${(bot-liqTop).toFixed(1)}" fill="${LAYER_C[0]}"/>`;
+  // 糖分：杯面上的糖霜，糖越多越厚
+  if(st.s&&sg.b>0)fill+=`<rect x="0" y="${liqTop.toFixed(1)}" width="120" height="${(sg.b*2.2).toFixed(1)}" fill="#fff" opacity=".85"/>`;
+  const np=st.c?Math.min(opt.pearls!=null?opt.pearls:5,14):0;let pearls="";
+  for(let i=0;i<np;i++){const row=Math.floor(i/5),col=i%5;pearls+=`<circle cx="${(cx-bw/2+8+col*(bw-16)/4+(row%2?4:0)).toFixed(1)}" cy="${(bot-6-row*8).toFixed(1)}" r="4" fill="#343329"/>`}
+  const lid=st.c?`<path d="M${(cx-half(top)-3).toFixed(1)} ${top.toFixed(1)} Q${cx} ${(top-22*sc).toFixed(1)} ${(cx+half(top)+3).toFixed(1)} ${top.toFixed(1)} Z" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><rect x="${cx+6}" y="${(top-46*sc).toFixed(1)}" width="6" height="${(40*sc).toFixed(1)}" rx="3" fill="var(--accent)" transform="rotate(14 ${cx+9} ${top})"/>`
+    :`<line x1="${(cx-half(top)-3).toFixed(1)}" x2="${(cx+half(top)+3).toFixed(1)}" y1="${top.toFixed(1)}" y2="${top.toFixed(1)}" stroke="var(--ink-2)" stroke-width="2.5" stroke-linecap="round"/>`;
+  const note=st.n?`<g transform="translate(${(cx+bw/2-4).toFixed(1)} ${(bot-22).toFixed(1)})"><circle r="9" fill="#DCC59C" stroke="#fff" stroke-width="2"/><text y="4.5" text-anchor="middle" font-size="13" font-weight="700" fill="#4A423B" font-family="var(--f-num)">!</text></g>`:"";
+  const q=!st.b?`<text x="${cx}" y="${(bot-H/2+8).toFixed(1)}" text-anchor="middle" font-size="26" fill="var(--ink-2)" font-family="var(--f-num)">?</text>`:"";
+  return `<svg class="cupsvg" width="${w}" height="${(w*1.45).toFixed(0)}" viewBox="0 0 120 174" role="img" aria-label="${esc(k.name)}这杯奶茶"><defs><clipPath id="${cid}"><path d="${body}"/></clipPath></defs>
+    <path d="${body}" fill="var(--glass)"/><g clip-path="url(#${cid})">${fill}${pearls}</g>
+    <path d="${body}" fill="none" stroke="var(--ink-2)" stroke-width="2.2" stroke-linejoin="round" ${st.b?"":'stroke-dasharray="5 4"'}/>${lid}${note}${q}</svg>`;
+}
+function recipe(id){
+  const k=CARDS[id],d=secsDone(id),sz=sizeOf(k),sg=sugarOf(k);
+  const rows=[["茶底",d.includes(0),BASE[id]],["配料",d.includes(1),`${k.pie.length} 层`],["糖分",d.includes(2),sg.name],["杯型",d.includes(3),sz.name],["注意",d.includes(4),k.risk[0]],["封口",sealed(id),"看懂了"]];
+  return `<div class="make">${cupSVG(id,128)}<div class="recipe"><div class="rc-h">做一杯${esc(k.name)}<span>${stepCount(id)} / 6</span></div>
+    ${rows.map(r=>`<div class="rc${r[1]?" on":""}"><i>${r[0]}</i><span>${r[1]?esc(r[2]):"？"}</span></div>`).join("")}</div></div>`;
+}
+function rot(arr,ans,seed){const k=seed%arr.length;const out=arr.slice(k).concat(arr.slice(0,k));return [out,(ans-k+arr.length)%arr.length]}
+function pick3(bands,b){const i=Math.max(0,Math.min(bands.length-3,b-1));return {opts:bands.slice(i,i+3).map(x=>x[0]),ans:b-i}}
+function checks(id){
+  const k=CARDS[id],i=CARD_ORDER.indexOf(id),o1=CARDS[CARD_ORDER[(i+1)%CARD_ORDER.length]],h=hashN(id);
+  const small=k.pie.reduce((a,b)=>b[1]<a[1]?b:a);const sg=sugarOf(k),sz=sizeOf(k);
+  const s3=pick3(SUGAR_BANDS,sg.b),z3=pick3(SIZE_BANDS,sz.b);
+  const otherRisks=[...new Set(CARD_ORDER.map(x=>CARDS[x].risk[0]).filter(r=>r!==k.risk[0]))];
+  const r1=otherRisks[h%otherRisks.length];let r2=otherRisks[(h+3)%otherRisks.length];if(r2===r1)r2=otherRisks[(h+4)%otherRisks.length];
+  const raw=[
+    [`这杯的钱，主要是谁付的？`,[k.scene[0][1],o1.scene[0][1]],0,`对。茶底是「${BASE[id]}」，先弄清楚谁在买。`],
+    ["哪一层配料最厚？",[k.pie[0][0],small[0]],0,`对，「${k.pie[0][0]}」占了约 ${k.pie[0][1]}%。`],
+    [`每卖 100 块留下约 ${sg.p} 元。照着上面的刻度，这杯是几分糖？`,s3.opts,s3.ans,`对，${sg.name}。糖分越高，说明每卖一块钱留下的利润越多。`],
+    [`收入每年平均涨约 ${Math.round(sz.g*100)}%，这杯是什么杯型？`,z3.opts,z3.ans,`对，${sz.name}。看方向就够了，不用记具体数字。`],
+    ["这杯最要注意的是什么？",[k.risk[0],r1,r2],0,"对。知道它怕什么，下跌的时候才不慌。"]];
+  return raw.map((c,j)=>{const [opts,ans]=rot(c[1],c[2],h+j);return [c[0],opts,ans,c[3]]});
+}
+function checkHTML(id,j){
+  const c=checks(id)[j];const done=secsDone(id).includes(j);
+  if(done)return `<div class="chk done"><b>加进杯子了</b>${esc(c[3])}</div>`;
+  return `<div class="chk" data-chk="${id}" data-j="${j}"><div class="chk-q"><span>考考自己</span>${esc(c[0])}</div><div class="chk-o">${c[1].map((o,i)=>`<button class="pill" data-i="${i}">${esc(o)}</button>`).join("")}</div><div class="fb" aria-live="polite"></div></div>`;
+}
+function bandRow(bands,cur,show){return `<div class="bands">${bands.map((b,i)=>`<div class="band${show&&i===cur?" on":""}"><b>${b[0]}</b><small>${b[1]}</small></div>`).join("")}</div>`}
+
+const quizStep={};
+function renderLearnList(){
+  const n=CARD_ORDER.filter(sealed).length;
+  $("#learnHead").innerHTML=`<h1>每家公司，都是一杯奶茶</h1><p class="sub">看懂它的茶底、配料、糖分和杯型。每看懂一段，杯子里就多一样东西；最后答对 3 题封口，这杯才能放上奶茶架。已封口 <b>${n}</b> / ${CARD_ORDER.length} 杯。</p>`;
+  $("#cards").innerHTML=`<div class="list-grid">${CARD_ORDER.map(id=>{const k=CARDS[id];const sc=stepCount(id);
+    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div>${cupSVG(id,40)}</div>
+      <span class="lc-one">${esc(k.one)}</span><span class="lc-sw${sealed(id)?" full":""}">${sealed(id)?"已封口，看懂了":sc?`做到第 ${sc} / 6 步`:"还没开始做"}</span></a>`}).join("")}</div>`;
+}
+function quizHTML(id){
+  const k=CARDS[id];
+  if(sealed(id)){
+    const inJar=S.items.some(i=>i.id===id);const sg=sugarOf(k),sz=sizeOf(k);
+    return `<div class="share" id="share-${id}"><div class="share-top">${cupSVG(id,70,{full:1,pearls:3})}<div><div class="share-h">${esc(k.name)}这杯，我看懂了</div><div class="share-tags">${esc(BASE[id])} · ${sg.name} · ${sz.name}</div></div></div><ol>${k.three.map(t=>`<li>${esc(t)}</li>`).join("")}</ol><div class="share-f">糖分 · 先看懂，再持有</div></div>
+      <div class="done-row"><button class="btn ghost" data-copy="${id}">复制，讲给朋友听</button>${inJar?`<button class="btn ghost" data-nav="jar">它已在奶茶架上</button>`:`<button class="btn" data-add="${id}">放上奶茶架</button>`}</div>`;
+  }
+  const d=secsDone(id);const left=[0,1,2,3,4].filter(j=>!d.includes(j));
+  if(left.length)return `<div class="locked">还差 ${left.length} 道小检查（${left.map(j=>["茶底","配料","糖分","杯型","注意事项"][j]).join("、")}）。五段都做完，最后 3 题就会出现。</div>`;
+  const i=quizStep[id]||0;const q=k.quiz[i];
+  return `<div class="qprog">${[0,1,2].map(j=>`<i class="${j<i?"ok":j===i?"now":""}"></i>`).join("")}<span>第 ${i+1} / 3 题</span></div>
+    <p class="qq">${esc(q[0])}</p><div class="opts">${q[1].map((o,j)=>`<button class="opt" data-i="${j}">${esc(o)}</button>`).join("")}</div><div class="fb" aria-live="polite"></div>`;
+}
+function renderCardDetail(id){
+  const k=CARDS[id],c=ALL[id],d=secsDone(id),sg=sugarOf(k),sz=sizeOf(k);
+  $("#learnHead").innerHTML=`<a class="back" href="#learn">‹ 全部奶茶</a>`;
+  const [cost,exp,prof]=k.per100;
+  $("#cards").innerHTML=`<article class="card" id="card-${id}">
+    <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
+    <p class="one">${esc(k.one)}</p>
+    <div id="meter">${recipe(id)}</div>
+
+    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="茶底"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="var(--accent)" stroke-width="2"/><path d="M9 16c2.6-1 4.6-3 6-6" stroke="var(--surface)" stroke-width="1.5"/></svg>它卖什么、卖给谁？</h3>
+      <div class="scene">${k.scene.map((s,i)=>`<div class="sc sc${i}"><small>${esc(s[0])}</small>${esc(s[1])}</div>${i<2?`<div class="arr" aria-hidden="true">›</div>`:""}`).join("")}</div>
+      <div class="chkwrap">${checkHTML(id,0)}</div></div>
+
+    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="配料"><path d="M12 2.5C9 6.6 5.5 10.4 5.5 14.6a6.5 6.5 0 0 0 13 0C18.5 10.4 15 6.6 12 2.5Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8"/><path d="M5.7 15.2c2.2-1.1 4.3-1.1 6.3 0s4.1 1.1 6.3 0" stroke="var(--surface)" stroke-width="1.5" opacity=".9"/><path d="M8.8 12.2c.3-1.6 1.2-3 2.2-4.3" stroke="var(--surface)" stroke-width="1.5" opacity=".7"/></svg>钱从哪里来？</h3>
+      <div class="layers-row"><div class="layers">${k.pie.map((p,i)=>`<div style="flex:${p[1]};background:${LAYER_C[i%5]}"></div>`).join("")}</div>
+        <div class="layer-k">${k.pie.slice().map((p,i)=>`<div><i style="background:${LAYER_C[i%5]}"></i><span>${esc(p[0])}</span><em>${p[1]}%</em></div>`).reverse().join("")}</div></div>
+      <p class="src">每一层的厚度，就是这块收入占多少。${esc(k.pieTitle)}。</p>
+      <div class="chkwrap">${checkHTML(id,1)}</div></div>
+
+    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="糖分"><path d="M12 2.5 21 7l-9 4.5L3 7Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8" opacity=".5"/><path d="M3 7v10l9 4.5v-10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8"/><path d="M21 7v10l-9 4.5v-10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.8" opacity=".78"/><path d="M7 13.2h.01M8.5 16.8h.01M16 14.6h.01" stroke="var(--surface)" stroke-width="1.8"/></svg>每卖 100 块，能留下多少？</h3>
+      <div class="coins-row"><div class="coins" role="img" aria-label="100 块里：利润 ${prof} 块，成本 ${cost} 块，费用和税 ${exp} 块">${Array.from({length:100},(_,i)=>`<i class="${i<prof?"pr":i<prof+cost?"co":"ex"}"></i>`).join("")}</div>
+        <div class="coin-k"><div class="ck pr"><i></i><div><b>${prof}</b> 块<span>留下来，变成利润</span></div></div><div class="ck co"><i></i><div><b>${cost}</b> 块<span>做东西的成本</span></div></div><div class="ck ex"><i></i><div><b>${exp}</b> 块<span>开店、营销、员工和交税</span></div></div></div></div>
+      <p class="note">${esc(k.per100Note)}</p>
+      <p class="note">留下的利润越多，这杯就越甜。每卖 100 块留下：</p>${bandRow(SUGAR_BANDS,sg.b,d.includes(2))}
+      <div class="chkwrap">${checkHTML(id,2)}</div></div>
+
+    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="杯型"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M5 8h14" stroke="var(--accent)" stroke-width="2.5"/><path d="m12 8 1-6h2" stroke="var(--accent)" stroke-width="2"/><path d="M8 15a6.47 6.47 0 0 1 4 0 6.47 6.47 0 0 0 4 0" stroke="var(--surface)" stroke-width="1.6"/></svg>它在变大吗？</h3>
+      <div class="grow">${miniBars(k.rev,k.years,"var(--c1)","收入")}${miniBars(k.prof,k.years,"var(--grape)","利润")}</div>
+      <p class="note">${esc(k.growNote)}</p>
+      <p class="note">收入长得越快，杯子越大。收入每年平均增长：</p>${bandRow(SIZE_BANDS,sz.b,d.includes(3))}
+      <div class="chkwrap">${checkHTML(id,3)}</div></div>
+
+    <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="注意事项"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M12 9v4M12 17h.01" stroke="var(--surface)" stroke-width="2"/></svg>什么会让它变差？</h3>
+      <div class="risk"><span class="rtag">${esc(k.risk[0])}</span>${esc(k.risk[1])}</div>
+      <div class="moat"><b>招牌秘方：别人凭什么抢不走</b>${esc(k.moat)}</div>
+      <div class="chkwrap">${checkHTML(id,4)}</div></div>
+
+    <p class="src">数字按公司年报估算并四舍五入，标「示例价」的是为了好算。糖分和杯型的刻度是我们为了好懂自己定的。仅供理解，不构成任何投资建议。</p>
+    <div class="quiz" data-q="${id}"><h3 class="qh">封口：答对最后 3 题</h3><div class="qbody">${quizHTML(id)}</div></div>
+  </article>`;
+}
+function renderLearn(){if(learnDetail&&CARDS[learnDetail])renderCardDetail(learnDetail);else renderLearnList()}
+let learnDetail=null;
+$("#cards").addEventListener("click",e=>{
+  const pl=e.target.closest(".pill");
+  if(pl&&!pl.disabled){const box=pl.closest("[data-chk]");const id=box.dataset.chk,j=+box.dataset.j,c=checks(id)[j];
+    if(+pl.dataset.i===c[2]){S.secs=S.secs||{};S.secs[id]=[...new Set(secsDone(id).concat(j))];save();
+      const y=scrollY;renderCardDetail(id);scrollTo(0,y);
+      toast(["茶底倒好了","配料加进去了","糖加好了","杯型定好了","注意事项贴上了"][j])}
+    else{pl.classList.add("wrong");pl.disabled=true;box.querySelector(".fb").textContent="再看看上面的图，答案就在里面。"}
+    return}
+  const o=e.target.closest(".opt");
+  if(o&&!o.disabled){const id=o.closest("[data-q]").dataset.q,k=CARDS[id],i=quizStep[id]||0,q=k.quiz[i],j=+o.dataset.i;const fb=o.closest(".qbody").querySelector(".fb");
+    if(j===q[2]){o.classList.add("right");o.closest(".opts").querySelectorAll(".opt").forEach(b=>b.disabled=true);fb.textContent=q[3];
+      setTimeout(()=>{if(i<2){quizStep[id]=i+1;const qb=document.querySelector(`[data-q="${id}"] .qbody`);if(qb)qb.innerHTML=quizHTML(id)}
+        else{S.understood.push(id);S.candies+=3;addLog(k.name+"这杯封口了，看懂了",3);save();toast(`${k.name}这杯封口了！+3 颗珍珠`);const y=scrollY;renderCardDetail(id);scrollTo(0,y)}},900)}
+    else{o.classList.add("wrong");o.disabled=true;fb.textContent="再想想，答案就藏在上面的五段里。"}}
+  const a=e.target.closest("[data-add]");if(a)addToJar(a.dataset.add);
+  const n=e.target.closest("[data-nav]");if(n)go(n.dataset.nav);
+  const cp=e.target.closest("[data-copy]");if(cp){const id=cp.dataset.copy,k=CARDS[id];const txt=`${k.name}这杯，我看懂了（${BASE[id]} · ${sugarOf(k).name} · ${sizeOf(k).name}）：\n`+k.three.map((t,i)=>`${i+1}. ${t}`).join("\n")+"\n—— 糖分 · 先看懂，再持有";
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("share-"+id));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);toast("已选中，长按或 Ctrl+C 复制")};
+    try{navigator.clipboard.writeText(txt).then(()=>toast("复制好了，发给朋友吧"),fallback)}catch(err){fallback()}}
+});
+function renderCards(){renderLearn()}
+
+/* ---------------- 我的奶茶架 ---------------- */
+let pendingDrop=0;
+function addToJar(id){if(S.items.some(i=>i.id===id))return;S.items.push({id,weeks:0,path:[100]});addLog(ALL[id].name+"放上了奶茶架",0);save();toast("放好了，陪它几周看看");go("jar")}
+function drawShelf(){
+  const its=S.items;const slots=Math.max(3,Math.ceil(its.length/3)*3);let html="";
+  for(let i=0;i<slots;i++){const it=its[i];
+    if(!it){html+=`<div class="slot empty-slot"><div class="ghost-cup"></div><span>空位</span></div>`;continue}
+    const k=CARDS[it.id];html+=`<div class="slot">${cupSVG(it.id,76,{full:1,pearls:it.weeks})}<b>${esc(k.name)}</b><span>${sugarOf(k).name} · ${sizeOf(k).name}</span></div>`}
+  $("#shelf").innerHTML=html;
+  $("#cmpTip").hidden=its.length<2;
+  $("#count").innerHTML=S.candies+"<small>颗珍珠</small>";
+}
+function spark(path){const W=84,H=34;const mn=Math.min(...path),mx=Math.max(...path),sp=Math.max(mx-mn,1);
+  const pts=path.map((v,i)=>[(path.length===1?W/2:i/(path.length-1)*(W-6)+3),(H-4)-(v-mn)/sp*(H-8)]);
+  const last=pts[pts.length-1];
+  return `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><line x1="0" x2="${W}" y1="${H-4-(100-mn)/sp*(H-8)}" y2="${H-4-(100-mn)/sp*(H-8)}" stroke="var(--line)" stroke-dasharray="3 3"/><polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="var(--grape)" stroke-width="2" stroke-linejoin="round"/><circle cx="${last[0]}" cy="${last[1]}" r="3" fill="var(--accent)"/></svg>`}
+function badges(w){return [[4,"一个月"],[12,"一个季度"],[52,"一整年"]].filter(b=>w>=b[0]).map(b=>`<span class="badge">陪了${b[1]}</span>`).join("")}
+function renderJar(){
+  drawShelf();
+  $("#weekLbl").textContent=S.week?"已模拟 "+S.week+" 周":"";
+  $("#holds").innerHTML=S.items.length?S.items.map(it=>{const c=ALL[it.id];const v=it.path[it.path.length-1];
+    return `<div class="hold"><div class="logo" style="background:${logoColor(it.id)}">${esc(c.name[0])}</div>
+      <div class="meta"><b>${esc(c.name)}</b>陪伴 ${it.weeks} 周 · 一路走来${v>=100?"高了":"低了"} ${Math.abs(v-100).toFixed(1)}%</div>${spark(it.path)}
+      <div class="x"><div class="badges">${badges(it.weeks)||"第 4 周会得到第一个徽章"}</div><button class="linkbtn" data-out="${it.id}">拿下来</button></div></div>`}).join("")
+    :`<div class="empty">架子上还没有奶茶。<br>去 <a href="#learn" style="color:var(--accent);font-weight:700">图解卡</a> 做完一杯并封口，就能放上来。</div>`;
+  $("#ff1").disabled=$("#ff4").disabled=!S.items.length;
+  $("#log").innerHTML=S.log.length?S.log.slice(0,12).map(l=>`<li>${esc(l.t)}${l.n?` <b>+${l.n}</b>`:""}</li>`).join(""):`<li>第一杯封口的时候，第一批珍珠就来了。</li>`;
+}
+function weekStep(){
+  S.week++;let got=0;
+  S.items.forEach(it=>{
+    const r=(Math.random()+Math.random()+Math.random()-1.45)*4.2; // 略微向上的随机走势
+    const last=it.path[it.path.length-1];const nv=Math.round(last*(1+r/100)*10)/10;it.path.push(nv);if(it.path.length>53)it.path.shift();
+    it.weeks++;const name=ALL[it.id].name;
+    if(r<0){S.candies+=2;got+=2;addLog(`第 ${S.week} 周：${name}跌了 ${Math.abs(r).toFixed(1)}%，你没有把它拿下来`,2)}
+    else{S.candies+=1;got+=1;addLog(`第 ${S.week} 周：陪伴${name}`,1)}
+    const m={4:"一个月",12:"一个季度",52:"一整年"}[it.weeks];if(m){S.candies+=5;got+=5;addLog(`陪${name}满${m}`,5)}
+  });
+  return got;
+}
+function ff(n){let g=0;for(let i=0;i<n;i++)g+=weekStep();save();renderJar();toast(`过了 ${n} 周，+${g} 颗珍珠`)}
+$("#ff1").onclick=()=>ff(1);$("#ff4").onclick=()=>ff(4);
+$("#holds").addEventListener("click",e=>{const b=e.target.closest("[data-out]");if(!b)return;
+  if(b.dataset.confirm!=="1"){b.dataset.confirm="1";b.textContent="再点一次确认（珍珠不会少，陪伴周数清零）";return}
+  const id=b.dataset.out;S.items=S.items.filter(i=>i.id!==id);addLog(ALL[id].name+"拿下来了",0);save();renderJar()});
+$("#resetBtn").onclick=e=>{const b=e.currentTarget;if(b.dataset.confirm!=="1"){b.dataset.confirm="1";b.textContent="再点一次确认清空";return}
+  b.dataset.confirm="";b.textContent="清空重来";S=fresh();save();Object.values(ALL).forEach(c=>c.chg=BASE_CHG[c.id]);dayLabel();renderJar();drawMap();toast("已清空")};
+
+/* ---------------- routing ---------------- */
+const VIEWS=["map","learn","jar"];
+function show(h){
+  let v=h;learnDetail=null;
+  if(h&&h.indexOf("c-")===0&&CARDS[h.slice(2)]){v="learn";learnDetail=h.slice(2)}
+  if(!VIEWS.includes(v))v="map";
+  VIEWS.forEach(x=>{$("#v-"+x).hidden=x!==v});
+  document.querySelectorAll(".tabs a").forEach(a=>{if(a.dataset.v===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(v==="map")drawMap();if(v==="learn")renderLearn();if(v==="jar")renderJar();
+  scrollTo(0,0);
+}
+function go(v,id){const h=id?"c-"+id:v;if(location.hash!=="#"+h)location.hash=h;else show(h)}
+addEventListener("hashchange",()=>show(location.hash.slice(1)));
+if(S.day>1){Object.values(ALL).forEach(c=>{let v=(Math.random()+Math.random()+Math.random()-1.5)*3.2;c.chg=Math.round(v*10)/10})}
+dayLabel();
+show(location.hash.slice(1));
+})();
+</script>
