@@ -707,6 +707,8 @@ const CARDS = {
   },
   unh:{
     "name": "联合健康",
+    "payerOptions": ["只用免费健康资讯的人", "收取诊疗费的医院和诊所"],
+    "riskOptions": ["健康资讯网站访问量下降", "诊所办公场地租金上涨"],
     "mkt": "美股 · UNH",
     "currency": "美元",
     "one": "UnitedHealthcare 做医疗保险，Optum 提供诊疗、药房福利管理和健康数据服务。",
@@ -1224,7 +1226,7 @@ function renderCardDetail(id){
       <div class="coins-row"><div class="coins" role="img" aria-label="100 ${unit}里：利润 ${prof} ${unit}，成本 ${cost} ${unit}，其余 ${exp} ${unit}">${Array.from({length:100},(_,i)=>`<i class="${i<prof?"pr":i<prof+cost?"co":"ex"}"></i>`).join("")}</div>
         <div class="coin-k"><div class="ck pr"><i></i><div><b>${prof}</b> ${unit}<span>留下来，变成利润</span></div></div><div class="ck co"><i></i><div><b>${cost}</b> ${unit}<span>${esc(k.per100Labels?.[0] ?? "做东西的成本")}</span></div></div><div class="ck ex"><i></i><div><b>${exp}</b> ${unit}<span>${esc(k.per100Labels?.[1] ?? "开店、营销、员工和交税")}</span></div></div></div></div>
       <p class="note">${esc(k.per100Note)}</p>
-      ${bandCheck(id,2,SUGAR_BANDS,sg.b,"留下的利润越多，这杯就越甜。",`每 100 ${unit}收入留下约 ${sg.p} ${unit}，点一下：这杯是几分糖？`)}</div>
+      ${bandCheck(id,2,k.currency?SUGAR_BANDS.map(([name,range])=>[name,range.replace("元",k.currency)]):SUGAR_BANDS,sg.b,"留下的利润越多，这杯就越甜。",`每 100 ${unit}收入留下约 ${sg.p} ${unit}，点一下：这杯是几分糖？`)}</div>
 
     <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="杯型"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M5 8h14" stroke="var(--accent)" stroke-width="2.5"/><path d="m12 8 1-6h2" stroke="var(--accent)" stroke-width="2"/><path d="M8 15a6.47 6.47 0 0 1 4 0 6.47 6.47 0 0 0 4 0" stroke="var(--surface)" stroke-width="1.6"/></svg>它在变大吗？</h3>
       <div class="grow">${miniBars(k.rev,k.years,"var(--c1)","收入")}${miniBars(k.prof,k.years,"var(--grape)","利润")}</div>
