@@ -118,9 +118,8 @@ h2{font-size:17px;margin:0 0 8px;text-wrap:balance}
 /* ---------- card template ---------- */
 .list-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .lc{background:var(--surface);border-radius:10px;padding:14px;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;min-width:0}
-.lc-top{display:flex;justify-content:space-between;align-items:flex-start}
+.lc-top{min-height:58px;overflow-wrap:anywhere}
 .lc b{font-size:16px}
-.lc-one{font-size:12.5px;color:var(--ink-2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .logo.sm{width:38px;height:38px;font-size:16px;border-radius:11px}
 .tag{font-size:11px;font-weight:500;border-radius:6px;padding:1px 6px;background:var(--surface-2);color:var(--ink-2);vertical-align:3px;white-space:nowrap}
 .st{font-size:12px;color:var(--accent);font-weight:700;margin-top:auto}
@@ -214,7 +213,7 @@ h2{font-size:17px;margin:0 0 8px;text-wrap:balance}
 .band-chk .bands{margin-top:0}
 button.band{border:1.5px solid var(--line);font:inherit;font-size:12px;cursor:pointer}
 button.band.wrong{opacity:.45;text-decoration:none}
-.lc-top .cupsvg{flex:none}
+.lc > .cupsvg{display:block;align-self:center;flex:none;margin:2px 0 6px}
 .lc-sw{font-size:12.5px;font-weight:700;color:var(--ink-2);margin-top:auto}
 .lc-sw.full{color:var(--accent)}
 .share-top{display:flex;gap:12px;align-items:center;margin-bottom:8px}
@@ -1491,8 +1490,8 @@ function renderLearnList(){
   const n=CARD_ORDER.filter(sealed).length;
   $("#learnHead").innerHTML=`<h1>每家公司，都是一杯奶茶</h1><p class="sub">看懂它的茶底、配料、糖分和杯型。每看懂一段，杯子里就多一样东西；最后答对 3 题封口，这杯才能放上奶茶架。已封口 <b>${n}</b> / ${CARD_ORDER.length} 杯。</p><div class="tools"><a class="btn ghost compare-link" href="#compare">公司对比</a></div>`;
   $("#cards").innerHTML=`<div class="list-grid">${CARD_ORDER.map(id=>{const k=CARDS[id];const sc=stepCount(id);
-    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div>${cupSVG(id,40,{uniformSize:true,full:true})}</div>
-      <span class="lc-one">${esc(k.one)}</span><span class="lc-sw${sealed(id)?" full":""}">${sealed(id)?"已封口，看懂了":sc?`做到第 ${sc} / 6 步`:"还没开始做"}</span></a>`}).join("")}</div>`;
+    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div></div>${cupSVG(id,76,{uniformSize:true,full:true})}
+      <span class="lc-sw${sealed(id)?" full":""}">${sealed(id)?"已封口，看懂了":sc?`做到第 ${sc} / 6 步`:"还没开始做"}</span></a>`}).join("")}</div>`;
 }
 function quizHTML(id){
   const k=CARDS[id];
