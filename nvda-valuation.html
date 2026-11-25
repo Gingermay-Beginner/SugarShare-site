@@ -19,7 +19,7 @@ h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margi
 .comparison{margin:12px 0 6px}.compare-row{margin-bottom:12px}.compare-label{display:flex;justify-content:space-between;align-items:baseline;gap:2px 10px;flex-wrap:wrap;font-size:.875rem}.compare-label b{color:var(--accent);font-variant-numeric:tabular-nums}.track{height:16px;background:#e2dacd;border-radius:4px;position:relative;margin-top:4px}.track span{display:block;height:100%;width:var(--value);background:var(--sage);border-radius:4px}.track.gold span{background:var(--tea)}.track.benchmark:after{content:"";position:absolute;left:57.61%;top:-3px;bottom:-3px;border-left:2px dashed var(--ink)}.axis{display:flex;justify-content:space-between;color:var(--ink-2);font-size:.8rem}.compare-row.selected .track span{background:var(--accent)}.compare-row.selected .compare-label strong{text-decoration:underline;text-underline-offset:4px}
 .profit-strip{height:20px;border-radius:3px;margin-top:5px;background:repeating-linear-gradient(to right,var(--tea) 0,var(--tea) calc(5% - 2px),transparent calc(5% - 2px),transparent 5%)}.profit-strip.short{clip-path:inset(0 50% 0 0)}.comparison-box .compare-row:last-child{margin-bottom:0}
 @media(max-width:380px){.wordmark small{display:none}.sheet section{padding:14px}}
-.value-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:5px 0}.value-grid span{height:18px;border-radius:3px;background:var(--sage)}.value-grid.profit-grid span{background:var(--tea)}.value-grid .partial{background:linear-gradient(to right,var(--sage) 55%,var(--line) 55%)}.comparison-box figcaption{margin-bottom:8px}
+.value-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:5px 0}.value-grid span{height:18px;border-radius:3px;background:var(--sage)}.value-grid.profit-grid span{background:var(--tea)}.value-grid .partial{background:linear-gradient(to right,var(--sage) 55%,var(--line) 55%)}.comparison-box figcaption{margin-bottom:8px}
 </style>
 <main>
 <header><div class="wordmark"><strong>糖分</strong><small>先看懂，再持有</small></div><span class="meta ticker">英伟达 · NVDA</span></header>
@@ -40,7 +40,7 @@ h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margi
 <section>
 <h2>英伟达的市值约是过去四季利润的 16.6 倍</h2>
 <figure class="comparison comparison-box" aria-label="一格代表过去四季净利润，估算市值约为 16.6 格">
-<figcaption><small>每格＝过去四季净利润，约 2,263 亿美元。每行最多 5 格。</small></figcaption>
+<figcaption><small>每格＝过去四季净利润，约 2,263 亿美元。每行最多 4 格。</small></figcaption>
 <div class="compare-row"><div class="compare-label"><strong>过去四季净利润</strong><b>1 格</b></div><div class="value-grid profit-grid" aria-hidden="true"><span></span></div></div>
 <div class="compare-row"><div class="compare-label"><strong>估算市值 · 11 月 24 日收盘</strong><b>约 16.6 格</b></div><div class="value-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="partial"></span></div><small>约 37,447 亿美元</small></div>
 </figure>
