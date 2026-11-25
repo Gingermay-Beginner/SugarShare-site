@@ -1432,7 +1432,7 @@ let cupSeq=0;
 function cupSVG(id,w,opt){
   opt=opt||{};const k=CARDS[id],d=secsDone(id);
   const st=opt.full?{b:1,l:1,s:1,z:1,n:1,c:1}:{b:d.includes(0),l:d.includes(1),s:d.includes(2),z:d.includes(3),n:d.includes(4),c:sealed(id)};
-  const sz=sizeOf(k),sg=sugarOf(k);const sc=st.z?sz.scale:0.82;
+  const sz=sizeOf(k),sg=sugarOf(k);const sc=st.z&&!opt.uniformSize?sz.scale:0.82;
   const cx=60,bot=164,H=120*sc,tw=86*sc,bw=64*sc,top=bot-H;
   const half=y=>bw/2+(tw-bw)/2*(bot-y)/H;
   const r=10*sc,f1=v=>v.toFixed(1); // 杯底圆角，与 logo 一致
@@ -1455,7 +1455,7 @@ function cupSVG(id,w,opt){
 function recipe(id){
   const k=CARDS[id],d=secsDone(id),sz=sizeOf(k),sg=sugarOf(k);
   const rows=[["茶底",d.includes(0),BASE[id]],["配料",d.includes(1),`${k.pie.length} 层`],["糖分",d.includes(2),sg.name],["杯型",d.includes(3),sz.name],["注意",d.includes(4),k.risk[0]],["封口",sealed(id),"看懂了"]];
-  return `<div class="make">${cupSVG(id,128)}<div class="recipe"><div class="rc-h">做一杯${esc(k.name)}<span>${stepCount(id)} / 6</span></div>
+  return `<div class="make">${cupSVG(id,128,{uniformSize:true})}<div class="recipe"><div class="rc-h">做一杯${esc(k.name)}<span>${stepCount(id)} / 6</span></div>
     ${rows.map(r=>`<div class="rc${r[1]?" on":""}"><i>${r[0]}</i><span>${r[1]?esc(r[2]):"？"}</span></div>`).join("")}</div></div>`;
 }
 function rot(arr,ans,seed){const k=seed%arr.length;const out=arr.slice(k).concat(arr.slice(0,k));return [out,(ans-k+arr.length)%arr.length]}
@@ -1491,7 +1491,7 @@ function renderLearnList(){
   const n=CARD_ORDER.filter(sealed).length;
   $("#learnHead").innerHTML=`<h1>每家公司，都是一杯奶茶</h1><p class="sub">看懂它的茶底、配料、糖分和杯型。每看懂一段，杯子里就多一样东西；最后答对 3 题封口，这杯才能放上奶茶架。已封口 <b>${n}</b> / ${CARD_ORDER.length} 杯。</p><div class="tools"><a class="btn ghost compare-link" href="#compare">公司对比</a></div>`;
   $("#cards").innerHTML=`<div class="list-grid">${CARD_ORDER.map(id=>{const k=CARDS[id];const sc=stepCount(id);
-    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div>${cupSVG(id,40)}</div>
+    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div>${cupSVG(id,40,{uniformSize:true})}</div>
       <span class="lc-one">${esc(k.one)}</span><span class="lc-sw${sealed(id)?" full":""}">${sealed(id)?"已封口，看懂了":sc?`做到第 ${sc} / 6 步`:"还没开始做"}</span></a>`}).join("")}</div>`;
 }
 function quizHTML(id){
