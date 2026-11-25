@@ -19,7 +19,8 @@ h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margi
 .comparison{margin:12px 0 6px}.compare-row{margin-bottom:12px}.compare-label{display:flex;justify-content:space-between;align-items:baseline;gap:2px 10px;flex-wrap:wrap;font-size:.875rem}.compare-label b{color:var(--accent);font-variant-numeric:tabular-nums}.track{height:16px;background:#e2dacd;border-radius:4px;position:relative;margin-top:4px}.track span{display:block;height:100%;width:var(--value);background:var(--sage);border-radius:4px}.track.gold span{background:var(--tea)}.track.benchmark:after{content:"";position:absolute;left:57.61%;top:-3px;bottom:-3px;border-left:2px dashed var(--ink)}.axis{display:flex;justify-content:space-between;color:var(--ink-2);font-size:.8rem}.compare-row.selected .track span{background:var(--accent)}.compare-row.selected .compare-label strong{text-decoration:underline;text-underline-offset:4px}
 .profit-strip{height:20px;border-radius:3px;margin-top:5px;background:repeating-linear-gradient(to right,var(--tea) 0,var(--tea) calc(5% - 2px),transparent calc(5% - 2px),transparent 5%)}.profit-strip.short{clip-path:inset(0 50% 0 0)}.comparison-box .compare-row:last-child{margin-bottom:0}
 @media(max-width:380px){.wordmark small{display:none}.sheet section{padding:14px}}
-.value-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:5px 0}.value-grid span{height:18px;border-radius:3px;background:var(--sage)}.value-grid.profit-grid span{background:var(--tea)}.value-grid .partial{background:linear-gradient(to right,var(--sage) 55%,var(--line) 55%)}.comparison-box figcaption{margin-bottom:8px}
+.value-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:5px 0}.value-grid span{aspect-ratio:1;border-radius:3px;background:var(--sage)}.value-grid.profit-grid span{background:var(--tea)}.value-grid .partial{background:linear-gradient(to right,var(--sage) 55%,var(--line) 55%)}.comparison-box figcaption{margin-bottom:8px}
+.value-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.value-pair .compare-row{margin:0}.value-pair .compare-label{display:grid;gap:2px}
 </style>
 <main>
 <header><div class="wordmark"><strong>糖分</strong><small>先看懂，再持有</small></div><span class="meta ticker">英伟达 · NVDA</span></header>
@@ -40,16 +41,18 @@ h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margi
 <section>
 <h2>英伟达的市值约是过去四季利润的 16.6 倍</h2>
 <figure class="comparison comparison-box" aria-label="一格代表过去四季净利润，估算市值约为 16.6 格">
-<figcaption><small>每格＝过去四季净利润，约 2,263 亿美元。每行最多 4 格。</small></figcaption>
+<figcaption><small>每格＝过去四季净利润，约 2,263 亿美元。市值每行 4 格。</small></figcaption>
+<div class="value-pair">
 <div class="compare-row"><div class="compare-label"><strong>过去四季净利润</strong><b>1 格</b></div><div class="value-grid profit-grid" aria-hidden="true"><span></span></div></div>
-<div class="compare-row"><div class="compare-label"><strong>估算市值 · 11 月 24 日收盘</strong><b>约 16.6 格</b></div><div class="value-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="partial"></span></div><small>约 37,447 亿美元</small></div>
+<div class="compare-row"><div class="compare-label"><strong>估算市值</strong><b>约 16.6 格</b></div><div class="value-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="partial"></span></div><small>11 月 24 日收盘 · 约 37,447 亿美元</small></div>
+</div>
 </figure>
 <p class="formula">估算市值 ÷ 过去四季净利润 ≈ 16.6 倍</p>
 <details class="details"><summary>展开日期、口径与来源</summary><p>行情取 2026 年 11 月 24 日美股常规交易收盘价 155.38 美元。估算市值用该价格乘以截至 2026 年 8 月 21 日披露的约 241 亿股在外普通股。 <a href="https://dorseywright.nasdaq.com/chart/performance/symbol/NVDA">Nasdaq Dorsey Wright 行情</a> · <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm">英伟达 10-Q</a></p><p>四季 GAAP 合并净利润截至 2026 年 10 月 25 日，为 FY2027 前三季的 1,832.97 亿美元加 FY2026 第四季的 429.60 亿美元，合计 2,262.57 亿美元。最新季度财报于 11 月 17 日发布。 <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/default.aspx">FY2027 第三季</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026">FY2026 第四季</a></p></details>
 </section>
 <section>
 <h2>利润涨了，市值也一定会涨吗？</h2>
-<p>把一年后最近四季的净利润，乘以届时市场愿意给的市盈率。</p>
+<p>以已披露的四季净利润 2,262.57 亿美元为基准，选 2,500、3,000、3,500 亿美元三个相隔 500 亿的整数，作为一年后的教学假设。括号里的百分比是相对这个基准的增幅。</p>
 <div class="choices" id="scenarios" aria-label="教学情景"><button data-scenario="0" aria-pressed="true">低情景</button><button data-scenario="1" aria-pressed="false">中情景</button><button data-scenario="2" aria-pressed="false">高情景</button></div>
 <div class="scenario"><small>教学假设 · 约 2027 年 11 月</small><div id="scenarioChart" class="comparison"></div><div class="axis"><span>0</span><span>6.5 万亿美元</span></div><p><small>虚线为 11 月 24 日估算市值 3.74 万亿美元</small></p><p id="scenarioResult" aria-live="polite"></p></div>
 <details class="details"><summary>每次只改一个数，会怎样？</summary><p>固定 12 倍，利润从 2,500 亿增至 3,000 亿美元，市值从 3.00 万亿增至 3.60 万亿美元。</p><p>固定 3,000 亿美元利润，倍数从 12 倍升至 15 倍，市值从 3.60 万亿增至 4.50 万亿美元。</p></details>
