@@ -1600,6 +1600,7 @@ function renderCardDetail(id){
   $("#cards").innerHTML=`<article class="card" id="card-${id}">
     <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
     <p class="one">${esc(k.one)}</p>
+    ${id==="nvda" ? `<p class="one"><a class="pill" style="display:inline-block;color:var(--accent);font-weight:700;text-decoration:none" href="./nvda-valuation.html">看懂估值</a></p>` : ""}
     <div id="meter">${recipe(id)}</div>
 
     <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="茶底"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="var(--accent)" stroke-width="2"/><path d="M9 16c2.6-1 4.6-3 6-6" stroke="var(--surface)" stroke-width="1.5"/></svg>它卖什么、卖给谁？</h3>
