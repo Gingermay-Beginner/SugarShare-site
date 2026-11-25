@@ -1491,7 +1491,7 @@ function renderLearnList(){
   const n=CARD_ORDER.filter(sealed).length;
   $("#learnHead").innerHTML=`<h1>每家公司，都是一杯奶茶</h1><p class="sub">看懂它的茶底、配料、糖分和杯型。每看懂一段，杯子里就多一样东西；最后答对 3 题封口，这杯才能放上奶茶架。已封口 <b>${n}</b> / ${CARD_ORDER.length} 杯。</p><div class="tools"><a class="btn ghost compare-link" href="#compare">公司对比</a></div>`;
   $("#cards").innerHTML=`<div class="list-grid">${CARD_ORDER.map(id=>{const k=CARDS[id];const sc=stepCount(id);
-    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div>${cupSVG(id,40,{uniformSize:true})}</div>
+    return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div>${cupSVG(id,40,{uniformSize:true,full:true})}</div>
       <span class="lc-one">${esc(k.one)}</span><span class="lc-sw${sealed(id)?" full":""}">${sealed(id)?"已封口，看懂了":sc?`做到第 ${sc} / 6 步`:"还没开始做"}</span></a>`}).join("")}</div>`;
 }
 function quizHTML(id){
