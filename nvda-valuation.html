@@ -7,31 +7,30 @@
 :root{color-scheme:light;--bg:#f5f1ea;--surface:#fffdf9;--surface-2:#ede7dd;--ink:#4a423b;--ink-2:#766a5e;--line:#e2dacd;--accent:#7a5f4b;--accent-soft:#efe6dc;--btn:#6e6357;--rose:#d99aa0;--tea:#dcc59c;--sage:#a7b08c;--shadow:0 4px 18px rgba(74,66,59,.07);--body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;--display:"Noto Serif SC","Songti SC","STSong",serif}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body)}
 main{max-width:480px;margin:auto;padding:14px 16px 28px}
-header,footer{display:flex;justify-content:space-between;align-items:center;gap:10px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px}
 header strong{font:800 23px/1 var(--display);letter-spacing:.08em}.wordmark{display:flex;gap:8px;align-items:center}.wordmark small{font-size:.82rem}
 .meta,small{color:var(--ink-2);font-size:.875rem}.ticker{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 9px;white-space:nowrap}
-.back-link{display:inline-block;margin-top:12px;color:var(--accent);font-size:.875rem}.steps{display:flex;gap:6px;margin:16px 0 12px}.steps button{flex:1;min-width:0;padding:5px}.steps [aria-current]{background:var(--btn);color:white}
-.sheet{background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:18px}
+.back-link{display:inline-block;margin-top:12px;color:var(--accent);font-size:.875rem}
+.sheet{display:grid;gap:14px;margin-top:14px}.sheet section{background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:18px}
 h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margin:0 0 12px}
 .cup{height:73px;width:58px;margin:0 auto 8px;background:linear-gradient(var(--sage) 24%,var(--tea) 24% 72%,var(--rose) 72%);clip-path:polygon(0 0,100% 0,85% 100%,15% 100%);border-radius:5px;text-align:center;padding-top:25px;font-size:.8rem;font-weight:800}.cup:after{content:"●  ●  ●";display:block;font-size:.58rem}.center{text-align:center}.cup-panel{background:var(--surface-2);border-radius:10px;padding:14px}.prices,.choices{display:flex;gap:8px;flex-wrap:wrap}.prices>*{flex:1}
 .tile{border-radius:10px;padding:8px;background:#f1e7d6}.tile:first-child{background:#f4e4e4}
 .formula{font-weight:800;color:var(--accent);margin:13px 0}.scenario,.comparison-box{background:var(--surface-2);border-radius:10px;padding:12px;margin-top:14px}
-.details{margin-top:14px}.details a{color:var(--accent)}button{font:700 .875rem/1.5 var(--body);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer}button:hover:not(:disabled){background:var(--accent-soft)}button.primary,button[aria-pressed=true]{background:var(--btn);border-color:var(--btn);color:white}button.primary:hover,button[aria-pressed=true]:hover{background:var(--accent)}button:disabled{opacity:.5;cursor:default}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}footer{margin-top:12px}.answer{margin-top:12px;color:var(--accent);font-weight:700}.answer:empty{display:none}[hidden]{display:none!important}
+.details{margin-top:14px}.details a{color:var(--accent)}button{font:700 .875rem/1.5 var(--body);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer}button:hover:not(:disabled){background:var(--accent-soft)}button.primary,button[aria-pressed=true]{background:var(--btn);border-color:var(--btn);color:white}button.primary:hover,button[aria-pressed=true]:hover{background:var(--accent)}button:disabled{opacity:.5;cursor:default}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.answer{margin-top:12px;color:var(--accent);font-weight:700}.answer:empty{display:none}[hidden]{display:none!important}
 .comparison{margin:12px 0 6px}.compare-row{margin-bottom:12px}.compare-label{display:flex;justify-content:space-between;align-items:baseline;gap:2px 10px;flex-wrap:wrap;font-size:.875rem}.compare-label b{color:var(--accent);font-variant-numeric:tabular-nums}.track{height:16px;background:#e2dacd;border-radius:4px;position:relative;margin-top:4px}.track span{display:block;height:100%;width:var(--value);background:var(--sage);border-radius:4px}.track.gold span{background:var(--tea)}.track.benchmark:after{content:"";position:absolute;left:57.61%;top:-3px;bottom:-3px;border-left:2px dashed var(--ink)}.axis{display:flex;justify-content:space-between;color:var(--ink-2);font-size:.8rem}.compare-row.selected .track span{background:var(--accent)}.compare-row.selected .compare-label strong{text-decoration:underline;text-underline-offset:4px}
 .profit-strip{height:20px;border-radius:3px;margin-top:5px;background:repeating-linear-gradient(to right,var(--tea) 0,var(--tea) calc(5% - 2px),transparent calc(5% - 2px),transparent 5%)}.profit-strip.short{clip-path:inset(0 50% 0 0)}.comparison-box .compare-row:last-child{margin-bottom:0}
-@media(max-width:380px){.wordmark small{display:none}.sheet{padding:14px}}
+@media(max-width:380px){.wordmark small{display:none}.sheet section{padding:14px}}
 </style>
 <main>
 <header><div class="wordmark"><strong>糖分</strong><small>先看懂，再持有</small></div><span class="meta ticker">英伟达 · NVDA</span></header>
 <a class="back-link" href="./#c-nvda">返回英伟达图解卡</a>
-<nav class="steps" aria-label="图解章节"></nav>
 <article class="sheet">
-<section data-step>
-<div class="hero"><div><h1 tabindex="-1">英伟达很赚钱，为什么还要看股价？</h1><p>一家奶茶店去年净赚 10 万元。有人出 100 万元买它的全部股权，也有人出 200 万元。店还是那家店，出价越高，你就越需要想清楚未来的生意要好到什么程度。</p></div>
+<section>
+<div class="hero"><div><h1>英伟达很赚钱，为什么还要看股价？</h1><p>一家奶茶店去年净赚 10 万元。有人出 100 万元买它的全部股权，也有人出 200 万元。店还是那家店，出价越高，你就越需要想清楚未来的生意要好到什么程度。</p></div>
 <div class="center cup-panel"><div class="cup" aria-hidden="true">整家店</div><p>去年净赚 <strong>10 万元</strong></p><div class="prices"><div class="tile">出价 <b>100 万元</b></div><div class="tile">出价 <b>200 万元</b></div></div></div></div>
 </section>
-<section data-step hidden>
-<h2 tabindex="-1">买下全部股权，要付几倍年利润？</h2>
+<section>
+<h2>买下全部股权，要付几倍年利润？</h2>
 <p><b>市值</b>是全部股权的总价，等于每股价格乘以在外股数。<b>净利润</b>是扣掉原料、房租、工资和税等之后，最后赚的钱。</p>
 <div class="formula">市盈率＝股权总价 ÷ 年净利润</div>
 <div class="comparison-box" aria-label="两种出价相当于多少块年净利润">
@@ -40,8 +39,8 @@ h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margi
 <div class="compare-row"><div class="compare-label"><strong>出价 200 万元</strong><b>20 块 · 20 倍</b></div><div class="profit-strip" aria-hidden="true"></div></div>
 </div>
 </section>
-<section data-step hidden>
-<h2 tabindex="-1">英伟达的市值约是过去四季利润的 16.6 倍</h2>
+<section>
+<h2>英伟达的市值约是过去四季利润的 16.6 倍</h2>
 <figure class="comparison" aria-label="市值和利润以同一亿美元尺度对比">
 <div class="compare-row"><div class="compare-label"><strong>估算市值 · 11 月 24 日收盘</strong><b>约 37,447 亿美元</b></div><div class="track" aria-hidden="true" style="--value:93.61645%"><span></span></div></div>
 <div class="compare-row"><div class="compare-label"><strong>净利润 · 已披露的过去四季</strong><b>约 2,263 亿美元</b></div><div class="track gold" aria-hidden="true" style="--value:5.656425%"><span></span></div></div>
@@ -50,59 +49,29 @@ h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margi
 <p class="formula">估算市值 ÷ 过去四季净利润 ≈ 16.6 倍</p>
 <details class="details"><summary>展开日期、口径与来源</summary><p>行情取 2026 年 11 月 24 日美股常规交易收盘价 155.38 美元。估算市值用该价格乘以截至 2026 年 8 月 21 日披露的约 241 亿股在外普通股。 <a href="https://dorseywright.nasdaq.com/chart/performance/symbol/NVDA">Nasdaq Dorsey Wright 行情</a> · <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm">英伟达 10-Q</a></p><p>四季 GAAP 合并净利润截至 2026 年 10 月 25 日，为 FY2027 前三季的 1,832.97 亿美元加 FY2026 第四季的 429.60 亿美元，合计 2,262.57 亿美元。最新季度财报于 11 月 17 日发布。 <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/default.aspx">FY2027 第三季</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026">FY2026 第四季</a></p></details>
 </section>
-<section data-step hidden>
-<h2 tabindex="-1">利润涨了，市值也一定会涨吗？</h2>
+<section>
+<h2>利润涨了，市值也一定会涨吗？</h2>
 <p>把一年后最近四季的净利润，乘以届时市场愿意给的市盈率。</p>
 <div class="choices" id="scenarios" aria-label="教学情景"><button data-scenario="0" aria-pressed="true">低情景</button><button data-scenario="1" aria-pressed="false">中情景</button><button data-scenario="2" aria-pressed="false">高情景</button></div>
 <div class="scenario"><small>教学假设 · 约 2027 年 11 月</small><div id="scenarioChart" class="comparison"></div><div class="axis"><span>0</span><span>6.5 万亿美元</span></div><p><small>虚线为 11 月 24 日估算市值 3.74 万亿美元</small></p><p id="scenarioResult" aria-live="polite"></p></div>
 <details class="details"><summary>每次只改一个数，会怎样？</summary><p>固定 12 倍，利润从 2,500 亿增至 3,000 亿美元，市值从 3.00 万亿增至 3.60 万亿美元。</p><p>固定 3,000 亿美元利润，倍数从 12 倍升至 15 倍，市值从 3.60 万亿增至 4.50 万亿美元。</p></details>
 </section>
-<section data-step hidden>
-<h2 tabindex="-1">倒着算，这个价格需要多少利润？</h2>
+<section>
+<h2>倒着算，这个价格需要多少利润？</h2>
 <p>把 <b>3.74 万亿美元</b>作为一年后要达到的市值。选择你假设市场届时会给的倍数。</p>
 <div class="choices" id="multiples" aria-label="假设市盈率"><button data-multiple="12" aria-pressed="false">12 倍</button><button data-multiple="15" aria-pressed="true">15 倍</button><button data-multiple="18" aria-pressed="false">18 倍</button></div>
 <div class="scenario"><small>教学假设 · 维持同一市值</small><div id="reverseChart" class="comparison"></div><div class="axis"><span>0</span><span>3,500 亿美元</span></div><p id="reverseResult" aria-live="polite"></p></div>
 <p class="details">倍数给得越低，要支撑同一个价格，利润就得越高。单凭股价，无法确定投资者究竟预期哪一个利润数字。</p>
 </section>
-<section data-step hidden>
-<h2 tabindex="-1">你能判断市值会往哪边走吗？</h2>
+<section>
+<h2>你能判断市值会往哪边走吗？</h2>
 <p>英伟达一年后的四季净利润增至 <b>3,000 亿美元</b>，市场届时只给 <b>12 倍</b>。算出的市值比 3.74 万亿美元高还是低？</p>
 <div class="choices" id="quiz"><button data-answer="high">更高</button><button data-answer="same">差不多</button><button data-answer="low">更低</button></div>
 <div class="answer" id="feedback" role="status"></div>
 </section>
 </article>
-<footer><button id="prev">上一屏</button><span id="count" class="meta" aria-live="polite"></span><button id="next" class="primary">下一屏</button></footer>
 </main>
 <script>
-const panels = [...document.querySelectorAll('[data-step]')];
-const navigation = document.querySelector('.steps');
-const previous = document.querySelector('#prev');
-const next = document.querySelector('#next');
-const names = ['开场', '市盈率', '财报与市值', '三种情景', '反推利润', '理解检查'];
-let current = 0;
-const tabs = names.map((name, index) => {
-  const tab = document.createElement('button');
-  tab.textContent = index + 1;
-  tab.setAttribute('aria-label', name);
-  tab.addEventListener('click', () => show(index));
-  navigation.append(tab);
-  return tab;
-});
-function show(index, focus = true) {
-  current = index;
-  panels.forEach((panel, i) => {
-    panel.hidden = i !== current;
-    if (i === current) tabs[i].setAttribute('aria-current', 'step');
-    else tabs[i].removeAttribute('aria-current');
-  });
-  previous.disabled = current === 0;
-  next.textContent = current === panels.length - 1 ? '回到开场' : '下一屏';
-  document.querySelector('#count').textContent = (current + 1) + ' / ' + panels.length;
-  if (focus) panels[current].querySelector('h1,h2').focus();
-}
-previous.addEventListener('click', () => show(current - 1));
-next.addEventListener('click', () => show((current + 1) % panels.length));
-show(0, false);
 const baselineProfit = 2262.57;
 const marketCap = 155.38 * 241;
 const number = new Intl.NumberFormat('zh-CN');
