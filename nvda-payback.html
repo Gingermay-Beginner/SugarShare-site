@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>英伟达这杯多少钱</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday learning, calm and premium (糖分 brand)
+   IDEA 杯子 = 买下整家店的价钱；每年净赚的钱 = 倒进去的一层；倒满要几层 = 几年回本
+   PICTURE three cups side by side filling layer by layer; every later section has its own drawing
+   COLOUR warm paper ground, cocoa ink, caramel sugar, rose for NVIDIA, mist blue for market
+   TYPE Noto Serif SC display + Noto Sans SC text, Manrope numbers
+   LAYOUT title + one-line finding, cups full width beneath; phone keeps cups in one row, smaller */
+:root{color-scheme:light dark;
+--bg:light-dark(#F5F1EA,#221F1C);--surface:light-dark(#FFFDF9,#2A2623);--surface2:light-dark(#EDE7DD,#34302C);
+--ink:light-dark(#4A423B,#F3EEE6);--ink2:light-dark(#766A5E,#B5ACA2);--line:light-dark(#E2DACD,#403A35);
+--accent:light-dark(#7A5F4B,#D9BFA8);--rose:#D99AA0;--rose2:light-dark(#E8BFC3,#B98389);--roseInk:light-dark(#9E5A62,#E8B3B8);
+--sugar:light-dark(#DCC59C,#CDB487);--sugar2:light-dark(#E9DABD,#A8936B);--mist:light-dark(#B5C0C9,#8E9AA4);--mist2:light-dark(#CFD7DD,#6F7B85);
+--lav:light-dark(#BDB4D0,#9D93B3);--milk:light-dark(#FBF8F2,#2E2925);--pearlSp:light-dark(#8E9BA7,#9DA9B4);--pearlNv:light-dark(#C27D86,#D9969E);--glass:light-dark(#EFE9DF,#38322D)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.7 "Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;overflow-x:clip;margin:0}
+.band{padding-block:clamp(28px,4vw,56px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.alt{background:var(--milk)}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:"Noto Serif SC","Songti SC",serif;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin:0}
+h1{font-size:clamp(30px,5vw,48px)}
+h2{font-size:clamp(22px,3vw,30px);margin-bottom:8px}
+h3{font-size:18px;margin-bottom:6px}
+p{margin:0 0 12px;max-width:68ch}
+.num{font-family:Manrope,"Noto Sans SC",sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.muted{color:var(--ink2)}
+.small{font-size:14px}
+.tiny{font-size:13px;color:var(--ink2)}
+.lead{font-size:clamp(17px,2vw,19px);margin-top:12px;max-width:60ch}
+.hero{background:var(--milk);border-bottom:1px solid var(--line)}
+.cups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,3vw,40px);margin-top:26px;align-items:end}
+.cupcard{text-align:center}
+.cupcard svg{width:100%;max-width:230px;height:auto;display:block;margin:0 auto}
+.cupcard .yr{font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(28px,5vw,46px);line-height:1.1}
+.cupcard .yr small{font-size:15px;font-weight:600;font-family:"Noto Sans SC"}
+.cupcard .who{font-weight:700;font-size:15px}
+.cupcard .how{font-size:13px;color:var(--ink2);line-height:1.4}
+.straws{display:grid;gap:6px;margin-top:28px}
+.srow{display:grid;grid-template-columns:9.5em minmax(0,1fr) 4.6em;gap:14px;align-items:center}
+.slab b{display:block;font-size:16px}.slab span{font-size:13px;color:var(--ink2);line-height:1.3;display:block}
+.sfig{position:relative;height:52px}.sfig.axis{height:30px}.sfig>svg{position:absolute;inset:0;width:100%;height:100%}
+.sval{font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(24px,3.4vw,34px);white-space:nowrap;text-align:right}.sval small{font-size:14px;font-family:'Noto Sans SC'}.sval.nv{color:var(--roseInk)}
+@media(max-width:560px){.srow{grid-template-columns:minmax(0,1fr) 3.8em;gap:4px 10px}.slab{grid-column:1/-1;margin-top:6px}.sfig{height:34px}}
+.key{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-top:18px;font-size:14px;color:var(--ink2)}
+.key i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,2.5vw,26px)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.eq{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:start;text-align:center;margin-top:18px}
+.eq .op{font-family:Manrope;font-size:32px;font-weight:800;color:var(--ink2);height:76px;display:flex;align-items:center;justify-content:center}
+.eq b{display:block;font-family:Manrope;font-size:clamp(22px,3vw,30px);font-weight:800;line-height:1.2}
+.eq span{font-size:13.5px;color:var(--ink2)}
+.eq svg{width:76px;height:76px;display:block;margin:0 auto 6px}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,260px);gap:28px;align-items:center}
+.big{font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(44px,7vw,72px);line-height:1;color:var(--roseInk)}
+input[type=range]{width:100%;accent-color:var(--accent);height:44px}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.presets button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--milk);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:40px}
+.presets button:hover,.presets button:focus-visible{border-color:var(--accent);outline:none}
+.presets button[aria-pressed=true]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+#calcCup svg{width:100%;max-width:260px;height:auto;display:block;margin:0 auto}
+.fig{position:relative;min-height:300px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
+.coins{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:220px}
+.coins i{aspect-ratio:1;border-radius:50%;background:var(--surface2)}
+.coins i.on{background:var(--rose)}
+.coins i.half{background:linear-gradient(90deg,var(--rose) 30%,var(--surface2) 30%)}
+.coins.sp i.on{background:var(--mist)}
+.coins.sp i.half{background:linear-gradient(90deg,var(--mist) 50%,var(--surface2) 50%)}
+.coinrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:12px}
+.coinrow b{font-family:Manrope;font-size:28px;font-weight:800}
+.dcf{display:flex;align-items:flex-end;gap:5px;flex-wrap:nowrap;margin:16px 0 6px;overflow:hidden}
+.dcf i{display:block;background:var(--sugar);border-radius:4px;flex:none}
+.warn{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
+.warn:first-child{border-top:0}
+.warn svg{width:52px;height:52px}
+.scroll{overflow-x:auto}
+.ftab{margin-top:6px}.ftab td.when{white-space:nowrap}.ftab th{font-weight:700;color:var(--ink);text-align:left;vertical-align:bottom;padding:6px 8px}.ftab td{padding:6px 8px;border-bottom:1px solid var(--line)}.ftab th span{font-weight:400;font-size:12.5px;color:var(--ink2)}.ftab td:nth-child(odd):not(:first-child),.ftab th:nth-child(odd):not(:first-child){color:var(--ink2);text-align:center;width:1.5em}.ftab td.hl{color:var(--roseInk);font-weight:700}.ftab tr.sep td{border-top:2px solid var(--line)}
+.tool{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:14px;align-items:center}
+.tool svg{width:96px;height:72px}
+.tag{font-size:12.5px;font-weight:500;font-family:"Noto Sans SC";background:var(--surface2);border-radius:999px;padding:2px 10px;color:var(--ink2);white-space:nowrap}
+.tag.rec{background:var(--rose);color:#3b2326}
+.phone{max-width:340px;margin:0 auto;background:var(--milk);border:1px solid var(--line);border-radius:30px;padding:22px 18px;box-shadow:0 6px 24px rgba(74,66,59,.08)}
+.phone .t{font-family:"Noto Serif SC";font-size:20px;font-weight:700;margin:2px 0 8px}
+.phone .mini{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;text-align:center}
+.phone .mini svg{width:100%;max-width:120px;height:auto}
+.phone .pill{background:var(--surface2);border-radius:10px;padding:8px 12px;margin-top:10px;font-size:14px}
+.foot{font-size:13.5px;color:var(--ink2)}
+.foot a{color:var(--accent)}
+.foot li{margin-bottom:4px;overflow-wrap:anywhere}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.pop{transform-box:fill-box;transform-origin:center;animation:pop .35s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes pour{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.lay{transform-box:fill-box;transform-origin:bottom;animation:pour .35s ease-out both}
+@media(prefers-reduced-motion:reduce){.lay,.pop{animation:none}}
+@media(max-width:820px){.calc,.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){.eq{grid-template-columns:minmax(0,1fr)}.eq .op{font-size:22px;height:auto}.cupcard .how{font-size:12px}.tool{grid-template-columns:minmax(0,1fr) 72px}.tool svg{width:72px}}
+</style>
+
+<section class="band hero"><div class="wrap">
+  <p class="tiny" style="margin:0 0 10px"><a href="./index.html" style="color:var(--accent)">← 回到糖分</a></p>
+  <p class="tiny" style="margin:0 0 6px">糖分 · 第六问：这杯现在多少钱</p>
+  <h1>英伟达这杯，大约 16 年回本</h1>
+  <p class="lead">如果把整家店买下来，用公司每年净赚的钱慢慢还，要几年才能回本？吸管里的每一颗珍珠代表一年，珍珠越多，吸管越长，回本越久。同样按过去 12 个月比、或同样按明年预估比，英伟达的吸管都比大盘短。</p>
+  <div class="straws" id="heroStraws"></div>
+  <div class="key"><span><i style="background:var(--pearlSp);border-radius:50%"></i>美股大盘</span><span><i style="background:var(--pearlNv);border-radius:50%"></i>英伟达</span><span>一颗珍珠 = 一年</span></div>
+  <p class="tiny" style="text-align:center;margin:8px auto 0">英伟达按 2026 年 11 月 25 日收盘价 $149.30；大盘为标普 500 的过去 12 个月和远期市盈率，FactSet 2026 年 11 月 13 日</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>估值就是一道除法</h2>
+  <div class="eq">
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53 70 L23 70 Z" fill="var(--glass)" stroke="var(--accent)" stroke-width="2"/><path d="M16 22 Q38 2 60 22 Z" fill="var(--sugar)"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">3.6 万亿</b><span>店价（市值，美元）</span></div>
+    <div class="op">÷</div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><g fill="var(--rose)" stroke="var(--milk)" stroke-width="2"><ellipse cx="38" cy="62" rx="24" ry="8"/><ellipse cx="38" cy="52" rx="24" ry="8"/><ellipse cx="38" cy="42" rx="24" ry="8"/><ellipse cx="38" cy="32" rx="24" ry="8"/><ellipse cx="38" cy="22" rx="24" ry="8" fill="var(--rose2)"/></g></svg><b class="num">2,263 亿</b><span>一年净赚（近 12 个月）</span></div>
+    <div class="op">=</div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="28" fill="var(--surface2)"/><path d="M38 40 L38 12 A28 28 0 1 1 13 52 Z" fill="var(--rose)"/><circle cx="38" cy="40" r="5" fill="var(--accent)"/></svg><b class="num">≈ 16 年</b><span>几年回本（市盈率 P/E）</span></div>
+  </div>
+  <p class="tiny" style="margin-top:16px">近 12 个月每股收益 = 2026 财年 Q4 的 $1.76 + 2027 财年前三季度的 $7.55 = $9.31（GAAP）；$149.30 ÷ $9.31 ≈ 16.0。用总市值 ÷ 总利润算也是约 16。</p>
+  <div class="grid2" style="margin-top:28px;align-items:center"><div>  <h3>倒过来说：每花 100 块，一年赚回几块</h3>
+  <p class="small">16 年回本，也可以说成每花 100 块，公司一年替你赚回 100 ÷ 16 ≈ 6.2 块。两种说法是同一个数，只是一个讲"要几年"，一个讲"每年多少"。后一种更像存款利息，方便和熟悉的东西比较。</p>
+    </div><div class="panel">
+      <div class="tiny" style="margin-bottom:4px">英伟达 vs 美股大盘（按过去 12 个月）</div>
+      <div class="coinrow">
+        <div><div class="coins" id="coinNv"></div><b class="num" style="color:var(--roseInk)">6.2 块</b><div class="tiny">英伟达（1 ÷ 16）</div></div>
+        <div><div class="coins sp" id="coinSp"></div><b class="num">3.9 块</b><div class="tiny">美股大盘（1 ÷ 25.4）</div></div>
+      </div>
+      <p class="tiny" style="margin-top:10px">这叫盈利收益率。利润大部分留在公司里，并不会真的分到你手上。</p>
+    </div></div>
+</div></section>
+
+<section class="band alt"><div class="wrap">
+  <h2>自己试一试：利润变了，要几颗珍珠？</h2>
+  <p>杯子代表价钱，一直是 3.6 万亿。一颗珍珠是一年净赚的钱：赚得越多，珍珠越大，需要的颗数越少，回本越快。</p>
+  <div class="panel calc">
+    <div>
+      <div class="tiny">未来每年的利润，是过去 12 个月的</div>
+      <div class="num" style="font-size:28px;font-weight:800" id="mult">1.0 倍</div>
+      <input type="range" id="slider" min="0.5" max="2.5" step="0.05" value="1" aria-label="未来利润倍数">
+      <div class="presets" id="presets">
+        <button data-m="0.5">利润腰斩</button>
+        <button data-m="1" aria-pressed="true">跟过去一样</button>
+        <button data-m="1.7">分析师的明年预估</button>
+        <button data-m="2.2">继续猛涨</button>
+      </div>
+      <div style="margin-top:18px"><span class="big" id="years">16</span> <span style="font-size:20px">年回本</span></div>
+      <p class="small" id="calcNote" style="margin:6px 0 0"></p>
+    </div>
+    <div id="calcCup"></div>
+  </div>
+  <p class="tiny" style="margin-top:12px">"分析师的明年预估"是倒推的：分析师引用的远期市盈率为 8.9 倍和约 10 倍，相当于预期未来一年利润是过去 12 个月的 1.6 到 1.8 倍，这里取 1.7。没有考虑钱的时间价值，只用来建立直觉。</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>为什么"过去"要 16 年，"明年"只要 9 到 10 年？</h2>
+  <p>因为利润涨得太快了。一年前一个季度净赚 319 亿美元，最近一个季度已经是 653 亿，翻了一倍。"过去 12 个月"把早些时候较少的利润也算了进去，所以回本年数偏长；分析师按接下来更高的利润算，年数就短了。下面每根柱子是一个季度的营收，玫瑰色部分是其中的净利润。</p>
+  <div class="panel"><div class="fig" id="rev"></div></div>
+  <p class="tiny" style="margin-top:10px">单位：亿美元。FY27 Q1 由前三季度合计倒算，约数。FY27 Q4 是公司指引（多一周，假设没有中国数据中心算力收入），毛利率指引降到 71% 到 72%。英伟达财年比自然年早约一年。</p>
+</div></section>
+
+<section class="band alt"><div class="wrap">
+  <h2>回本年数会变：利润在涨，价钱却跌了</h2>
+  <p>市场出价就是买下整家公司要花的钱：<b>市场出价 = 股价 × 股数</b>。股数两个月里几乎没变，变的是股价：从 10 月初约 $239 跌到 11 月 25 日的 $149.30，所以市场出价也从约 5.77 万亿降到约 3.6 万亿。同一段时间，一年净赚反而从 1,929 亿涨到 2,263 亿。</p>
+  <div class="panel"><div class="grid2"><div><h3>第一步：算出市场出价</h3><div class="scroll"><table class="ftab"><thead><tr><th></th><th>股价</th><th></th><th>股数</th><th></th><th>市场出价</th></tr></thead><tbody><tr><td class="when">10 月初</td><td class="num">≈ $239</td><td class="">×</td><td class="num">≈ 241 亿股</td><td class="">=</td><td class="num">5.77 万亿</td></tr><tr><td class="when">11 月 25 日</td><td class="num hl">$149.30 ↓</td><td class="">×</td><td class="num">≈ 241 亿股</td><td class="">=</td><td class="num hl">3.6 万亿 ↓</td></tr></tbody></table></div></div><div><h3>第二步：算出几年回本</h3><div class="scroll"><table class="ftab"><thead><tr><th></th><th>市场出价</th><th></th><th>一年净赚</th><th></th><th>回本</th></tr></thead><tbody><tr><td class="when">10 月初</td><td class="num">5.77 万亿</td><td class="">÷</td><td class="num">1,929 亿</td><td class="">=</td><td class="num">≈ 30 年</td></tr><tr><td class="when">11 月 25 日</td><td class="num hl">3.6 万亿 ↓</td><td class="">÷</td><td class="num">2,263 亿 ↑</td><td class="">=</td><td class="num">16 年</td></tr></tbody></table></div></div></div>
+    <p class="tiny" style="margin:10px 0 0">股数 ≈ 3.60 万亿 ÷ $149.30；10 月初股价 ≈ 5.77 万亿 ÷ 股数（52 周最高价为 $243.37）。都是约数。</p></div>
+  <p style="margin-top:14px">所以看到股价大跌，先别急着以为公司变差了。先分清楚：是"一年净赚"变少了，还是"市场出价"变低了？英伟达是后者。</p>
+  <div class="straws" id="thenStraws"></div>
+  <p class="tiny" style="text-align:center;margin-top:10px">一颗珍珠 = 一年。10 月初的 30 年为示意估算：峰值市值 ÷ 截至 2026 年 7 月的近四季净利润</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>市场为什么不愿意出高价</h2>
+  <div class="grid2">
+    <div class="panel">
+      <div class="warn"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25" fill="var(--surface2)"/><circle cx="26" cy="20" r="8" fill="var(--lav)"/><path d="M12 42 Q26 26 40 42 Z" fill="var(--lav)"/><path d="M18 11 L22 6 L26 11 L30 6 L34 11 Z" fill="var(--sugar)"/></svg><div><b>掌柜换不换人</b><br><span class="small">11 月 CEO 黄仁勋辞任又复职，财报发布时由 CFO 克蕾斯任临时 CEO，董事会 11 月 23 日让黄仁勋复职。</span></div></div>
+      <div class="warn"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25" fill="var(--surface2)"/><rect x="14" y="20" width="24" height="20" rx="3" fill="var(--mist)"/><path d="M12 20 L26 10 L40 20 Z" fill="var(--accent)"/><path d="M10 44 L42 10" stroke="var(--roseInk)" stroke-width="3" stroke-linecap="round"/></svg><div><b>中国分店暂时关门</b><br><span class="small">出口限制下，下季度指引已假设中国数据中心算力收入为零。</span></div></div>
+      <div class="warn"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25" fill="var(--surface2)"/><rect x="12" y="28" width="8" height="12" rx="2" fill="var(--sugar)"/><rect x="22" y="20" width="8" height="20" rx="2" fill="var(--sugar)"/><rect x="32" y="14" width="8" height="26" rx="2" fill="var(--sugar2)" stroke="var(--accent)" stroke-dasharray="2 2"/></svg><div><b>大客户还会不会一直下大单</b><br><span class="small">数据中心建设节奏、客户融资速度、美国政治变化。</span></div></div>
+      <div class="warn"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25" fill="var(--surface2)"/><path d="M10 18 L22 18 L20 40 L12 40 Z" fill="var(--rose)"/><path d="M30 18 L42 18 L40 40 L32 40 Z" fill="var(--mist)"/></svg><div><b>别家开始自己煮茶底</b><br><span class="small">大型科技公司在做自研 AI 芯片，可能分走订单。</span></div></div>
+    </div>
+    <div class="panel">
+      <h3>市场在担心：现在的利润是不是山顶？</h3>
+      <div class="fig" id="cycle" style="min-height:220px"></div>
+      <p class="small" style="margin-top:8px">英伟达一般不被算作典型的周期股，但芯片行业向来有起有落：客户集中下单时利润冲高，订单放缓时利润回落。英伟达过去也经历过利润大幅下滑的年份。现在市场争论的是，AI 数据中心的大单会不会也是一轮"高峰"。彼得·林奇提醒过：如果利润正处在山顶，回本年数反而会显得最短，因为价钱已经打了"以后赚不了这么多"的折扣。所以"只要 9 到 10 年，好像很便宜"和"担心利润见顶，所以只肯出这个价"，是同一个数字的两种读法。图为示意，不是英伟达的真实曲线。</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="band alt"><div class="wrap">
+  <h2 style="font-size:20px;color:var(--ink2)">注：未来的钱，要打个折</h2>
+    <div class="panel">
+      <h3>折现：越远的钱，今天越小</h3>
+      <div class="dcf" id="dcf"></div>
+      <div class="tiny" style="display:flex;justify-content:space-between"><span>明年</span><span>20 年后</span></div>
+      <p class="small" style="margin-top:10px">假设投资人要求每年约 9% 的回报，明年的 1 块钱今天约值 0.92 块，越往后越小。如果利润永远不涨不跌，把所有年份的钱折算后加起来，一家公司大约值 11 倍利润。英伟达远期只给 9 到 10 倍，大致是在按"利润不再增长，甚至回落"定价。这是示意计算。</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="band alt"><div class="wrap foot">
+  <h3 style="color:var(--ink)">数据来源</h3>
+  <ul>
+    <li>英伟达 2027 财年第三季度财报（2026 年 11 月 17 日发布，季度截至 10 月 25 日）：<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27pr.htm">SEC 原文</a></li>
+    <li>英伟达 2026 财年第四季度及全年财报（2026 年 2 月 25 日）：<a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026">英伟达投资者关系</a></li>
+    <li>股价 $149.30、市值 3.60 万亿、52 周区间、远期市盈率约 10 倍：<a href="https://www.fool.com/investing/2026/11/26/these-2-ai-chip-stocks-are-down-36-to-39-from-their-highs-here-s-what-history-says-happens-next/">Motley Fool，2026 年 11 月 26 日</a></li>
+    <li>10 月初市值峰值 5.77 万亿、远期市盈率 8.9 倍（Gary Black）、五项担忧（Gene Munster）：<a href="https://stocktwits.com/news-articles/markets/equity/nvidia-s-market-cap-falls-below-microsoft-s-analyst-flags-five-overhangs-for-nvda-stock/cNbx4KZR9Z3">Stocktwits，2026 年 11 月 25 日</a></li>
+    <li>标普 500 远期市盈率 18.3 倍（5 年平均 19.8，10 年平均 19.1）、过去 12 个月市盈率 25.4 倍：<a href="https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_111326.pdf">FactSet Earnings Insight，2026 年 11 月 13 日</a></li>
+  </ul>
+  <p>16 年、30 年、6.2 块、1.6 到 1.8 倍、约 11 倍等是根据上述数字的简化计算。本页只用于学习理解，不构成任何投资建议。</p>
+</div></section>
+
+<script>
+{
+let uid=0;
+const cup=(years,o={})=>{
+  const maxY=o.fixed?years:(o.maxY||20),Hm=190,bot=236,ch=Math.min(years,maxY)/maxY*Hm,top=bot-ch,id='c'+(uid++),k=16/Hm;
+  const xl=y=>40-(bot-y)*k,xr=y=>160+(bot-y)*k,L=xl(top),Rr=xr(top),mid=(L+Rr)/2;
+  const tone=o.tone||'nv',c1=tone==='sp'?'var(--mist)':'var(--rose)',c2=tone==='sp'?'var(--mist2)':'var(--rose2)';
+  const yrs=Math.min(years,maxY),lh=Hm/maxY,full=Math.floor(yrs),frac=yrs-full;
+  let lays='';
+  for(let i=0;i<Math.ceil(yrs);i++){
+    const h=i<full?lh:frac*lh,y=bot-(i*lh)-h;
+    lays+=`<rect class="${o.anim?'lay':''}" style="animation-delay:${(i*.06).toFixed(2)}s" x="0" y="${y.toFixed(1)}" width="200" height="${Math.max(h-.8,.5).toFixed(1)}" fill="${i%2?c2:c1}"/>`;
+  }
+  let ticks='';
+  for(let i=5;i<yrs;i+=5){const y=bot-i*lh,a=xl(y);ticks+=`<line x1="${a-8}" x2="${a-2}" y1="${y}" y2="${y}" stroke="var(--ink2)"/><text x="${a-11}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--ink2)">${i}</text>`}
+  const shape=`M${L} ${top} L${Rr} ${top} L160 ${bot} L40 ${bot} Z`;
+  return `<svg viewBox="-12 0 212 250" role="img" aria-label="${o.label||''}约${years.toFixed(1)}年倒满">
+  <defs><clipPath id="${id}"><path d="${shape}"/></clipPath></defs>
+  <path d="M${L-2} ${top-4} Q${mid} ${top-46} ${Rr+2} ${top-4} Z" fill="var(--sugar)"/>
+  <rect x="${L-10}" y="${top-8}" width="${Rr-L+20}" height="10" rx="5" fill="var(--accent)"/>
+  <rect x="${mid-4.5}" y="${top-44}" width="9" height="40" rx="4" fill="var(--ink2)"/>
+  <path d="${shape}" fill="var(--glass)"/>
+  <g clip-path="url(#${id})">${lays}</g>
+  <path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+  ${ticks}</svg>`;
+};
+const card=(y,who,how,tone,shown,maxY)=>`<div class="cupcard">${cup(y,{tone,anim:true,label:who,maxY})}<div class="yr" style="color:${tone==='sp'?'var(--ink)':'var(--roseInk)'}">${shown}<small> 年</small></div><div class="who">${who}</div><div class="how">${how}</div></div>`;
+const SR=[{y:25.4,who:'美股大盘',how:'标普 500，按过去 12 个月',t:'sp',v:'25'},{y:16,who:'英伟达',how:'按过去 12 个月',t:'nv',v:'16'},{y:18.3,who:'美股大盘',how:'标普 500，按明年预估',t:'sp',v:'18'},{y:9.5,who:'英伟达',how:'按分析师明年预估',t:'nv',v:'9–10'}];
+const makeStraws=(HS,SR,MAX)=>{
+HS.innerHTML=SR.map((r,i)=>`<div class="srow"><div class="slab"><b>${r.who}</b><span>${r.how}</span></div><div class="sfig" data-i="${i}"></div><div class="sval ${r.t}">${r.v}<small> 年</small></div></div>`).join('')+'<div class="srow"><div class="slab"></div><div class="sfig axis"></div><div></div></div>';
+const drawHS=()=>{
+  HS.querySelectorAll('.sfig').forEach(el=>{
+    const W=el.clientWidth,H=el.clientHeight,ml=10,mr=16,u=(W-ml-mr)/MAX;
+    if(el.classList.contains('axis')){let t='';for(let k=0;k<=MAX;k+=(W<420?10:5)){const x=ml+k*u;t+=`<line x1="${x}" x2="${x}" y1="2" y2="8" stroke="var(--ink2)"/><text x="${x}" y="24" text-anchor="middle" font-size="12" fill="var(--ink2)">${k}${k?' 年':''}</text>`}el.innerHTML=`<svg><line x1="${ml}" x2="${W-mr}" y1="2" y2="2" stroke="var(--line)"/>${t}</svg>`;return}
+    const r0=SR[+el.dataset.i],r=Math.max(2.5,Math.min(13,u/2-.6)),sh=2*r+8,sy=(H-sh)/2,cy=H/2,ex=ml+(r0.y%1?Math.floor(r0.y)*u+u/2+1:r0.y*u)+5;
+    const tube='var(--glass)',pc=r0.t==='sp'?'var(--pearlSp)':'var(--pearlNv)';
+    let g='';const cid=HS.id+el.dataset.i;for(let i=0;i<Math.ceil(r0.y);i++){const f=Math.min(1,r0.y-i),x=ml+i*u+u/2+1,rr=r,cl=f<1?` clip-path="url(#${cid})"`:'';if(f<1)g+=`<defs><clipPath id="${cid}"><rect x="${(ml+i*u).toFixed(1)}" y="0" width="${(u/2+1).toFixed(1)}" height="${H}"/></clipPath></defs>`;g+=`<g${cl}><circle class="pop" style="animation-delay:${(i*.05).toFixed(2)}s" cx="${x.toFixed(1)}" cy="${cy}" r="${rr.toFixed(1)}" fill="${pc}"/><circle cx="${(x-rr*.35).toFixed(1)}" cy="${(cy-rr*.35).toFixed(1)}" r="${(rr*.28).toFixed(1)}" fill="var(--milk)" opacity=".5"/></g>`}
+    el.innerHTML=`<svg><path d="M${ml} ${sy} L${ex+6} ${sy} L${ex} ${sy+sh} L${ml} ${sy+sh} Z" fill="${tube}" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/>${g}</svg>`;
+  });
+};
+new ResizeObserver(drawHS).observe(HS);};
+makeStraws(document.getElementById('heroStraws'),SR,27);
+makeStraws(document.getElementById('thenStraws'),[{y:29.9,who:'10 月初',how:'市场出价约 5.77 万亿',t:'nv',v:'≈30'},{y:16,who:'11 月 25 日',how:'市场出价约 3.6 万亿',t:'nv',v:'16'}],32);
+
+const coins=(el,v)=>{let h='';for(let i=0;i<100;i++)h+=`<i class="${i<Math.floor(v)?'on':(i<v?'half':'')}"></i>`;document.getElementById(el).innerHTML=h};
+coins('coinNv',6.2);coins('coinSp',3.9);
+
+const D=document.getElementById('dcf');
+const drawD=()=>{const W=D.clientWidth,n=20,gap=5,base=Math.min(40,(W-gap*(n-1))/n*1.15);let h='';for(let i=1;i<=n;i++){const s=base*Math.pow(1/1.09,i);h+=`<i style="width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;opacity:${(1-i*.025).toFixed(2)}"></i>`}D.innerHTML=h};
+new ResizeObserver(drawD).observe(D);
+
+const R=document.getElementById('rev');
+const rev=[['FY26 Q3',570,319],['FY26 Q4',681,430],['FY27 Q1',816,583],['FY27 Q2',962,597],['FY27 Q3',1158,653],['FY27 Q4',1300,null]];
+const drawR=()=>{
+  const W=R.clientWidth,H=R.clientHeight,ml=8,mr=8,mt=26,mb=40,cw=(W-ml-mr)/rev.length,bw=Math.min(70,cw*.62),sc=(H-mt-mb)/1300;
+  let s='';
+  rev.forEach((r,i)=>{
+    const x=ml+i*cw+(cw-bw)/2,h=r[1]*sc,y=H-mb-h,g=r[2]===null;
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="6" fill="${g?'none':'var(--sugar)'}" ${g?'stroke="var(--accent)" stroke-dasharray="5 4" stroke-width="1.5"':''}/>`;
+    if(!g){const nh=r[2]*sc;s+=`<rect x="${x}" y="${H-mb-nh}" width="${bw}" height="${nh}" rx="6" fill="var(--rose)"/>`;
+      if(W>460)s+=`<text x="${x+bw/2}" y="${H-mb-nh/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#3b2326">${r[2]}</text>`}
+    s+=`<text x="${x+bw/2}" y="${y-8}" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)">${r[1].toLocaleString()}${g?' 指引':''}</text>`;
+    s+=`<text x="${x+bw/2}" y="${H-mb+20}" text-anchor="middle" font-size="${W<460?11:13}" fill="var(--ink2)">${W<460?r[0].replace('FY','').replace(' ',''):r[0]}</text>`;
+  });
+  s+=`<line x1="${ml}" x2="${W-mr}" y1="${H-mb}" y2="${H-mb}" stroke="var(--line)"/>`;
+  s+=`<g font-size="13" fill="var(--ink2)"><rect x="${ml}" y="2" width="12" height="12" rx="2" fill="var(--sugar)"/><text x="${ml+18}" y="13">营收</text><rect x="${ml+70}" y="2" width="12" height="12" rx="2" fill="var(--rose)"/><text x="${ml+88}" y="13">其中净利润</text></g>`;
+  R.innerHTML=`<svg>${s}</svg>`;
+};
+new ResizeObserver(drawR).observe(R);
+
+const Cy=document.getElementById('cycle');
+const drawC=()=>{
+  const W=Cy.clientWidth,H=Cy.clientHeight,m=20,n=60;let p1='',p2='';
+  for(let i=0;i<=n;i++){const t=i/n,x=m+t*(W-2*m),e=Math.sin(t*Math.PI),y1=H-34-e*(H-80),y2=46+e*(H-110)*.8;p1+=(i?'L':'M')+x.toFixed(1)+' '+y1.toFixed(1);p2+=(i?'L':'M')+x.toFixed(1)+' '+y2.toFixed(1)}
+  const cx=W/2;
+  Cy.innerHTML=`<svg><path d="${p1}" fill="none" stroke="var(--rose)" stroke-width="4" stroke-linecap="round"/><path d="${p2}" fill="none" stroke="var(--mist)" stroke-width="4" stroke-dasharray="7 6" stroke-linecap="round"/>
+  <circle cx="${cx}" cy="46" r="6" fill="var(--roseInk)"/><text x="${cx+12}" y="40" font-size="13" fill="var(--ink)">利润在山顶</text>
+  <text x="${m}" y="${H-34-(H-80)*.15-10}" font-size="13" fill="var(--roseInk)" font-weight="700">利润</text>
+  <text x="${W-m}" y="40" text-anchor="end" font-size="13" fill="var(--ink2)" font-weight="700">市盈率</text>
+  <text x="${cx}" y="${46+(H-110)*.8+22}" text-anchor="middle" font-size="13" fill="var(--ink2)">市盈率在谷底</text></svg>`;
+};
+new ResizeObserver(drawC).observe(Cy);
+
+const layout=(years,m)=>{
+  const top=46,bot=236,k=16/190,xl=y=>40-(bot-y)*k,xr=y=>160+(bot-y)*k,H=bot-top-8;
+  const full=Math.floor(years+1e-9),frac=years-full,n=full+(frac>.05?1:0);
+  const rowsFor=(r,step)=>{const d=2*r+1.5,rows=[];let row=0,c=0;while(c<n&&row<80){const cy=bot-3-r-row*step,L=xl(cy)+r+3,R=xr(cy)-r-3,off=row%2?d/2:0;const cnt=Math.min(n-c,Math.max(1,Math.floor((R-L-off)/d)+1));rows.push(cnt);c+=cnt;row++}return rows};
+  let lo=3,hi=70;
+  for(let it=0;it<30;it++){const r=(lo+hi)/2,rows=rowsFor(r,(2*r+1.5)*.88);const h=2*r+(rows.length-1)*(2*r+1.5)*.88;if(h<=H)lo=r;else hi=r}
+  const r=lo,d=2*r+1.5,rows=rowsFor(r,d*.88),step=rows.length>1?Math.min(d,(H-2*r)/(rows.length-1)):0;
+  const ps=[];rows.forEach((cnt,ri)=>{const cy=bot-3-r-ri*step,L=xl(cy)+r+3,R=xr(cy)-r-3,w=(cnt-1)*d,x0=(L+R-w)/2;for(let q=0;q<cnt;q++)ps.push({x:x0+q*d,y:cy,r,h:1})});
+  if(frac>.05)ps[n-1].h=.5;
+  return ps;
+};
+let PC=null,cur=[],anim=0;
+const pcInit=el=>{
+  const top=46,bot=236,shape=`M24 ${top} L176 ${top} L160 ${bot} L40 ${bot} Z`;
+  el.innerHTML=`<svg viewBox="-12 0 212 250" role="img" aria-label="珍珠杯"><path d="M22 ${top-4} Q100 -6 178 ${top-4} Z" fill="var(--sugar)"/><rect x="14" y="${top-8}" width="172" height="10" rx="5" fill="var(--accent)"/><rect x="94" y="2" width="9" height="${top-6}" rx="4" fill="var(--ink2)"/><path d="${shape}" fill="var(--glass)"/><g id="pg"></g><path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>`;
+  PC=el.querySelector('#pg');
+};
+const pcPaint=ps=>{
+  PC.innerHTML=ps.filter(p=>p.r>.3).map((p,i)=>{const cw=(2*p.r*p.h).toFixed(1);return `<clipPath id="pk${i}"><rect x="${(p.x-p.r-1).toFixed(1)}" y="0" width="${(+cw+1).toFixed(1)}" height="300"/></clipPath><g clip-path="url(#pk${i})"><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="var(--pearlNv)"/><circle cx="${(p.x-p.r*.35).toFixed(1)}" cy="${(p.y-p.r*.35).toFixed(1)}" r="${(p.r*.28).toFixed(1)}" fill="var(--milk)" opacity=".5"/></g>`}).join('');
+};
+const pcTo=(years,m)=>{
+  const tgt=layout(years,m),from=cur.slice(),N=Math.max(tgt.length,from.length);
+  const pairs=[];
+  for(let i=0;i<N;i++){
+    const a=from[i],b=tgt[i];
+    if(a&&b)pairs.push([a,b]);
+    else if(b)pairs.push([{...b,r:0},b]);
+    else{const t=tgt[i%tgt.length]||a;pairs.push([a,{x:t.x,y:t.y,r:0,h:1}])}
+  }
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=performance.now(),D=reduce?0:420,id=++anim;
+  const ease=t=>1-Math.pow(1-t,3);
+  const step=now=>{
+    if(id!==anim)return;
+    const t=D?Math.min(1,(now-t0)/D):1,e=ease(t);
+    cur=pairs.map(([a,b])=>({x:a.x+(b.x-a.x)*e,y:a.y+(b.y-a.y)*e,r:a.r+(b.r-a.r)*e,h:a.h+(b.h-a.h)*e}));
+    pcPaint(cur);
+    if(t<1)requestAnimationFrame(step);else cur=tgt;
+  };
+  requestAnimationFrame(step);
+};
+const PRICE=36000,PROFIT=2263;
+const s=document.getElementById('slider'),Y=document.getElementById('years'),M=document.getElementById('mult'),C=document.getElementById('calcCup'),N=document.getElementById('calcNote'),P=document.getElementById('presets');
+const draw=()=>{
+  const m=+s.value,y=PRICE/(PROFIT*m);
+  M.textContent=m.toFixed(2).replace(/0$/,'')+' 倍';
+  Y.textContent=y<10?y.toFixed(1):Math.round(y);
+  if(!PC)pcInit(C);pcTo(y,m);
+  N.textContent=y>18.3?'比大盘的约 18 年还慢：这时 3.6 万亿就显得不便宜了。':y>12?'和大盘差不多，或略快一点。':'倒得很快：前提是每年赚这么多真的能保持住。';
+  P.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',Math.abs(+b.dataset.m-m)<.01));
+};
+s.addEventListener('input',draw);
+P.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;s.value=b.dataset.m;draw()});
+draw();
+}
+</script>
