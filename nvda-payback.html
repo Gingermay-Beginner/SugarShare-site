@@ -82,7 +82,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 .warn{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
 .warn:first-child{border-top:0}
 .warn svg{width:52px;height:52px}
-.scroll{overflow-x:auto}
+.scroll{overflow-x:auto}.eq2{margin-top:14px}.eq2 .op{height:auto}
 .ftab{margin-top:6px}.ftab td.when{white-space:nowrap}.ftab th{font-weight:700;color:var(--ink);text-align:left;vertical-align:bottom;padding:6px 8px}.ftab td{padding:6px 8px;border-bottom:1px solid var(--line)}.ftab th span{font-weight:400;font-size:12.5px;color:var(--ink2)}.ftab td:nth-child(odd):not(:first-child),.ftab th:nth-child(odd):not(:first-child){color:var(--ink2);text-align:center;width:1.5em}.ftab td.hl{color:var(--roseInk);font-weight:700}.ftab tr.sep td{border-top:2px solid var(--line)}
 .tool{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:14px;align-items:center}
 .tool svg{width:96px;height:72px}
@@ -124,7 +124,10 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
     <div class="op">=</div>
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="28" fill="var(--surface2)"/><path d="M38 40 L38 12 A28 28 0 1 1 13 52 Z" fill="var(--rose)"/><circle cx="38" cy="40" r="5" fill="var(--accent)"/></svg><b class="num">≈ 16 年</b><span>几年回本（市盈率 P/E）</span></div>
   </div>
-  <p class="tiny" style="margin-top:16px">近 12 个月每股收益 = 2026 财年 Q4 的 $1.76 + 2027 财年前三季度的 $7.55 = $9.31（GAAP）；$149.30 ÷ $9.31 ≈ 16.0。用总市值 ÷ 总利润算也是约 16。</p>
+  <div class="panel" style="margin-top:22px"><h3 style="margin-top:0">另一种算法：只看一股</h3>
+    <p class="small">上面是按整家公司算。也可以只看一股：一股的价格，除以这一股一年分摊到的净赚。结果是同一个数。</p>
+    <div class="eq eq2"><div><b class="num">$149.30</b><span>每股价格（11 月 25 日收盘）</span></div><div class="op">÷</div><div><b class="num">$9.31</b><span>每股一年净赚（每股收益 EPS）</span></div><div class="op">=</div><div><b class="num">≈ 16 年</b><span>几年回本（市盈率 P/E）</span></div></div>
+    <p class="tiny" style="margin:12px 0 0">$9.31 = 2026 财年 Q4 的 $1.76 + 2027 财年前三季度的 $7.55，按 GAAP 口径。149.30 ÷ 9.31 ≈ 16.0。</p></div>
   <div class="grid2" style="margin-top:28px;align-items:center"><div>  <h3>倒过来说：每花 100 块，一年赚回几块</h3>
   <p class="small">16 年回本，也可以说成每花 100 块，公司一年替你赚回 100 ÷ 16 ≈ 6.2 块。两种说法是同一个数，只是一个讲"要几年"，一个讲"每年多少"。后一种更像存款利息，方便和熟悉的东西比较。</p>
     </div><div class="panel">
