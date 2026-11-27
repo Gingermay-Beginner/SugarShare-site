@@ -177,6 +177,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <p style="margin-top:14px">所以看到股价大跌，先别急着以为公司变差了。先分清楚：是"一年净赚"变少了，还是"市场出价"变低了？英伟达是后者。</p>
   <div class="panel" style="margin-top:22px"><div class="fig" id="thenCups" style="height:auto"></div>
   <div class="key" style="justify-content:center;margin-top:6px"><span>杯子大小 = 市场出价</span><span>珍珠大小 = 一年净赚</span><span>珍珠颗数 = 几年回本</span></div></div>
+  <p style="margin-top:14px">中间那杯是假设，现实里没有发生：价钱还停在 5.77 万亿，利润换成现在的 2,263 亿，要约 25.5 年。所以利润上涨只把回本从 30 年缩到约 25.5 年；剩下降到 16 年的部分，是因为价钱跌了。</p>
   <p class="tiny" style="text-align:center;margin-top:10px">10 月初的 30 年为示意估算：峰值市值 ÷ 截至 2026 年 7 月的近四季净利润。杯子面积和珍珠面积按比例画。</p>
 </div></section>
 
@@ -264,28 +265,30 @@ new ResizeObserver(drawHS).observe(HS);};
 makeStraws(document.getElementById('heroStraws'),SR,27);
 {
   const TC=document.getElementById('thenCups');
-  const CUPS=[{when:'10 月初',price:57700,profit:1929,y:30,v:'≈30 年'},{when:'11 月 25 日',price:36000,profit:2263,y:16,v:'16 年'}];
+  const CUPS=[{when:'10 月初',price:57700,profit:1929,y:30,v:'≈30 年'},{when:'假设',price:57700,profit:2263,y:25.5,v:'≈25.5 年',hypo:1},{when:'11 月 25 日',price:36000,profit:2263,y:16,v:'16 年'}];
   const BH=190,BT=152,BB=120;
   const pack=(c,s,r)=>{const H=BH*s,tw=BT*s,bw=BB*s,y=c.y,full=Math.floor(y+1e-9),frac=y-full,n=full+(frac>.05?1:0),d=2*r+2,step=d,ps=[];
     const half=yy=>(bw+(tw-bw)*(yy/H))/2;let row=0;
     while(ps.length<n&&row<60){const cy=r+2+row*step,hw=half(cy-r)-r-3,cnt=Math.min(n-ps.length,Math.max(1,Math.floor(2*hw/d)+1)),w=(cnt-1)*d;for(let q=0;q<cnt;q++)ps.push({x:-w/2+q*d,y:cy,h:1});row++}
     if(frac>.05)ps[n-1].h=.5;return {ps,top:row?(row-1)*step+2*r+2:0,H};};
   const drawT=()=>{
-    const W=TC.clientWidth,narrow=W<460;
-    const sBig=narrow?Math.min(1,(W/2-16)/BT):1.05,ratio=Math.sqrt(CUPS[1].price/CUPS[0].price),sc=[sBig,sBig*ratio];
-    // pearl radius: area ∝ profit; find largest base so both fit
+    const W=TC.clientWidth,narrow=W<560,gap=narrow?10:44;
+    const sBig=Math.min(1,(W-2*gap)/3/(BT+18)),sc=CUPS.map(c=>sBig*Math.sqrt(c.price/57700));
     let lo=1,hi=40;for(let it=0;it<30;it++){const k=(lo+hi)/2;const ok=CUPS.every((c,i)=>{const p=pack(c,sc[i],k*Math.sqrt(c.profit/2263));return p.top<=p.H-4});ok?lo=k:hi=k}
-    const k=lo*.97,gap=narrow?20:70,colW=BT*sBig,totalW=colW*2+gap,ox=(W-totalW)/2,lidH=14,topPad=40,Hs=BH*sBig+lidH+topPad,labH=narrow?68:58;
+    const k=lo*.97,colW=(BT+18)*sBig,totalW=colW*3+gap*2,ox=(W-totalW)/2,lidH=14,topPad=40,Hs=BH*sBig+lidH+topPad,labH=narrow?84:62,fs=narrow?11.5:12.5;
     let s='';
     CUPS.forEach((c,i)=>{
-      const S=sc[i],H=BH*S,tw=BT*S,bw=BB*S,cx=ox+colW/2+i*(colW+gap),base=topPad+lidH+BH*sBig,top=base-H,r=k*Math.sqrt(c.profit/2263),P=pack(c,S,r);
+      const S=sc[i],H=BH*S,tw=BT*S,bw=BB*S,cx=ox+colW/2+i*(colW+gap),base=topPad+lidH+BH*sBig,top=base-H,r=k*Math.sqrt(c.profit/2263),P=pack(c,S,r),hy=c.hypo;
       const shape=`M${cx-tw/2} ${top} L${cx+tw/2} ${top} L${cx+bw/2} ${base} L${cx-bw/2} ${base} Z`;
-      s+=`<path d="M${cx-tw/2-2} ${top-4} Q${cx} ${top-28*S} ${cx+tw/2+2} ${top-4} Z" fill="var(--sugar)"/><rect x="${cx-tw/2-8}" y="${top-8}" width="${tw+16}" height="${10}" rx="5" fill="var(--accent)"/><rect x="${cx-4}" y="${top-8-34*S}" width="8" height="${34*S}" rx="4" fill="var(--ink2)"/><path d="${shape}" fill="var(--glass)"/>`;
-      P.ps.forEach((p,j)=>{const px=cx+p.x,py=base-p.y,id='tc'+i+'_'+j;s+=`<clipPath id="${id}"><rect x="${(px-r-1).toFixed(1)}" y="0" width="${(2*r*p.h+1).toFixed(1)}" height="999"/></clipPath><g clip-path="url(#${id})"><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlNv)"/><circle cx="${(px-r*.35).toFixed(1)}" cy="${(py-r*.35).toFixed(1)}" r="${(r*.28).toFixed(1)}" fill="var(--milk)" opacity=".5"/></g>`});
-      s+=`<path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
-      s+=`<text x="${cx}" y="${base+22}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">${c.when} · ${c.v}</text>${narrow?`<text x="${cx}" y="${base+41}" text-anchor="middle" font-size="12" fill="var(--ink2)">出价 ${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿</text><text x="${cx}" y="${base+57}" text-anchor="middle" font-size="12" fill="var(--ink2)">净赚 ${c.profit.toLocaleString()} 亿</text>`:`<text x="${cx}" y="${base+42}" text-anchor="middle" font-size="12.5" fill="var(--ink2)">出价 ${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿 · 净赚 ${c.profit.toLocaleString()} 亿</text>`}`;
+      s+=`<g opacity="${hy?.55:1}"><path d="M${cx-tw/2-2} ${top-4} Q${cx} ${top-28*S} ${cx+tw/2+2} ${top-4} Z" fill="var(--sugar)"/><rect x="${cx-tw/2-8}" y="${top-8}" width="${tw+16}" height="${10}" rx="5" fill="var(--accent)"/>${hy?'':`<rect x="${cx-4}" y="${top-8-34*S}" width="8" height="${34*S}" rx="4" fill="var(--ink2)"/>`}</g><path d="${shape}" fill="${hy?'none':'var(--glass)'}"/>`;
+      P.ps.forEach((p,j)=>{const px=cx+p.x,py=base-p.y,id='tc'+i+'_'+j;s+=`<clipPath id="${id}"><rect x="${(px-r-1).toFixed(1)}" y="0" width="${(2*r*p.h+1).toFixed(1)}" height="999"/></clipPath><g clip-path="url(#${id})">`+(hy?`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(r-1).toFixed(1)}" fill="var(--pearlNv)" fill-opacity=".18" stroke="var(--pearlNv)" stroke-width="1.5" stroke-dasharray="3 2.5"/>`:`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlNv)"/><circle cx="${(px-r*.35).toFixed(1)}" cy="${(py-r*.35).toFixed(1)}" r="${(r*.28).toFixed(1)}" fill="var(--milk)" opacity=".5"/>`)+`</g>`});
+      s+=`<path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2" ${hy?'stroke-dasharray="6 5" opacity=".7"':''}/>`;
+      if(hy)s+=`<rect x="${cx-24}" y="${top-40}" width="48" height="22" rx="11" fill="var(--surface2)" stroke="var(--accent)" stroke-dasharray="3 3"/><text x="${cx}" y="${top-25}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink2)">假设</text>`;
+      const col=hy?'var(--ink2)':'var(--ink)',p1=`出价 ${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿${hy?'（没跌）':''}`,p2=`净赚 ${c.profit.toLocaleString()} 亿${hy?'（已涨）':''}`,title=hy?'如果价钱没跌':c.when;
+      s+=narrow?`<text x="${cx}" y="${base+19}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${col}">${title}</text><text x="${cx}" y="${base+38}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${c.v}</text><text x="${cx}" y="${base+56}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+72}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`
+        :`<text x="${cx}" y="${base+22}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${title} · ${c.v}</text><text x="${cx}" y="${base+42}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+58}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`;
     });
-    TC.innerHTML=`<svg width="${W}" height="${Hs+labH}" viewBox="0 0 ${W} ${Hs+labH}" role="img" aria-label="两杯珍珠对比：10 月初杯子更大、珍珠更小、约 30 颗；11 月 25 日杯子更小、珍珠更大、16 颗">${s}</svg>`;
+    TC.innerHTML=`<svg width="${W}" height="${Hs+labH}" viewBox="0 0 ${W} ${Hs+labH}" role="img" aria-label="三杯珍珠对比：10 月初大杯小珍珠约 30 颗；假设价钱没跌、利润已涨，大杯大珍珠约 25.5 颗；11 月 25 日小杯大珍珠 16 颗">${s}</svg>`;
   };
   new ResizeObserver(drawT).observe(TC);
 }
