@@ -116,9 +116,19 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 </div></section>
 
 <section class="band"><div class="wrap">
-  <h2>估值就是一道除法</h2>
-  <div class="eq">
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">3.6 万亿</b><span>店价（市值，美元）</span></div>
+  <h2>贵不贵，就是一道除法</h2>
+  <p>股价是买一股要多少钱，单看它看不出贵不贵。先把股价乘上股数，得到<b>市值</b>，也就是买下整家店的价钱；再用市值除以一年净赚，得到<b>几年回本</b>。这个数就是市盈率，也就是这页说的「估值」。</p>
+  <p class="tiny" style="margin:18px 0 0;font-weight:700;color:var(--ink)">① 先算买下整家店要多少钱</p>
+  <div class="eq" style="margin-top:8px">
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="26" fill="var(--sugar)" stroke="var(--accent)" stroke-width="2"/><text x="38" y="49" text-anchor="middle" font-size="26" font-weight="800" fill="var(--accent)">$</text></svg><b class="num">$149.30</b><span>股价（买一股，11 月 25 日收盘）</span></div>
+    <div class="op">×</div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><g stroke="var(--accent)" stroke-width="2"><rect x="16" y="18" width="40" height="28" rx="4" fill="var(--surface2)"/><rect x="20" y="26" width="40" height="28" rx="4" fill="var(--glass)"/><rect x="24" y="34" width="40" height="28" rx="4" fill="var(--milk)"/></g><line x1="30" x2="56" y1="44" y2="44" stroke="var(--ink2)" stroke-width="2"/><line x1="30" x2="48" y1="52" y2="52" stroke="var(--ink2)" stroke-width="2"/></svg><b class="num">≈ 241 亿股</b><span>股数</span></div>
+    <div class="op">=</div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">3.6 万亿</b><span>市值（买下整家店，美元）</span></div>
+  </div>
+  <p class="tiny" style="margin:22px 0 0;font-weight:700;color:var(--ink)">② 再看靠利润几年回本</p>
+  <div class="eq" style="margin-top:8px">
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">3.6 万亿</b><span>市值（买下整家店，美元）</span></div>
     <div class="op">÷</div>
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><g fill="var(--rose)" stroke="var(--milk)" stroke-width="2"><ellipse cx="38" cy="62" rx="24" ry="8"/><ellipse cx="38" cy="52" rx="24" ry="8"/><ellipse cx="38" cy="42" rx="24" ry="8"/><ellipse cx="38" cy="32" rx="24" ry="8"/><ellipse cx="38" cy="22" rx="24" ry="8" fill="var(--rose2)"/></g></svg><b class="num">2,263 亿</b><span>一年净赚（近 12 个月）</span></div>
     <div class="op">=</div>
@@ -142,7 +152,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 
 <section class="band alt"><div class="wrap">
   <h2>自己试一试：利润变了，要几颗珍珠？</h2>
-  <p>杯子代表价钱，一直是 3.6 万亿。一颗珍珠是一年净赚的钱：赚得越多，珍珠越大，需要的颗数越少，回本越快。</p>
+  <p>杯子代表市值，一直是 3.6 万亿。一颗珍珠是一年净赚的钱：赚得越多，珍珠越大，需要的颗数越少，回本越快。</p>
   <div class="panel calc">
     <div>
       <div class="tiny">未来每年的利润，是过去 12 个月的</div>
@@ -170,15 +180,15 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 </div></section>
 
 <section class="band alt"><div class="wrap">
-  <h2>回本年数会变：利润在涨，价钱却跌了</h2>
-  <p>市场出价就是买下整家公司要花的钱：<b>市场出价 = 股价 × 股数</b>。股数两个月里几乎没变，变的是股价：从 10 月初约 $239 跌到 11 月 25 日的 $149.30，所以市场出价也从约 5.77 万亿降到约 3.6 万亿。同一段时间，一年净赚反而从 1,929 亿涨到 2,263 亿。</p>
-  <div class="panel"><div class="grid2"><div><h3>第一步：算出市场出价</h3><div class="scroll"><table class="ftab"><thead><tr><th></th><th>股价</th><th></th><th>股数</th><th></th><th>市场出价</th></tr></thead><tbody><tr><td class="when">10 月初</td><td class="num">≈ $239</td><td class="">×</td><td class="num">≈ 241 亿股</td><td class="">=</td><td class="num">5.77 万亿</td></tr><tr><td class="when">11 月 25 日</td><td class="num hl">$149.30 ↓</td><td class="">×</td><td class="num">≈ 241 亿股</td><td class="">=</td><td class="num hl">3.6 万亿 ↓</td></tr></tbody></table></div></div><div><h3>第二步：算出几年回本</h3><div class="scroll"><table class="ftab"><thead><tr><th></th><th>市场出价</th><th></th><th>一年净赚</th><th></th><th>回本</th></tr></thead><tbody><tr><td class="when">10 月初</td><td class="num">5.77 万亿</td><td class="">÷</td><td class="num">1,929 亿</td><td class="">=</td><td class="num">≈ 30 年</td></tr><tr><td class="when">11 月 25 日</td><td class="num hl">3.6 万亿 ↓</td><td class="">÷</td><td class="num">2,263 亿 ↑</td><td class="">=</td><td class="num">16 年</td></tr></tbody></table></div></div></div>
+  <h2>回本年数会变：利润在涨，市值却跌了</h2>
+  <p>市值就是买下整家公司要花的钱：<b>市值 = 股价 × 股数</b>。股数两个月里几乎没变，变的是股价：从 10 月初约 $239 跌到 11 月 25 日的 $149.30，所以市值也从约 5.77 万亿降到约 3.6 万亿。同一段时间，一年净赚反而从 1,929 亿涨到 2,263 亿。</p>
+  <div class="panel"><div class="grid2"><div><h3>第一步：算出市值</h3><div class="scroll"><table class="ftab"><thead><tr><th></th><th>股价</th><th></th><th>股数</th><th></th><th>市值</th></tr></thead><tbody><tr><td class="when">10 月初</td><td class="num">≈ $239</td><td class="">×</td><td class="num">≈ 241 亿股</td><td class="">=</td><td class="num">5.77 万亿</td></tr><tr><td class="when">11 月 25 日</td><td class="num hl">$149.30 ↓</td><td class="">×</td><td class="num">≈ 241 亿股</td><td class="">=</td><td class="num hl">3.6 万亿 ↓</td></tr></tbody></table></div></div><div><h3>第二步：算出几年回本</h3><div class="scroll"><table class="ftab"><thead><tr><th></th><th>市值</th><th></th><th>一年净赚</th><th></th><th>回本</th></tr></thead><tbody><tr><td class="when">10 月初</td><td class="num">5.77 万亿</td><td class="">÷</td><td class="num">1,929 亿</td><td class="">=</td><td class="num">≈ 30 年</td></tr><tr><td class="when">11 月 25 日</td><td class="num hl">3.6 万亿 ↓</td><td class="">÷</td><td class="num">2,263 亿 ↑</td><td class="">=</td><td class="num">16 年</td></tr></tbody></table></div></div></div>
     <p class="tiny" style="margin:10px 0 0">股数 ≈ 3.60 万亿 ÷ $149.30；10 月初股价 ≈ 5.77 万亿 ÷ 股数（52 周最高价为 $243.37）。都是约数。</p></div>
-  <p style="margin-top:14px">所以看到股价大跌，先别急着以为公司变差了。先分清楚：是"一年净赚"变少了，还是"市场出价"变低了？英伟达是后者。</p>
+  <p style="margin-top:14px">所以看到股价大跌，先别急着以为公司变差了。先分清楚：是"一年净赚"变少了，还是"市值"变低了？英伟达是后者。</p>
   <div class="panel" style="margin-top:22px"><div class="fig" id="thenCups" style="height:auto"></div>
-  <div class="key" style="justify-content:center;margin-top:6px"><span>杯子大小 = 市场出价</span><span>珍珠大小 ≈ 一年净赚</span><span>珍珠颗数 = 几年回本</span></div></div>
-  <p style="margin-top:14px">中间那杯是假设，现实里没有发生：价钱还停在 5.77 万亿，利润换成现在的 2,263 亿，要约 25.5 年。所以利润上涨只把回本从 30 年缩到约 25.5 年；剩下降到 16 年的部分，是因为价钱跌了。</p>
-  <p class="tiny" style="text-align:center;margin:10px auto 0;max-width:none">10 月初的 30 年为示意估算：峰值市值 ÷ 截至 2026 年 7 月的近四季净利润。杯子面积按出价比例画；珍珠颗数 × 珍珠大小 = 出价，所以三杯都正好装满，珍珠大小近似按净赚比例。</p>
+  <div class="key" style="justify-content:center;margin-top:6px"><span>杯子大小 = 市值</span><span>珍珠大小 ≈ 一年净赚</span><span>珍珠颗数 = 几年回本</span></div></div>
+  <p style="margin-top:14px">中间那杯是假设，现实里没有发生：市值还停在 5.77 万亿，利润换成现在的 2,263 亿，要约 25.5 年。所以利润上涨只把回本从 30 年缩到约 25.5 年；剩下降到 16 年的部分，是因为市值跌了。</p>
+  <p class="tiny" style="text-align:center;margin:10px auto 0;max-width:none">10 月初的 30 年为示意估算：峰值市值 ÷ 截至 2026 年 7 月的近四季净利润。杯子面积按市值比例画；珍珠颗数 × 珍珠大小 = 市值，所以三杯都正好装满，珍珠大小近似按净赚比例。</p>
 </div></section>
 
 <section class="band"><div class="wrap">
@@ -193,7 +203,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
     <div class="panel">
       <h3>市场在担心：现在的利润是不是山顶？</h3>
       <div class="fig" id="cycle" style="min-height:220px"></div>
-      <p class="small" style="margin-top:8px">英伟达一般不被算作典型的周期股，但芯片行业向来有起有落：客户集中下单时利润冲高，订单放缓时利润回落。英伟达过去也经历过利润大幅下滑的年份。现在市场争论的是，AI 数据中心的大单会不会也是一轮"高峰"。彼得·林奇提醒过：如果利润正处在山顶，回本年数反而会显得最短，因为价钱已经打了"以后赚不了这么多"的折扣。所以"只要 9 到 10 年，好像很便宜"和"担心利润见顶，所以只肯出这个价"，是同一个数字的两种读法。图为示意，不是英伟达的真实曲线。</p>
+      <p class="small" style="margin-top:8px">英伟达一般不被算作典型的周期股，但芯片行业向来有起有落：客户集中下单时利润冲高，订单放缓时利润回落。英伟达过去也经历过利润大幅下滑的年份。现在市场争论的是，AI 数据中心的大单会不会也是一轮"高峰"。彼得·林奇提醒过：如果利润正处在山顶，回本年数反而会显得最短，因为市值已经打了"以后赚不了这么多"的折扣。所以"只要 9 到 10 年，好像很便宜"和"担心利润见顶，所以只肯出这个价"，是同一个数字的两种读法。图为示意，不是英伟达的真实曲线。</p>
     </div>
   </div>
 </div></section>
@@ -204,7 +214,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
       <h3>为什么？因为未来的钱要打个折</h3>
       <div class="dcf" id="dcf"></div>
       <div class="tiny" style="display:flex;justify-content:space-between"><span>明年</span><span>20 年后</span></div>
-      <p class="small" style="margin-top:10px">假设投资人要求每年约 9% 的回报，那么明年的 1 块钱今天约值 0.92 块，越往后越小。一家公司今天值多少钱，就是把它以后每年赚的钱打折算回今天，再加起来。如果利润永远不涨不跌，把所有年份的钱折算后加起来，一家公司大约值 11 倍利润。9% 是假设的：换成 8%，约值 12.5 倍；换成 10%，约值 10 倍。英伟达按明年预估利润算是 9 到 10 倍，跟一家不再增长的公司差不多。虽然利润还在快速增长，市场给的价钱却像是在说"以后不会再长了"。</p>
+      <p class="small" style="margin-top:10px">假设投资人要求每年约 9% 的回报，那么明年的 1 块钱今天约值 0.92 块，越往后越小。一家公司今天值多少钱，就是把它以后每年赚的钱打折算回今天，再加起来。如果利润永远不涨不跌，把所有年份的钱折算后加起来，一家公司大约值 11 倍利润。9% 是假设的：换成 8%，约值 12.5 倍；换成 10%，约值 10 倍。英伟达按明年预估利润算是 9 到 10 倍，跟一家不再增长的公司差不多。虽然利润还在快速增长，市场给的市值却像是在说"以后不会再长了"。</p>
       <p class="small" style="margin:6px 0 0"><a href="./discount.html" style="color:var(--accent)">想细看：小知识卡「未来的钱要打个折」 →</a></p>
     </div>
   </div>
@@ -295,11 +305,11 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
       s+=`<path d="${shape}" fill="${hy?'none':'var(--glass)'}"/>`;
       P.ps.forEach((p,j)=>{const px=cx+p.x,py=base-p.y,id='tc'+i+'_'+j;s+=`<clipPath id="${id}"><rect x="${(px-r-1).toFixed(1)}" y="0" width="${(2*r*p.h+1).toFixed(1)}" height="999"/></clipPath><g clip-path="url(#${id})">`+(hy?`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(r-1).toFixed(1)}" fill="var(--pearlHy)" opacity=".55"/>`:`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlNv)"/>`)+`</g>`});
       s+=`<path d="${shape}" fill="none" stroke="var(--ink2)" stroke-width="2.5" ${hy?'opacity=".35"':''}/><g ${hy?'opacity=".35"':''}>${rim(cx-tw/2,cx+tw/2,top)}</g>`;
-            const col=hy?'var(--ink2)':'var(--ink)',p1=`出价 ${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿${hy?'（没跌）':''}`,p2=`净赚 ${c.profit.toLocaleString()} 亿${hy?'（已涨）':''}`,title=hy?'假设价钱没跌':c.when;
+            const col=hy?'var(--ink2)':'var(--ink)',p1=`市值 ${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿${hy?'（没跌）':''}`,p2=`净赚 ${c.profit.toLocaleString()} 亿${hy?'（已涨）':''}`,title=hy?'假设市值没跌':c.when;
       s+=narrow?`<text x="${cx}" y="${base+19}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${col}">${title}</text><text x="${cx}" y="${base+38}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${c.v}</text><text x="${cx}" y="${base+56}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+72}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`
         :`<text x="${cx}" y="${base+22}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${title} · ${c.v}</text><text x="${cx}" y="${base+42}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+58}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`;
     });
-    TC.innerHTML=`<svg width="${W}" height="${Hs+labH}" viewBox="0 0 ${W} ${Hs+labH}" role="img" aria-label="三杯珍珠对比：10 月初大杯小珍珠约 30 颗；假设价钱没跌、利润已涨，大杯大珍珠约 25.5 颗；11 月 25 日小杯大珍珠 16 颗">${s}</svg>`;
+    TC.innerHTML=`<svg width="${W}" height="${Hs+labH}" viewBox="0 0 ${W} ${Hs+labH}" role="img" aria-label="三杯珍珠对比：10 月初大杯小珍珠约 30 颗；假设市值没跌、利润已涨，大杯大珍珠约 25.5 颗；11 月 25 日小杯大珍珠 16 颗">${s}</svg>`;
   };
   new ResizeObserver(drawT).observe(TC);
 }
