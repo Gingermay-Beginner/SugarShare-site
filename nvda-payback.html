@@ -18,7 +18,7 @@
 --ink:light-dark(#4A423B,#F3EEE6);--ink2:light-dark(#766A5E,#B5ACA2);--line:light-dark(#E2DACD,#403A35);
 --accent:light-dark(#7A5F4B,#D9BFA8);--rose:#D99AA0;--rose2:light-dark(#E8BFC3,#B98389);--roseInk:light-dark(#9E5A62,#E8B3B8);
 --sugar:light-dark(#DCC59C,#CDB487);--sugar2:light-dark(#E9DABD,#A8936B);--mist:light-dark(#B5C0C9,#8E9AA4);--mist2:light-dark(#CFD7DD,#6F7B85);
---lav:light-dark(#BDB4D0,#9D93B3);--milk:light-dark(#FBF8F2,#2E2925);--pearlSp:light-dark(#8E9BA7,#9DA9B4);--pearlNv:light-dark(#C27D86,#D9969E);--pearlHy:light-dark(#8FA3BF,#9FB3CE);--glass:light-dark(#EFE9DF,#38322D)}
+--lav:light-dark(#BDB4D0,#9D93B3);--milk:light-dark(#FBF8F2,#2E2925);--pearlSp:light-dark(#B3AA9E,#9A9187);--pearlNv:light-dark(#C27D86,#D9969E);--pearlHy:light-dark(#8FA3BF,#9FB3CE);--glass:light-dark(#EFE9DF,#38322D)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.7 "Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;overflow-x:clip;margin:0}
@@ -73,8 +73,8 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 .coins i{aspect-ratio:1;border-radius:50%;background:var(--surface2)}
 .coins i.on{background:var(--rose)}
 .coins i.half{background:linear-gradient(90deg,var(--rose) 30%,var(--surface2) 30%)}
-.coins.sp i.on{background:var(--mist)}
-.coins.sp i.half{background:linear-gradient(90deg,var(--mist) 50%,var(--surface2) 50%)}
+.coins.sp i.on{background:var(--pearlSp)}
+.coins.sp i.half{background:linear-gradient(90deg,var(--pearlSp) 50%,var(--surface2) 50%)}
 .coinrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:12px}
 .coinrow b{font-family:Manrope;font-size:28px;font-weight:800}
 .dcf{display:flex;align-items:flex-end;gap:5px;flex-wrap:nowrap;margin:16px 0 6px;overflow:hidden}
