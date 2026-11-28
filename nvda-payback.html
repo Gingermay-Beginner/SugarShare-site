@@ -308,18 +308,25 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
     const top=row?(row-1)*d+2*r+2:0,step=fill&&row>1?Math.max(d,(H-8-2*r-2)/(row-1)):d,out=[];
     rows.forEach((cnt,ri)=>{const w=(cnt-1)*d;for(let q=0;q<cnt;q++)out.push({x:-w/2+q*d,y:r+2+ri*step,h:1})});
     if(frac>.05)out[n-1].h=.5;return {ps:out,top,H};};
-  const fitR=(c,S)=>{let lo=1,hi=60;for(let it=0;it<30;it++){const r=(lo+hi)/2,p=pack(c,S,r);p.top<=p.H-8?lo=r:hi=r}return lo};
+  const hexPack=(c,s,r)=>{const H=BH*s,tw=BT*s,bw=BB*s,y=c.y,full=Math.floor(y+1e-9),frac=y-full,n=full+(frac>.05?1:0),d=2*r+1.5,dy=d*.866,ps=[];
+    const half=yy=>(bw+(tw-bw)*(yy/H))/2;let row=0,cy=0;
+    while(ps.length<n&&row<80){cy=r+2+row*dy;const hw=half(Math.max(0,cy-r))-r-3,o=(row%2)*d/2,xs=[];
+      for(let k=-40;k<=40;k++){const x=o+k*d;if(Math.abs(x)<=hw+1e-6)xs.push(x)}
+      if(!xs.length)xs.push(0);xs.sort((a,b)=>Math.abs(a)-Math.abs(b)||a-b);const take=xs.slice(0,n-ps.length).sort((a,b)=>a-b);
+      take.forEach(x=>ps.push({x,y:cy,h:1}));row++}
+    if(frac>.05&&ps.length)ps[ps.length-1].h=.5;return {ps,top:cy+r+2,H}};
+  const best=(c,S)=>{const f=(fn)=>{let lo=1,hi=60;for(let it=0;it<30;it++){const r=(lo+hi)/2,p=fn(c,S,r);p.top<=p.H-8?lo=r:hi=r}return lo};const rg=f(pack),rh=f(hexPack);return rh>rg*1.02?{r:rh,hex:1}:{r:rg,hex:0}};
   const drawT=()=>{
     const W=TC.clientWidth,narrow=W<560,gap=narrow?10:44;
     const sBig=Math.min(1,(W-2*gap)/3/(BT+18)),sc=CUPS.map(c=>sBig*Math.sqrt(c.price/57700));
-    const RR=CUPS.map((c,i)=>fitR(c,sc[i]));
+    const RR=CUPS.map((c,i)=>best(c,sc[i]));
     const colW=(BT+18)*sBig,totalW=colW*3+gap*2,ox=(W-totalW)/2,lidH=4,topPad=10,Hs=BH*sBig+lidH+topPad,labH=narrow?84:62,fs=narrow?11.5:12.5;
     let s='';
     CUPS.forEach((c,i)=>{
-      const S=sc[i],H=BH*S,tw=BT*S,bw=BB*S,cx=ox+colW/2+i*(colW+gap),base=topPad+lidH+BH*sBig,top=base-H,r=RR[i],P=pack(c,S,r,1),hy=c.hypo;
+      const S=sc[i],H=BH*S,tw=BT*S,bw=BB*S,cx=ox+colW/2+i*(colW+gap),base=topPad+lidH+BH*sBig,top=base-H,r=RR[i].r,P=RR[i].hex?hexPack(c,S,r):pack(c,S,r,1),hy=c.hypo;
       const shape=cupD(cx-tw/2,cx+tw/2,top,cx-bw/2,cx+bw/2,base,12*S);
       s+=`<path d="${shape}" fill="${hy?'none':'var(--glass)'}"/>`;
-      P.ps.forEach((p,j)=>{const px=cx+p.x,py=base-p.y,id='tc'+i+'_'+j;s+=`<clipPath id="${id}"><rect x="${(px-r-1).toFixed(1)}" y="0" width="${(2*r*p.h+1).toFixed(1)}" height="999"/></clipPath><g clip-path="url(#${id})">`+(hy?`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(r-1).toFixed(1)}" fill="var(--pearlHy)" opacity=".55"/>`:`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlNv)"/>`)+`</g>`});
+      P.ps.forEach((p,j)=>{const px=cx+p.x,py=base-p.y,id='tc'+i+'_'+j;s+=`<clipPath id="${id}"><rect x="${(px-r-1).toFixed(1)}" y="0" width="${(2*r*p.h+1).toFixed(1)}" height="999"/></clipPath><g clip-path="url(#${id})">`+(hy?`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlHy)" opacity=".55"/>`:`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlNv)"/>`)+`</g>`});
       s+=`<path d="${shape}" fill="none" stroke="var(--ink2)" stroke-width="2.5" ${hy?'opacity=".35"':''}/><g ${hy?'opacity=".35"':''}>${rim(cx-tw/2,cx+tw/2,top)}</g>`;
             const col=hy?'var(--ink2)':'var(--ink)',p1=`市值 $${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿${hy?'（没跌）':''}`,p2=`净赚 $${c.profit.toLocaleString()} 亿${hy?'（已涨）':''}`,title=hy?'假设市值没跌':c.when;
       s+=narrow?`<text x="${cx}" y="${base+19}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${col}">${title}</text><text x="${cx}" y="${base+38}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${c.v}</text><text x="${cx}" y="${base+56}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+72}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`
