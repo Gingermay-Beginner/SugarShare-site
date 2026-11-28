@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-.ib{display:inline-grid;place-items:center;width:28px;height:28px;margin:-4px 0 -4px 4px;padding:0;border:0;background:none;color:var(--ink2);cursor:pointer;vertical-align:middle;border-radius:999px}.ib svg{width:17px;height:17px}.ib:focus-visible{outline:2px solid var(--accent)}.ib[aria-expanded=true]{color:var(--ink)}.ipop{margin:8px 0 0;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;font-size:13.5px;line-height:1.6;color:var(--ink)}.ipop ul{margin:6px 0 0;padding-left:1.2em}.ipop li{margin:4px 0}.ipop li b{font-weight:700}
+.ib{display:inline-grid;place-items:center;width:28px;height:28px;margin:-4px 0 -4px 4px;padding:0;border:0;background:none;color:var(--ink2);cursor:pointer;vertical-align:middle;border-radius:999px}.ib svg{width:17px;height:17px}.ib:focus-visible{outline:2px solid var(--accent)}.ib[aria-expanded=true]{color:var(--ink)}.iwrap{position:relative}.ipop{position:absolute;z-index:30;top:calc(100% + 6px);left:0;width:min(360px,100%);padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(60,45,35,.14);font-size:13.5px;line-height:1.6;color:var(--ink)}.ipop ul{margin:6px 0 0;padding-left:1.2em}.ipop li{margin:4px 0}.ipop li b{font-weight:700}
 
 html{scroll-behavior:smooth}
 /* VOICE everyday learning, calm and premium (糖分 brand)
@@ -132,8 +132,10 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(30 40) rotate(-8)"><rect width="44" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="22" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6万亿</text></g></svg><b class="num">$3.6 万亿</b><span>市值<br>（买下整家店）</span></div>
   </div>
   <p style="margin:30px 0 0;font-size:17px;font-weight:700;color:var(--ink)">② 再算几年回本，有两种算法</p>
+  <div class="iwrap">
   <p class="tiny" style="margin:18px 0 0;color:var(--ink2)"><span style="display:inline-block;background:var(--sugar);color:var(--ink);border-radius:999px;padding:2px 12px;font-weight:700;margin-right:8px">算整家店</span>市值 ÷ 一年净赚<button type="button" class="ib" id="ibCo" aria-expanded="false" aria-controls="whyCo" aria-label="什么时候用这种算法"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="6.2" r="1.15" fill="currentColor"/><path d="M10 9v5.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></p>
   <div class="ipop" id="whyCo" hidden><b>什么时候按整家店算？</b><ul><li><b>把公司当一门生意看：</b>花多少钱买下整家店、它一年赚多少，一眼就明白。</li><li><b>公司还没上市，或者正在被收购：</b>没有「一股」可看，只能按整家店算。</li><li><b>比较大小差很多的公司：</b>一股 $10 不一定比一股 $500 便宜，因为两家的股数不同；按整家店算就不受股数影响。</li></ul></div>
+  </div>
   <div class="eq" style="margin-top:8px">
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(30 40) rotate(-8)"><rect width="44" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="22" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6万亿</text></g></svg><b class="num">$3.6 万亿</b><span>市值<br>（买下整家店）</span></div>
     <div class="op">÷</div>
@@ -425,4 +427,4 @@ draw();
 }
 </script>
 
-<script>(()=>{const b=document.getElementById("ibCo"),p=document.getElementById("whyCo");if(!b||!p)return;const set=o=>{p.hidden=!o;b.setAttribute("aria-expanded",o)};let pinned=false;b.addEventListener("click",()=>{pinned=!pinned;set(pinned)});if(matchMedia("(hover:hover)").matches){b.addEventListener("mouseenter",()=>set(true));b.addEventListener("mouseleave",()=>{if(!pinned)set(false)})}})();</script>
+<script>(()=>{const b=document.getElementById("ibCo"),p=document.getElementById("whyCo");if(!b||!p)return;const set=o=>{p.hidden=!o;b.setAttribute("aria-expanded",o)};let pinned=false;b.addEventListener("click",e=>{e.stopPropagation();pinned=!pinned;set(pinned)});document.addEventListener("click",e=>{if(!p.hidden&&!p.contains(e.target)){pinned=false;set(false)}});document.addEventListener("keydown",e=>{if(e.key==="Escape"){pinned=false;set(false)}});if(matchMedia("(hover:hover)").matches){b.addEventListener("mouseenter",()=>set(true));b.addEventListener("mouseleave",()=>{if(!pinned)set(false)})}})();</script>
