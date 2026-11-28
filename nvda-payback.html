@@ -114,7 +114,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <h1>英伟达这杯，大约 16 年回本</h1>
   <div class="straws" id="heroStraws"></div>
   <div class="key"><span><i style="background:var(--pearlSp);border-radius:50%"></i>美股大盘</span><span><i style="background:var(--pearlNv);border-radius:50%"></i>英伟达</span><span>一颗<i style="background:none;border:1.5px solid var(--ink2);border-radius:50%;box-sizing:border-box;margin-left:5px" aria-label="珍珠"></i>= 一年</span></div>
-  <p class="tiny" style="text-align:center;margin:8px auto 0">英伟达按 2026 年 11 月 25 日收盘价 $149.30 算；美股大盘指标普 500，按 2026 年 11 月 13 日的数据。<a href="#sources" style="color:inherit;text-decoration:underline;text-underline-offset:3px">看数据来源 ↓</a></p>
+  <p class="tiny" style="text-align:center;margin:8px auto 0">英伟达按 2026 年 11 月 25 日收盘价 $149.30 算；美股大盘指标普 500，用的是 11 月 20 日的数据：这个数每周才发一次，这是 11 月 25 日之前最新的一期。<a href="#sources" style="color:inherit;text-decoration:underline;text-underline-offset:3px">看数据来源 ↓</a></p>
 </div></section>
 
 <section class="band"><div class="wrap">
@@ -146,7 +146,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
       <div class="tiny" style="margin-bottom:4px">英伟达 vs 美股大盘（按过去 12 个月）</div>
       <div class="coinrow">
         <div><div class="coins" id="coinNv"></div><b class="num" style="color:var(--roseInk)">6.2 块</b><div class="tiny">英伟达（1 ÷ 16）</div></div>
-        <div><div class="coins sp" id="coinSp"></div><b class="num">3.9 块</b><div class="tiny">美股大盘（1 ÷ 25.4）</div></div>
+        <div><div class="coins sp" id="coinSp"></div><b class="num">4.4 块</b><div class="tiny">美股大盘（1 ÷ 22.9）</div></div>
       </div>
       <p class="tiny" style="margin-top:10px">这叫盈利收益率。利润大部分留在公司里，并不会真的分到你手上。</p>
     </div></div>
@@ -236,7 +236,7 @@ document.getElementById('stepNext').addEventListener('click',()=>{try{const K='t
     <li>英伟达 2026 财年第四季度及全年财报（2026 年 2 月 25 日）：<a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026">英伟达投资者关系</a></li>
     <li>股价 $149.30、市值 3.60 万亿、52 周区间、远期市盈率约 10 倍：<a href="https://www.fool.com/investing/2026/11/26/these-2-ai-chip-stocks-are-down-36-to-39-from-their-highs-here-s-what-history-says-happens-next/">Motley Fool，2026 年 11 月 26 日</a></li>
     <li>10 月初市值峰值 5.77 万亿、远期市盈率 8.9 倍（Gary Black）、五项担忧（Gene Munster）：<a href="https://stocktwits.com/news-articles/markets/equity/nvidia-s-market-cap-falls-below-microsoft-s-analyst-flags-five-overhangs-for-nvda-stock/cNbx4KZR9Z3">Stocktwits，2026 年 11 月 25 日</a></li>
-    <li>美股大盘（标普 500）几年回本：按过去 12 个月约 25.4 年，按明年预估约 18.3 年（过去 5 年平均 19.8，10 年平均 19.1）：<a href="https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_111326.pdf">FactSet（美国金融数据公司）每周报告，2026 年 11 月 13 日</a></li>
+    <li>美股大盘（标普 500）几年回本：按过去 12 个月约 22.9 年，按明年预估约 17.1 年（明年预估的过去 5 年平均 19.8，10 年平均 19.1）：<a href="https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_112026A.pdf">FactSet（美国金融数据公司）每周报告，2026 年 11 月 20 日</a></li>
   </ul>
   <p>16 年、30 年、6.2 块、1.6 到 1.8 倍、约 11 倍等是根据上述数字的简化计算。本页只用于学习理解，不构成任何投资建议。</p>
 </div></section>
@@ -269,7 +269,7 @@ const cup=(years,o={})=>{
   ${ticks}</svg>`;
 };
 const card=(y,who,how,tone,shown,maxY)=>`<div class="cupcard">${cup(y,{tone,anim:true,label:who,maxY})}<div class="yr" style="color:${tone==='sp'?'var(--ink)':'var(--roseInk)'}">${shown}<small> 年</small></div><div class="who">${who}</div><div class="how">${how}</div></div>`;
-const SR=[{y:25.4,who:'美股大盘',how:'标普 500，按过去 12 个月',t:'sp',v:'25'},{y:16,who:'英伟达',how:'按过去 12 个月',t:'nv',v:'16'}];
+const SR=[{y:22.9,who:'美股大盘',how:'标普 500，按过去 12 个月',t:'sp',v:'23'},{y:16,who:'英伟达',how:'按过去 12 个月',t:'nv',v:'16'}];
 const makeStraws=(HS,SR,MAX)=>{
 HS.innerHTML=SR.map((r,i)=>`<div class="srow"><div class="slab"><b>${r.who}</b><span>${r.how}</span></div><div class="sfig" data-i="${i}"></div><div class="sval ${r.t}">${r.v}<small> 年</small></div></div>`).join('')+'<div class="srow"><div class="slab"></div><div class="sfig axis"></div><div></div></div>';
 const drawHS=()=>{
@@ -317,7 +317,7 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
 }
 
 const coins=(el,v)=>{let h='';for(let i=0;i<100;i++)h+=`<i class="${i<Math.floor(v)?'on':(i<v?'half':'')}"></i>`;document.getElementById(el).innerHTML=h};
-coins('coinNv',6.2);coins('coinSp',3.9);
+coins('coinNv',6.2);coins('coinSp',4.4);
 
 const D=document.getElementById('dcf');
 const drawD=()=>{const W=D.clientWidth,n=20,gap=5,base=Math.min(40,(W-gap*(n-1))/n*1.15);let h='';for(let i=1;i<=n;i++){const s=base*Math.pow(1/1.09,i);h+=`<i style="width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;opacity:${(1-i*.025).toFixed(2)}"></i>`}D.innerHTML=h};
@@ -405,7 +405,7 @@ const draw=()=>{
   M.textContent=m.toFixed(2).replace(/0$/,'')+' 倍';
   Y.textContent=y<10?y.toFixed(1):Math.round(y);
   if(!PC)pcInit(C);pcTo(y,m);
-  N.textContent=y>18.3?'比大盘的约 18 年还慢：这时 3.6 万亿就显得不便宜了。':y>12?'和大盘差不多，或略快一点。':'倒得很快：前提是每年赚这么多真的能保持住。';
+  N.textContent=y>17.1?'比大盘的约 17 年还慢：这时 3.6 万亿就显得不便宜了。':y>12?'和大盘差不多，或略快一点。':'倒得很快：前提是每年赚这么多真的能保持住。';
   P.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',Math.abs(+b.dataset.m-m)<.01));
 };
 s.addEventListener('input',draw);
