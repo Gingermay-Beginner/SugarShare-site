@@ -143,7 +143,10 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
     <div class="op">=</div>
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="28" fill="var(--surface2)" stroke="var(--ink2)" stroke-width="2"/><path d="M38 40 L38 12 A28 28 0 1 1 13 52 Z" fill="var(--rose)" stroke="var(--ink2)" stroke-width="2" stroke-linejoin="round"/><circle cx="38" cy="40" r="4" fill="var(--ink2)"/></svg><b class="num">≈ 16 年</b><span>几年回本<br>（市盈率 P/E）</span></div>
   </div>
-  <p class="tiny" style="margin:18px 0 0;color:var(--ink2)"><span style="display:inline-block;background:var(--sugar);color:var(--ink);border-radius:999px;padding:2px 12px;font-weight:700;margin-right:8px">算一股</span>股价 ÷ 每股一年净赚</p>
+  <div class="iwrap">
+  <p class="tiny" style="margin:18px 0 0;color:var(--ink2)"><span style="display:inline-block;background:var(--sugar);color:var(--ink);border-radius:999px;padding:2px 12px;font-weight:700;margin-right:8px">算一股</span>股价 ÷ 每股一年净赚<button type="button" class="ib" id="ibSh" aria-expanded="false" aria-controls="whySh" aria-label="什么时候用这种算法"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="6.2" r="1.15" fill="currentColor"/><path d="M10 9v5.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></p>
+  <div class="ipop" id="whySh" hidden><b>炒股软件上的市盈率就是这么算的</b><p style="margin:6px 0 0">股价 ÷ 每股一年净赚。不同软件里的「一年」可能不一样：有的按最近 12 个月（TTM），有的按上一个完整财年（静态），有的按分析师预估（动态）。看的时候留意是哪一种。</p></div>
+  </div>
   <div class="eq" style="margin-top:8px">
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="26" fill="var(--sugar)" stroke="var(--accent)" stroke-width="2"/><text x="38" y="49" text-anchor="middle" font-size="26" font-weight="800" fill="var(--accent)">$</text></svg><b class="num">$149.30</b><span>股价<br>（一股）</span></div>
     <div class="op">÷</div>
@@ -151,7 +154,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
     <div class="op">=</div>
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="28" fill="var(--surface2)" stroke="var(--ink2)" stroke-width="2"/><path d="M38 40 L38 12 A28 28 0 1 1 13 52 Z" fill="var(--rose)" stroke="var(--ink2)" stroke-width="2" stroke-linejoin="round"/><circle cx="38" cy="40" r="4" fill="var(--ink2)"/></svg><b class="num">≈ 16 年</b><span>几年回本<br>（市盈率 P/E）</span></div>
   </div>
-  <p style="margin:16px 0 0">两种算法用的都是价格，只是一个看整家店，一个看一股，结果一样。炒股软件上显示的市盈率，就是按一股算的。</p>
+  <p style="margin:16px 0 0">两种算法用的都是价格，只是一个看整家店，一个看一股，结果一样。</p>
   <p class="tiny" style="margin:10px 0 0">股价按 2026 年 11 月 25 日收盘价 $149.30 算。每股一年净赚 $9.31 = 2026 财年 Q4 的 $1.76 + 2027 财年前三季度的 $7.55，按 GAAP 口径。</p>
   <div class="grid2" style="margin-top:28px;align-items:center"><div>  <h3>倒过来说：每花 100 块，一年赚回几块</h3>
   <p class="small">16 年回本，也可以说成每花 100 块，公司一年替你赚回 100 ÷ 16 ≈ 6.2 块。两种说法是同一个数，只是一个讲"要几年"，一个讲"每年多少"。后一种更像存款利息，方便和熟悉的东西比较。</p>
@@ -427,4 +430,4 @@ draw();
 }
 </script>
 
-<script>(()=>{const b=document.getElementById("ibCo"),p=document.getElementById("whyCo");if(!b||!p)return;const set=o=>{p.hidden=!o;b.setAttribute("aria-expanded",o)};let pinned=false;b.addEventListener("click",e=>{e.stopPropagation();pinned=!pinned;set(pinned)});document.addEventListener("click",e=>{if(!p.hidden&&!p.contains(e.target)){pinned=false;set(false)}});document.addEventListener("keydown",e=>{if(e.key==="Escape"){pinned=false;set(false)}});if(matchMedia("(hover:hover)").matches){b.addEventListener("mouseenter",()=>set(true));b.addEventListener("mouseleave",()=>{if(!pinned)set(false)})}})();</script>
+<script>(()=>{const hov=matchMedia("(hover:hover)").matches,all=[];document.querySelectorAll(".ib").forEach(b=>{const p=document.getElementById(b.getAttribute("aria-controls"));if(!p)return;const o={b,p,pinned:false,set(v){p.hidden=!v;b.setAttribute("aria-expanded",v)}};all.push(o);b.addEventListener("click",e=>{e.stopPropagation();const v=!o.pinned;all.forEach(x=>{x.pinned=false;x.set(false)});o.pinned=v;o.set(v)});if(hov){b.addEventListener("mouseenter",()=>o.set(true));b.addEventListener("mouseleave",()=>{if(!o.pinned)o.set(false)})}});const close=()=>all.forEach(x=>{x.pinned=false;x.set(false)});document.addEventListener("click",e=>{if(!all.some(x=>x.p.contains(e.target)))close()});document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});})();</script>
