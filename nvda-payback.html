@@ -121,7 +121,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 
 <section class="band"><div class="wrap">
   <h2>贵不贵，就是一道除法</h2>
-  <p>股价是买一股要多少钱，单看它看不出贵不贵。先把股价乘上股数，得到<b>市值</b>，也就是买下整家店的价钱；再用市值除以一年净赚，得到<b>几年回本</b>。这个数就是市盈率，也就是这页说的「估值」。</p>
+  <p>股价是买一股要多少钱，单看它看不出贵不贵。先把股价乘上股数，得到<b>市值</b>，也就是买下整家店的价钱；再用市值除以一年净赚（财报里叫净利润），得到<b>几年回本</b>。这个数就是市盈率，也就是这页说的「估值」。</p>
   <p style="margin:22px 0 0;font-size:17px;font-weight:700;color:var(--ink)">① 先算买下整家店要多少钱</p>
   <div class="eq" style="margin-top:8px">
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="26" fill="var(--sugar)" stroke="var(--accent)" stroke-width="2"/><text x="38" y="49" text-anchor="middle" font-size="26" font-weight="800" fill="var(--accent)">$</text></svg><b class="num">$149.30</b><span>股价</span></div>
@@ -191,7 +191,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 <section class="band"><div class="wrap">
   <h2>同一个价钱，用哪年的利润算，差别很大</h2>
   <p>同样是 $3.6 万亿：用过去 12 个月赚的钱算，要 16 年；用分析师预估的明年利润算，只要 9 到 10 年。英伟达一年前一个季度净赚 $319 亿，最近一个季度已经是 $653 亿，翻了一倍。所以看到一个市盈率，先问一句：它是按哪一年的利润算的？</p>
-  <p class="small" style="margin-top:6px">下面每个杯子是一个季度的营收，玫瑰色部分是其中的净利润。</p>
+  <p class="small" style="margin-top:6px">下面每个杯子是一个季度的营收，玫瑰色部分是其中的净赚。</p>
   <div class="panel"><div class="fig" id="rev"></div></div>
   <p class="tiny" style="margin-top:10px">FY27 Q1 由前三季度合计倒算，约数。FY27 Q4 是公司指引（多一周，假设没有中国数据中心算力收入），毛利率指引降到 71% 到 72%。英伟达财年比自然年早约一年。</p>
   <p style="margin-top:14px">不过，明年的利润只是预估，市场并不完全相信。这就是下面要讲的：市场为什么不愿意出高价。</p>
@@ -206,7 +206,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <div class="panel" style="margin-top:22px"><div class="fig" id="thenCups" style="height:auto"></div>
   <div class="key" style="justify-content:center;margin-top:6px"><span>杯子大小 = 市值</span><span>珍珠大小 ≈ 一年净赚</span><span>珍珠颗数 = 几年回本</span></div></div>
   <p style="margin-top:14px">中间那杯是假设，现实里没有发生：市值还停在 $5.77 万亿，利润换成现在的 $2,263 亿，要约 25.5 年。所以利润上涨只把回本从 30 年缩到约 25.5 年；剩下降到 16 年的部分，是因为市值跌了。</p>
-  <p class="tiny" style="text-align:center;margin:10px auto 0;max-width:none">10 月初的 30 年为示意估算：峰值市值 ÷ 截至 2026 年 7 月的近四季净利润。杯子面积按市值比例画；珍珠颗数 × 珍珠大小 = 市值，所以三杯都正好装满，珍珠大小近似按净赚比例。</p>
+  <p class="tiny" style="text-align:center;margin:10px auto 0;max-width:none">10 月初的 30 年为示意估算：峰值市值 ÷ 截至 2026 年 7 月的近四季净赚。杯子面积按市值比例画；珍珠颗数 × 珍珠大小 = 市值，所以三杯都正好装满，珍珠大小近似按净赚比例。</p>
 </div></section>
 
 <section class="band"><div class="wrap">
@@ -356,7 +356,7 @@ const drawR=()=>{
     s+=`<text x="${x+bw/2}" y="${H-mb+20}" text-anchor="middle" font-size="${W<460?11:13}" fill="var(--ink2)">${W<460?r[0].replace('FY','').replace(' ',''):r[0]}</text>`;
   });
   s+=`<line x1="${ml}" x2="${W-mr}" y1="${H-mb}" y2="${H-mb}" stroke="var(--line)"/>`;
-  s+=`<g font-size="13" fill="var(--ink2)"><rect x="${ml}" y="2" width="12" height="12" rx="2" fill="var(--sugar)"/><text x="${ml+18}" y="13">营收</text><rect x="${ml+70}" y="2" width="12" height="12" rx="2" fill="var(--rose)"/><text x="${ml+88}" y="13">其中净利润</text></g>`;
+  s+=`<g font-size="13" fill="var(--ink2)"><rect x="${ml}" y="2" width="12" height="12" rx="2" fill="var(--sugar)"/><text x="${ml+18}" y="13">营收</text><rect x="${ml+70}" y="2" width="12" height="12" rx="2" fill="var(--rose)"/><text x="${ml+88}" y="13">其中净赚</text></g>`;
   R.innerHTML=`<svg>${s}</svg>`;
 };
 new ResizeObserver(drawR).observe(R);
