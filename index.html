@@ -105,10 +105,8 @@ h2{font-size:17px;margin:0 0 8px;text-wrap:balance}
 .steps li b{display:block;font-size:14px;color:var(--ink)}
 .steps li small{display:block;font-size:11.5px;margin-top:2px}
 .steps li .no{font-family:Manrope,sans-serif;font-weight:800;font-size:12px;color:var(--ink-2)}
-.steps li.done{background:var(--accent-soft);border-color:var(--accent-soft)}
 .steps li.done .no,.steps li.now .no{color:var(--accent)}
-.steps li.now{border-color:var(--accent)}
-.steps li.lock{opacity:.6;border-style:dashed}
+.steps li.now{border-color:var(--accent);background:var(--accent-soft)}
 .steps a{color:inherit;text-decoration:none;display:block}
 .steps a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
 .next{display:flex;justify-content:flex-end;margin-top:14px}
@@ -1484,7 +1482,7 @@ function sizeOf(k){const n=k.rev.length;const g=Math.pow(k.rev[n-1]/k.rev[0],1/(
 function sugarOf(k){const p=k.per100[2];const b=p<3?0:p<8?1:p<15?2:p<30?3:4;return {p,b,name:SUGAR_BANDS[b][0]}}
 function secsDone(id){return (S.secs&&S.secs[id])||[]}
 function sealed(id){return S.understood.includes(id)}
-/* 三步走：看懂公司 → 看懂贵不贵 → 这个价在赌什么。暂不按顺序锁定；还没有页面的一步显示为淡色、不能点。 */
+/* 三步走：看懂公司 → 看懂贵不贵 → 这个价在赌什么。三格样式一样，只高亮当前页；还没有页面的一步不能点。 */
 const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:null}};
 function stepDone(id,k){return !!(S.steps&&S.steps[id]&&S.steps[id][k])}
 function stepsHTML(id){
@@ -1855,10 +1853,9 @@ function renderCardDetail(id){
   const k=CARDS[id],c=ALL[id],d=secsDone(id),sg=sugarOf(k),sz=sizeOf(k);
   $("#learnHead").innerHTML="";$("#tbTitle").textContent=k.name;$("#titleBar .tb-r").innerHTML=SEARCH_IC.replace('class="s-ic"','');
   const unit=k.currency||"块";
-  $("#cards").innerHTML=`<article class="card" id="card-${id}">
+  $("#cards").innerHTML=`${stepsHTML(id)}<article class="card" id="card-${id}">
     <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
     <p class="one">${esc(k.one)}</p>
-    ${stepsHTML(id)}
     <div id="meter">${recipe(id)}</div>
 
     <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="茶底"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="var(--accent)" stroke-width="2"/><path d="M9 16c2.6-1 4.6-3 6-6" stroke="var(--surface)" stroke-width="1.5"/></svg>它卖什么、卖给谁？</h3>
