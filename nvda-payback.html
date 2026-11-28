@@ -118,7 +118,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 <section class="band"><div class="wrap">
   <h2>估值就是一道除法</h2>
   <div class="eq">
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53 70 L23 70 Z" fill="var(--glass)" stroke="var(--accent)" stroke-width="2"/><path d="M16 22 Q38 2 60 22 Z" fill="var(--sugar)"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">3.6 万亿</b><span>店价（市值，美元）</span></div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">3.6 万亿</b><span>店价（市值，美元）</span></div>
     <div class="op">÷</div>
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><g fill="var(--rose)" stroke="var(--milk)" stroke-width="2"><ellipse cx="38" cy="62" rx="24" ry="8"/><ellipse cx="38" cy="52" rx="24" ry="8"/><ellipse cx="38" cy="42" rx="24" ry="8"/><ellipse cx="38" cy="32" rx="24" ry="8"/><ellipse cx="38" cy="22" rx="24" ry="8" fill="var(--rose2)"/></g></svg><b class="num">2,263 亿</b><span>一年净赚（近 12 个月）</span></div>
     <div class="op">=</div>
@@ -231,6 +231,10 @@ document.getElementById('stepNext').addEventListener('click',()=>{try{const K='t
 
 <script>
 {
+// 杯形与「看懂公司」的第一张杯子一致：平口一条线，没有拱盖和吸管，杯身上宽下窄，两个底角是圆角
+const cupD=(lt,rt,top,lb,rb,bot,r)=>{const kx=(x0,x1)=>x1+(x0-x1)*r/(bot-top);const f=v=>(+v).toFixed(1);
+  return `M${f(lt)} ${f(top)} L${f(rt)} ${f(top)} L${f(kx(rt,rb))} ${f(bot-r)} Q${f(rb)} ${f(bot)} ${f(rb-r)} ${f(bot)} L${f(lb+r)} ${f(bot)} Q${f(lb)} ${f(bot)} ${f(kx(lt,lb))} ${f(bot-r)} Z`};
+const rim=(x0,x1,y,w)=>`<line x1="${(x0-3).toFixed(1)}" x2="${(x1+3).toFixed(1)}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--ink2)" stroke-width="${w||3}" stroke-linecap="round"/>`;
 let uid=0;
 const cup=(years,o={})=>{
   const maxY=o.fixed?years:(o.maxY||20),Hm=190,bot=236,ch=Math.min(years,maxY)/maxY*Hm,top=bot-ch,id='c'+(uid++),k=16/Hm;
@@ -244,15 +248,12 @@ const cup=(years,o={})=>{
   }
   let ticks='';
   for(let i=5;i<yrs;i+=5){const y=bot-i*lh,a=xl(y);ticks+=`<line x1="${a-8}" x2="${a-2}" y1="${y}" y2="${y}" stroke="var(--ink2)"/><text x="${a-11}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--ink2)">${i}</text>`}
-  const shape=`M${L} ${top} L${Rr} ${top} L160 ${bot} L40 ${bot} Z`;
+  const shape=cupD(L,Rr,top,40,160,bot,14);
   return `<svg viewBox="-12 0 212 250" role="img" aria-label="${o.label||''}约${years.toFixed(1)}年倒满">
   <defs><clipPath id="${id}"><path d="${shape}"/></clipPath></defs>
-  <path d="M${L-2} ${top-4} Q${mid} ${top-46} ${Rr+2} ${top-4} Z" fill="var(--sugar)"/>
-  <rect x="${L-10}" y="${top-8}" width="${Rr-L+20}" height="10" rx="5" fill="var(--accent)"/>
-  <rect x="${mid-4.5}" y="${top-44}" width="9" height="40" rx="4" fill="var(--ink2)"/>
   <path d="${shape}" fill="var(--glass)"/>
   <g clip-path="url(#${id})">${lays}</g>
-  <path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+  <path d="${shape}" fill="none" stroke="var(--ink2)" stroke-width="2.5"/>${rim(L,Rr,top)}
   ${ticks}</svg>`;
 };
 const card=(y,who,how,tone,shown,maxY)=>`<div class="cupcard">${cup(y,{tone,anim:true,label:who,maxY})}<div class="yr" style="color:${tone==='sp'?'var(--ink)':'var(--roseInk)'}">${shown}<small> 年</small></div><div class="who">${who}</div><div class="how">${how}</div></div>`;
@@ -286,14 +287,14 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
     const W=TC.clientWidth,narrow=W<560,gap=narrow?10:44;
     const sBig=Math.min(1,(W-2*gap)/3/(BT+18)),sc=CUPS.map(c=>sBig*Math.sqrt(c.price/57700));
     const RR=CUPS.map((c,i)=>fitR(c,sc[i]));
-    const colW=(BT+18)*sBig,totalW=colW*3+gap*2,ox=(W-totalW)/2,lidH=14,topPad=40,Hs=BH*sBig+lidH+topPad,labH=narrow?84:62,fs=narrow?11.5:12.5;
+    const colW=(BT+18)*sBig,totalW=colW*3+gap*2,ox=(W-totalW)/2,lidH=4,topPad=10,Hs=BH*sBig+lidH+topPad,labH=narrow?84:62,fs=narrow?11.5:12.5;
     let s='';
     CUPS.forEach((c,i)=>{
       const S=sc[i],H=BH*S,tw=BT*S,bw=BB*S,cx=ox+colW/2+i*(colW+gap),base=topPad+lidH+BH*sBig,top=base-H,r=RR[i],P=pack(c,S,r,1),hy=c.hypo;
-      const shape=`M${cx-tw/2} ${top} L${cx+tw/2} ${top} L${cx+bw/2} ${base} L${cx-bw/2} ${base} Z`;
-      s+=`<g opacity="${hy?.55:1}"><path d="M${cx-tw/2-2} ${top-4} Q${cx} ${top-28*S} ${cx+tw/2+2} ${top-4} Z" fill="var(--sugar)"/><rect x="${cx-tw/2-8}" y="${top-8}" width="${tw+16}" height="${10}" rx="5" fill="var(--accent)"/><rect x="${cx-4}" y="${top-8-34*S}" width="8" height="${34*S}" rx="4" fill="var(--ink2)"/></g><path d="${shape}" fill="${hy?'none':'var(--glass)'}"/>`;
+      const shape=cupD(cx-tw/2,cx+tw/2,top,cx-bw/2,cx+bw/2,base,12*S);
+      s+=`<path d="${shape}" fill="${hy?'none':'var(--glass)'}"/>`;
       P.ps.forEach((p,j)=>{const px=cx+p.x,py=base-p.y,id='tc'+i+'_'+j;s+=`<clipPath id="${id}"><rect x="${(px-r-1).toFixed(1)}" y="0" width="${(2*r*p.h+1).toFixed(1)}" height="999"/></clipPath><g clip-path="url(#${id})">`+(hy?`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(r-1).toFixed(1)}" fill="var(--pearlNv)" fill-opacity=".18" stroke="var(--pearlNv)" stroke-width="1.5" stroke-dasharray="3 2.5"/>`:`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--pearlNv)"/>`)+`</g>`});
-      s+=`<path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2" ${hy?'stroke-dasharray="6 5" opacity=".7"':''}/>`;
+      s+=`<path d="${shape}" fill="none" stroke="var(--ink2)" stroke-width="2.5" ${hy?'stroke-dasharray="6 5" opacity=".7"':''}/><g ${hy?'opacity=".55"':''}>${rim(cx-tw/2,cx+tw/2,top)}</g>`;
             const col=hy?'var(--ink2)':'var(--ink)',p1=`出价 ${(c.price/10000).toFixed(2).replace(/0$/,'')} 万亿${hy?'（没跌）':''}`,p2=`净赚 ${c.profit.toLocaleString()} 亿${hy?'（已涨）':''}`,title=hy?'假设价钱没跌':c.when;
       s+=narrow?`<text x="${cx}" y="${base+19}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${col}">${title}</text><text x="${cx}" y="${base+38}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${c.v}</text><text x="${cx}" y="${base+56}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+72}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`
         :`<text x="${cx}" y="${base+22}" text-anchor="middle" font-size="15" font-weight="800" fill="${col}">${title} · ${c.v}</text><text x="${cx}" y="${base+42}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p1}</text><text x="${cx}" y="${base+58}" text-anchor="middle" font-size="${fs}" fill="var(--ink2)">${p2}</text>`;
@@ -355,8 +356,8 @@ const layout=(years,m)=>{
 };
 let PC=null,cur=[],anim=0;
 const pcInit=el=>{
-  const top=46,bot=236,shape=`M24 ${top} L176 ${top} L160 ${bot} L40 ${bot} Z`;
-  el.innerHTML=`<svg viewBox="-12 0 212 250" role="img" aria-label="珍珠杯"><path d="M22 ${top-4} Q100 -6 178 ${top-4} Z" fill="var(--sugar)"/><rect x="14" y="${top-8}" width="172" height="10" rx="5" fill="var(--accent)"/><rect x="94" y="2" width="9" height="${top-6}" rx="4" fill="var(--ink2)"/><path d="${shape}" fill="var(--glass)"/><g id="pg"></g><path d="${shape}" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>`;
+  const top=46,bot=236,shape=cupD(24,176,top,40,160,bot,16);
+  el.innerHTML=`<svg viewBox="-12 30 212 214" role="img" aria-label="珍珠杯"><path d="${shape}" fill="var(--glass)"/><g id="pg"></g><path d="${shape}" fill="none" stroke="var(--ink2)" stroke-width="2.5"/>${rim(24,176,top,3.5)}</svg>`;
   PC=el.querySelector('#pg');
 };
 const pcPaint=ps=>{
