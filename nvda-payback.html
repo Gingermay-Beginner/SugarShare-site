@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+html{scroll-behavior:smooth}
 /* VOICE everyday learning, calm and premium (糖分 brand)
    IDEA 杯子 = 买下整家店的价钱；每年净赚的钱 = 倒进去的一层；倒满要几层 = 几年回本
    PICTURE three cups side by side filling layer by layer; every later section has its own drawing
@@ -113,7 +114,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <h1>英伟达这杯，大约 16 年回本</h1>
   <div class="straws" id="heroStraws"></div>
   <div class="key"><span><i style="background:var(--pearlSp);border-radius:50%"></i>美股大盘</span><span><i style="background:var(--pearlNv);border-radius:50%"></i>英伟达</span><span>一颗<i style="background:none;border:1.5px solid var(--ink2);border-radius:50%;box-sizing:border-box;margin-left:5px" aria-label="珍珠"></i>= 一年</span></div>
-  <p class="tiny" style="text-align:center;margin:8px auto 0">英伟达按 2026 年 11 月 25 日收盘价 $149.30 算；美股大盘指标普 500，按 2026 年 11 月 13 日的数据。来源都在页面最下面。</p>
+  <p class="tiny" style="text-align:center;margin:8px auto 0">英伟达按 2026 年 11 月 25 日收盘价 $149.30 算；美股大盘指标普 500，按 2026 年 11 月 13 日的数据。<a href="#sources" style="color:var(--roseInk);text-decoration:underline;text-underline-offset:3px">看数据来源 ↓</a></p>
 </div></section>
 
 <section class="band"><div class="wrap">
@@ -229,7 +230,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 document.getElementById('stepNext').addEventListener('click',()=>{try{const K='tangguan-v4',S=JSON.parse(localStorage.getItem(K)||'{}');S.steps=S.steps||{};S.steps.nvda=Object.assign({},S.steps.nvda,{price:true});localStorage.setItem(K,JSON.stringify(S))}catch(e){}});
 </script>
 <section class="band alt"><div class="wrap foot">
-  <h3 style="color:var(--ink)">数据来源</h3>
+  <h3 id="sources" style="color:var(--ink);scroll-margin-top:72px">数据来源</h3>
   <ul>
     <li>英伟达 2027 财年第三季度财报（2026 年 11 月 17 日发布，季度截至 10 月 25 日）：<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27pr.htm">SEC 原文</a></li>
     <li>英伟达 2026 财年第四季度及全年财报（2026 年 2 月 25 日）：<a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2026">英伟达投资者关系</a></li>
