@@ -1487,7 +1487,7 @@ const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:null}};
 function stepDone(id,k){return !!(S.steps&&S.steps[id]&&S.steps[id][k])}
 function stepsHTML(id){
   const pg=STEP_PAGES[id]||{},d=[sealed(id),stepDone(id,"price"),stepDone(id,"bet")];
-  const cell=(n,title,href,soon)=>`<li class="${soon?"lock":(d[n]?"done":"")}${n===0?" now":""}">${href&&!soon?`<a href="${href}">`:""}<b>${d[n]?"✓ ":""}${title}</b>${href&&!soon?"</a>":""}</li>`;
+  const cell=(n,title,href,soon)=>`<li class="${soon?"lock":(d[n]?"done":"")}${n===0?" now":""}">${href&&!soon?`<a href="${href}">`:""}<b>${title}</b>${href&&!soon?"</a>":""}</li>`;
   return `<ol class="steps" aria-label="这杯的三步">${cell(0,"看懂公司")}${cell(1,"看懂贵不贵",pg.price,!pg.price)}${cell(2,"这个价在赌什么",pg.bet,!pg.bet)}</ol>`;
 }
 function nextHTML(id){const pg=STEP_PAGES[id]||{};
