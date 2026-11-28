@@ -178,7 +178,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <h2>为什么"过去"要 16 年，"明年"只要 9 到 10 年？</h2>
   <p>因为利润涨得太快了。一年前一个季度净赚 $319 亿，最近一个季度已经是 $653 亿，翻了一倍。"过去 12 个月"把早些时候较少的利润也算了进去，所以回本年数偏长；分析师按接下来更高的利润算，年数就短了。下面每根柱子是一个季度的营收，玫瑰色部分是其中的净利润。</p>
   <div class="panel"><div class="fig" id="rev"></div></div>
-  <p class="tiny" style="margin-top:10px">单位：亿美元。FY27 Q1 由前三季度合计倒算，约数。FY27 Q4 是公司指引（多一周，假设没有中国数据中心算力收入），毛利率指引降到 71% 到 72%。英伟达财年比自然年早约一年。</p>
+  <p class="tiny" style="margin-top:10px">FY27 Q1 由前三季度合计倒算，约数。FY27 Q4 是公司指引（多一周，假设没有中国数据中心算力收入），毛利率指引降到 71% 到 72%。英伟达财年比自然年早约一年。</p>
 </div></section>
 
 <section class="band alt"><div class="wrap">
@@ -335,8 +335,8 @@ const drawR=()=>{
     if(g)s+=`<g opacity=".5"><path d="${shape}" fill="var(--sugar)"/><line x1="${x-3}" x2="${x+bw+3}" y1="${y}" y2="${y}" stroke="var(--sugar)" stroke-width="3.5" stroke-linecap="round"/></g>`;
     else s+=`<clipPath id="${cid}"><path d="${shape}"/></clipPath><path d="${shape}" fill="var(--sugar)"/><line x1="${x-3}" x2="${x+bw+3}" y1="${y}" y2="${y}" stroke="var(--sugar)" stroke-width="3.5" stroke-linecap="round"/>`;
     if(!g){const nh=r[2]*sc;s+=`<rect x="${x-1}" y="${H-mb-nh}" width="${bw+2}" height="${nh+1}" fill="var(--rose)" clip-path="url(#${cid})"/>`;
-      if(W>460)s+=`<text x="${x+bw/2}" y="${H-mb-nh/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#3b2326">${r[2]}</text>`}
-    s+=`<text x="${g?Math.min(x+bw/2,W-mr-38):x+bw/2}" y="${y-8}" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)">${r[1].toLocaleString()}${g?' 指引':''}</text>`;
+      if(W>460)s+=`<text x="${x+bw/2}" y="${H-mb-nh/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#3b2326">$${r[2]} 亿</text>`}
+    s+=`<text x="${g?Math.min(x+bw/2,W-mr-38):x+bw/2}" y="${y-8}" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)">$${r[1].toLocaleString()} 亿${g?' 指引':''}</text>`;
     s+=`<text x="${x+bw/2}" y="${H-mb+20}" text-anchor="middle" font-size="${W<460?11:13}" fill="var(--ink2)">${W<460?r[0].replace('FY','').replace(' ',''):r[0]}</text>`;
   });
   s+=`<line x1="${ml}" x2="${W-mr}" y1="${H-mb}" y2="${H-mb}" stroke="var(--line)"/>`;
