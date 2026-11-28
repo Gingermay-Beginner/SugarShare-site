@@ -93,6 +93,21 @@ h2{font-size:17px;margin:0 0 8px;text-wrap:balance}
 .cards{display:flex;flex-direction:column;gap:16px;margin-top:12px}
 .card{background:var(--surface);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
 .card-top{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 12px;padding:0;list-style:none;counter-reset:st}
+.steps li{position:relative;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;line-height:1.35;color:var(--ink-2);background:var(--surface)}
+.steps li b{display:block;font-size:14px;color:var(--ink)}
+.steps li small{display:block;font-size:11.5px;margin-top:2px}
+.steps li .no{font-family:Manrope,sans-serif;font-weight:800;font-size:12px;color:var(--ink-2)}
+.steps li.done{background:var(--accent-soft);border-color:var(--accent-soft)}
+.steps li.done .no,.steps li.now .no{color:var(--accent)}
+.steps li.now{border-color:var(--accent)}
+.steps li.lock{opacity:.6;border-style:dashed}
+.steps a{color:inherit;text-decoration:none;display:block}
+.steps a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+.next{display:flex;justify-content:flex-end;margin-top:14px}
+.next a{display:inline-block;background:var(--btn);color:var(--surface);border-radius:999px;padding:10px 18px;font-weight:700;text-decoration:none;font-size:14px}
+@media(max-width:420px){.steps li{padding:7px 8px}.steps li b{font-size:13px}}
+
 .card .one{font-size:15px;margin:6px 0 14px}
 .pie-row{display:flex;gap:14px;align-items:center}
 .pie-row svg{flex:none;width:132px;height:132px}
@@ -1425,6 +1440,23 @@ function sizeOf(k){const n=k.rev.length;const g=Math.pow(k.rev[n-1]/k.rev[0],1/(
 function sugarOf(k){const p=k.per100[2];const b=p<3?0:p<8?1:p<15?2:p<30?3:4;return {p,b,name:SUGAR_BANDS[b][0]}}
 function secsDone(id){return (S.secs&&S.secs[id])||[]}
 function sealed(id){return S.understood.includes(id)}
+/* 三步走：1 看懂它（封口）→ 2 看懂价钱 → 3 价钱在赌什么。没有页面的步骤显示「准备中」。 */
+const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:null}};
+function stepDone(id,k){return !!(S.steps&&S.steps[id]&&S.steps[id][k])}
+function stepsHTML(id){
+  const pg=STEP_PAGES[id]||{},s1=sealed(id),s2=stepDone(id,"price"),s3=stepDone(id,"bet");
+  const cell=(n,title,state,sub,href)=>{const inner=`<span class="no">${state==="done"?"✓ ":""}第 ${n} 步</span><b>${title}</b><small>${sub}</small>`;
+    return `<li class="${state}">${href?`<a href="${href}">${inner}</a>`:inner}</li>`};
+  const c1=cell(1,"看懂它",s1?"done":"now",s1?"已封口":"做完五段，答对 3 题封口");
+  const c2=!pg.price?cell(2,"看懂价钱","lock","准备中"):!s1?cell(2,"看懂价钱","lock","封口后解锁"):cell(2,"看懂价钱",s2?"done":"now",s2?"已看完 · 再看一遍":"去看看 →",pg.price);
+  const c3=!pg.bet?cell(3,"价钱在赌什么","lock","准备中"):!s2?cell(3,"价钱在赌什么","lock","看完价钱后解锁"):cell(3,"价钱在赌什么",s3?"done":"now",s3?"已看完":"去看看 →",pg.bet);
+  return `<ol class="steps" aria-label="这杯的三步">${c1}${c2}${c3}</ol>`;
+}
+function nextHTML(id){const pg=STEP_PAGES[id]||{};
+  if(!sealed(id)||!pg.price)return "";
+  if(!stepDone(id,"price"))return `<div class="next"><a href="${pg.price}">下一步：看懂价钱 →</a></div>`;
+  if(pg.bet&&!stepDone(id,"bet"))return `<div class="next"><a href="${pg.bet}">下一步：价钱在赌什么 →</a></div>`;
+  return ""}
 function stepCount(id){return secsDone(id).length+(sealed(id)?1:0)}
 function hashN(s){let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0;return h}
 let cupSeq=0;
@@ -1599,7 +1631,7 @@ function renderCardDetail(id){
   $("#cards").innerHTML=`<article class="card" id="card-${id}">
     <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
     <p class="one">${esc(k.one)}</p>
-    ${id==="nvda" ? `<p class="one"><a class="pill" style="display:inline-block;color:var(--accent);font-weight:700;text-decoration:none" href="./nvda-payback.html">看懂估值</a></p>` : ""}
+    ${stepsHTML(id)}
     <div id="meter">${recipe(id)}</div>
 
     <div class="sec"><h3><svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="茶底"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="var(--accent)" stroke-width="2"/><path d="M9 16c2.6-1 4.6-3 6-6" stroke="var(--surface)" stroke-width="1.5"/></svg>它卖什么、卖给谁？</h3>
@@ -1629,6 +1661,7 @@ function renderCardDetail(id){
     <p class="src">数字按公司年报估算并四舍五入，标「示例价」的是为了好算。糖分和杯型的刻度是我们为了好懂自己定的。仅供理解，不构成任何投资建议。</p>
     ${k.sources ? `<p class="src">数据来源：${k.sources.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join(" · ")}</p>` : ""}
     <div class="quiz" data-q="${id}"><h3 class="qh">封口：答对最后 3 题</h3><div class="qbody">${quizHTML(id)}</div></div>
+    ${nextHTML(id)}
   </article>`;
 }
 function renderLearn(){if(learnDetail&&CARDS[learnDetail])renderCardDetail(learnDetail);else renderLearnList()}

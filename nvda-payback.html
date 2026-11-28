@@ -106,7 +106,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 </style>
 
 <section class="band hero"><div class="wrap">
-  <p class="tiny" style="margin:0 0 10px"><a href="./index.html" style="color:var(--accent)">← 回到糖分</a></p>
+  <p class="tiny" style="margin:0 0 10px"><a href="./index.html#c-nvda" style="color:var(--accent)">← 回到英伟达这杯</a></p>
   <p class="tiny" style="margin:0 0 6px">糖分 · 第六问：这杯现在多少钱</p>
   <h1>英伟达这杯，大约 16 年回本</h1>
   <p class="lead">如果把整家店买下来，用公司每年净赚的钱慢慢还，要几年才能回本？</p>
@@ -210,6 +210,13 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   </div>
 </div></section>
 
+<section class="band"><div class="wrap" style="text-align:center">
+  <p class="tiny" style="margin:0 auto 10px;max-width:none">第 2 步 · 看懂价钱　|　第 3 步「价钱在赌什么」准备中</p>
+  <a id="stepNext" href="./index.html#c-nvda" style="display:inline-block;background:var(--accent);color:var(--bg);border-radius:999px;padding:12px 22px;font-weight:700;text-decoration:none">看完了，回到英伟达这杯 →</a>
+</div></section>
+<script>
+document.getElementById('stepNext').addEventListener('click',()=>{try{const K='tangguan-v4',S=JSON.parse(localStorage.getItem(K)||'{}');S.steps=S.steps||{};S.steps.nvda=Object.assign({},S.steps.nvda,{price:true});localStorage.setItem(K,JSON.stringify(S))}catch(e){}});
+</script>
 <section class="band alt"><div class="wrap foot">
   <h3 style="color:var(--ink)">数据来源</h3>
   <ul>
