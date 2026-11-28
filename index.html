@@ -94,7 +94,7 @@ h2{font-size:17px;margin:0 0 8px;text-wrap:balance}
 .card{background:var(--surface);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
 .card-top{display:flex;gap:12px;align-items:center;margin-bottom:6px}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 12px;padding:0;list-style:none;counter-reset:st}
-.steps li{position:relative;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;line-height:1.35;color:var(--ink-2);background:var(--surface)}
+.steps li{position:relative;border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;text-align:center;font-size:13px;line-height:1.35;color:var(--ink-2);background:var(--surface)}
 .steps li b{display:block;font-size:14px;color:var(--ink)}
 .steps li small{display:block;font-size:11.5px;margin-top:2px}
 .steps li .no{font-family:Manrope,sans-serif;font-weight:800;font-size:12px;color:var(--ink-2)}
@@ -1470,23 +1470,17 @@ function sizeOf(k){const n=k.rev.length;const g=Math.pow(k.rev[n-1]/k.rev[0],1/(
 function sugarOf(k){const p=k.per100[2];const b=p<3?0:p<8?1:p<15?2:p<30?3:4;return {p,b,name:SUGAR_BANDS[b][0]}}
 function secsDone(id){return (S.secs&&S.secs[id])||[]}
 function sealed(id){return S.understood.includes(id)}
-/* 三步走：1 看懂它（封口）→ 2 看懂价钱 → 3 价钱在赌什么。没有页面的步骤显示「准备中」。 */
+/* 三步走：看懂公司 → 看懂股价 → 股价在赌什么。暂不按顺序锁定；还没有页面的一步显示为淡色、不能点。 */
 const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:null}};
 function stepDone(id,k){return !!(S.steps&&S.steps[id]&&S.steps[id][k])}
 function stepsHTML(id){
-  const pg=STEP_PAGES[id]||{},s1=sealed(id),s2=stepDone(id,"price"),s3=stepDone(id,"bet");
-  const cell=(n,title,state,sub,href)=>{const inner=`<span class="no">${state==="done"?"✓ ":""}第 ${n} 步</span><b>${title}</b><small>${sub}</small>`;
-    return `<li class="${state}">${href?`<a href="${href}">${inner}</a>`:inner}</li>`};
-  const c1=cell(1,"看懂它",s1?"done":"now",s1?"已封口":"做完五段，答对 3 题封口");
-  const c2=!pg.price?cell(2,"看懂价钱","lock","准备中"):!s1?cell(2,"看懂价钱","lock","封口后解锁"):cell(2,"看懂价钱",s2?"done":"now",s2?"已看完 · 再看一遍":"去看看 →",pg.price);
-  const c3=!pg.bet?cell(3,"价钱在赌什么","lock","准备中"):!s2?cell(3,"价钱在赌什么","lock","看完价钱后解锁"):cell(3,"价钱在赌什么",s3?"done":"now",s3?"已看完":"去看看 →",pg.bet);
-  return `<ol class="steps" aria-label="这杯的三步">${c1}${c2}${c3}</ol>`;
+  const pg=STEP_PAGES[id]||{},d=[sealed(id),stepDone(id,"price"),stepDone(id,"bet")];
+  const cell=(n,title,href,soon)=>`<li class="${soon?"lock":(d[n]?"done":"")}${n===0?" now":""}">${href&&!soon?`<a href="${href}">`:""}<b>${d[n]?"✓ ":""}${title}</b>${href&&!soon?"</a>":""}</li>`;
+  return `<ol class="steps" aria-label="这杯的三步">${cell(0,"看懂公司")}${cell(1,"看懂股价",pg.price,!pg.price)}${cell(2,"股价在赌什么",pg.bet,!pg.bet)}</ol>`;
 }
 function nextHTML(id){const pg=STEP_PAGES[id]||{};
-  if(!sealed(id)||!pg.price)return "";
-  if(!stepDone(id,"price"))return `<div class="next"><a href="${pg.price}">下一步：看懂价钱 →</a></div>`;
-  if(pg.bet&&!stepDone(id,"bet"))return `<div class="next"><a href="${pg.bet}">下一步：价钱在赌什么 →</a></div>`;
-  return ""}
+  if(!pg.price)return "";
+  return `<div class="next"><a href="${pg.price}">下一步：看懂股价 →</a></div>`}
 function stepCount(id){return secsDone(id).length+(sealed(id)?1:0)}
 function hashN(s){let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0;return h}
 let cupSeq=0;
