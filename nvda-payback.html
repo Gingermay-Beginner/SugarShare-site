@@ -185,7 +185,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
     </div>
     <div><div id="calcCup"></div><p class="tiny" style="text-align:center;margin:6px auto 0;max-width:none"><i style="display:inline-block;width:12px;height:12px;background:var(--pearlNv);border-radius:50%;margin:0 4px 0 0;vertical-align:-1px" aria-label="一颗珍珠"></i>= 一年净赚的钱</p></div>
   </div>
-  <p class="tiny" style="margin-top:12px">"分析师的明年预估"是倒推的：分析师引用的远期市盈率为 8.9 倍和约 10 倍，相当于预期未来一年利润是过去 12 个月的 1.6 到 1.8 倍，这里取 1.7。没有考虑钱的时间价值，只用来建立直觉。</p>
+  <p class="tiny" style="margin-top:12px">"分析师的明年预估"是倒推的：分析师按明年预估的净赚算，约 8.9 年和约 10 年回本（远期市盈率 8.9 和约 10），相当于预期明年净赚是过去 12 个月的 1.6 到 1.8 倍，这里取 1.7。没有考虑钱的时间价值，只用来建立直觉。</p>
   <h3 style="margin-top:30px">为什么分析师预估明年能多赚这么多？</h3>
   <p>因为英伟达的净赚涨得很快：一年前一个季度净赚 $319 亿，最近一个季度已经是 $653 亿，翻了一倍。下面每个杯子是一个季度的营收，玫瑰色部分是其中的净赚。</p>
   <div class="panel"><div class="fig" id="rev"></div></div>
@@ -225,12 +225,12 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 </div></section>
 
 <section class="band"><div class="wrap">
-  <h2 style="font-size:20px;color:var(--ink2)">注：9 到 10 倍，差不多是一家不再增长的公司的价钱</h2>
+  <h2 style="font-size:20px;color:var(--ink2)">注：按明年预估约 9 到 10 年回本，差不多是一家不再增长的公司的价钱</h2>
     <div class="panel">
       <h3>为什么？因为未来的钱要打个折</h3>
       <div class="dcf" id="dcf"></div>
       <div class="tiny" style="display:flex;justify-content:space-between"><span>明年</span><span>20 年后</span></div>
-      <p class="small" style="margin-top:10px">假设投资人要求每年约 9% 的回报，那么明年的 1 块钱今天约值 0.92 块，越往后越小。一家公司今天值多少钱，就是把它以后每年赚的钱打折算回今天，再加起来。如果利润永远不涨不跌，把所有年份的钱折算后加起来，一家公司大约值 11 倍利润。9% 是假设的：换成 8%，约值 12.5 倍；换成 10%，约值 10 倍。英伟达按明年预估利润算是 9 到 10 倍，跟一家不再增长的公司差不多。虽然利润还在快速增长，市场给的市值却像是在说"以后不会再长了"。</p>
+      <p class="small" style="margin-top:10px">假设投资人要求每年约 9% 的回报，那么明年的 1 块钱今天约值 0.92 块，越往后越小。一家公司今天值多少钱，就是把它以后每年赚的钱打折算回今天，再加起来。如果利润永远不涨不跌，把所有年份的钱折算后加起来，一家公司大约值 11 年的净赚，也就是约 11 年回本。9% 是假设的：换成 8%，约 12.5 年；换成 10%，约 10 年。英伟达按明年预估的净赚算是 9 到 10 年回本（就是上面计算器里「分析师的明年预估」那一档），跟一家不再增长的公司差不多。虽然净赚还在快速增长，市场给的市值却像是在说"以后不会再长了"。</p>
       <p class="small" style="margin:6px 0 0"><a href="./discount.html" style="color:var(--accent)">想细看：小知识卡「未来的钱要打个折」 →</a></p>
     </div>
   </div>
@@ -252,7 +252,7 @@ document.getElementById('stepNext').addEventListener('click',()=>{try{const K='t
     <li>10 月初市值峰值 $5.77 万亿、远期市盈率 8.9 倍（Gary Black）、五项担忧（Gene Munster）：<a href="https://stocktwits.com/news-articles/markets/equity/nvidia-s-market-cap-falls-below-microsoft-s-analyst-flags-five-overhangs-for-nvda-stock/cNbx4KZR9Z3">Stocktwits，2026 年 11 月 25 日</a></li>
     <li>美股大盘（标普 500）几年回本：按过去 12 个月约 22.9 年，按明年预估约 17.1 年（明年预估的过去 5 年平均 19.8，10 年平均 19.1）：<a href="https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_112026A.pdf">FactSet（美国金融数据公司）每周报告，2026 年 11 月 20 日</a></li>
   </ul>
-  <p>16 年、30 年、6.2 块、1.6 到 1.8 倍、约 11 倍等是根据上述数字的简化计算。本页只用于学习理解，不构成任何投资建议。</p>
+  <p>16 年、30 年、6.2 块、1.6 到 1.8 倍、约 11 年等是根据上述数字的简化计算。本页只用于学习理解，不构成任何投资建议。</p>
 </div></section>
 
 <script>
