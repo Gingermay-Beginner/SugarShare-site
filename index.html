@@ -305,6 +305,35 @@ section[hidden]{display:none}
 .compare-value{font-family:var(--f-num);font-weight:700;display:block;margin-top:3px}
 .compare-empty{margin-top:12px}
 
+/* ---------- search ---------- */
+.search{position:relative;margin:12px 0 4px}
+.search svg.s-ic{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--grape);pointer-events:none}
+.search input{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:11px 40px 11px 40px;font:inherit;font-size:15px;box-shadow:var(--shadow);-webkit-appearance:none;appearance:none}
+.search input::placeholder{color:var(--ink-2);opacity:.8}
+.search input:focus{outline:2px solid var(--grape);outline-offset:1px}
+.search input::-webkit-search-cancel-button{display:none}
+.search .s-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;width:32px;height:32px;border-radius:50%;color:var(--ink-2);font-size:18px;line-height:1}
+.s-hint{font-size:12.5px;color:var(--ink-2);margin:6px 2px 0}
+.s-hint button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 10px;margin:4px 4px 0 0;font-size:12.5px;color:var(--ink)}
+.s-res{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.sr{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow);text-decoration:none;color:var(--ink);min-width:0}
+.sr .logo{width:38px;height:38px;font-size:16px;border-radius:11px;flex:none}
+.sr .sr-m{flex:1;min-width:0}
+.sr .sr-m b{font-size:15px}
+.sr .sr-m small{display:block;color:var(--ink-2);font-size:12.5px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr .sr-r{flex:none;font-size:12.5px;font-weight:700;color:var(--accent);white-space:nowrap}
+.sr .sr-r.mute{color:var(--ink-2);font-weight:500}
+.sr .want{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:12.5px;color:var(--ink);white-space:nowrap;flex:none}
+.want[aria-pressed="true"]{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:700}
+.sr.none{flex-direction:column;align-items:stretch;gap:8px}
+.sr.none p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.sr.none .want{align-self:flex-start;padding:7px 14px}
+.s-wants{font-size:12.5px;color:var(--ink-2);margin:8px 2px 0}
+.s-wants b{color:var(--ink);font-weight:500}
+.back-row{display:flex;justify-content:space-between;align-items:center}
+.back-row .s-link{display:inline-flex;align-items:center;gap:5px;color:var(--ink-2);text-decoration:none;font-size:13.5px;padding:6px 0 2px}
+.back-row .s-link svg{width:15px;height:15px}
+
 /* ---------- bottom ---------- */
 .bottom{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .disc{max-width:480px;margin:0 auto;font-size:11px;color:var(--ink-2);text-align:center;padding:5px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
@@ -1403,7 +1432,7 @@ function openSheet(id){
       <div><h2>${esc(c.name)}</h2><div class="sub">${esc(c.sec)} · ${c.region==="cn"?"中国公司":"海外公司"}</div></div></div>
     <dl class="kv"><dt>它做什么</dt><dd>${esc(c.does)}</dd><dt>你可能见过</dt><dd>${esc(c.seen)}</dd><dt>有多大</dt><dd>市值${esc(fmtCap(c))}（示例约数）</dd></dl>
     <div class="today" style="background:${tileColor(c.chg)};color:var(--tile-ink)"><span class="big">${fmtPct(c.chg)}</span><br>今天它在市场上的价格${word}。一天的涨跌常常像天气，说明不了公司本身好不好。</div>
-    <div class="tools" style="margin-top:14px">${CARDS[id]?`<button class="btn" data-go="${id}">看懂它</button>`:`<span class="sub">这家公司的图解卡还在制作中。</span>`}
+    <div class="tools" style="margin-top:14px">${CARDS[id]?`<button class="btn" data-go="${id}">看懂它</button>`:`<span class="sub" style="flex-basis:100%">这家公司的图解卡还没做。</span>${wantBtn(c.name).replace('class="want"','class="btn ghost want"')}`}
     <button class="btn ghost" data-close>知道了</button></div>`;
   $("#scrim").classList.add("on");$("#sheet").classList.add("on");
 }
@@ -1412,6 +1441,7 @@ $("#scrim").onclick=closeSheet;
 $("#sheet").addEventListener("click",e=>{
   if(e.target.closest("[data-close]"))closeSheet();
   const g=e.target.closest("[data-go]");if(g){closeSheet();go("learn",g.dataset.go)}
+  const w=e.target.closest("[data-want]");if(w){const on=toggleWant(w.dataset.want);w.setAttribute("aria-pressed",on);w.textContent=on?"已想喝":"想喝这杯";toast(on?"记下了，这杯想喝":"取消想喝了")}
 });
 addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
 
@@ -1517,13 +1547,202 @@ function bandCheck(id,j,bands,cur,lead,q){
 }
 function bandRow(bands,cur,show){return `<div class="bands">${bands.map((b,i)=>`<div class="band${show&&i===cur?" on":""}"><b>${b[0]}</b><small>${b[1]}</small></div>`).join("")}</div>`}
 
+/* ---------------- 搜索：名字 / 拼音 / 英文 / 代码 ---------------- */
+// 地图上的公司：[上市地 · 代码, 拼音、简拼、英文、代码、常见叫法]
+const ALIAS={
+  mt:["A股 · 600519","guizhoumaotai maotai gzmt mt kweichow moutai 600519 feitian"],
+  wly:["A股 · 000858","wuliangye wly 000858"],
+  nfsq:["港股 · 09633","nongfushanquan nfsq nongfu spring 9633 dongfangshuye"],
+  htwy:["A股 · 603288","haitianweiye haitian htwy 603288"],
+  yl:["A股 · 600887","yiligufen yili ylgf 600887 anmuxi"],
+  mxbc:["港股 · 02097","mixuebingcheng mixue mxbc mixuejituan mxjt 2097 mixue"],
+  dp:["A股 · 605499","dongpengyinliao dongpeng dpyl 605499"],
+  yum:["港股 · 09987","baishengzhongguo bszg yum yumc kendeji kfc bishengke"],
+  qd:["A股 · 600600","qingdaopijiu qdpj tsingtao 600600 0168"],
+  ali:["港股 · 09988","alibaba albb baba 9988 taobao tianmao xianyu"],
+  pdd:["美股 · PDD","pinduoduo pdd temu"],
+  meituan:["港股 · 03690","meituan mt 3690 dazhongdianping waimai"],
+  jd:["港股 · 09618","jingdong jd 9618"],
+  anta:["港股 · 02020","antatiyu anta attY 2020 fila shizuniao"],
+  mns:["港股 · 09896","mingchuangyoupin mcyp miniso mnso 9896"],
+  ply:["A股 · 603605","polaiya ply proya 603605"],
+  laopu:["港股 · 06181","laopuhuangjin laopu lphj 6181"],
+  catl:["A股 · 300750","ningdeshidai ndsd catl 300750 3750"],
+  byd:["A股 · 002594","biyadi byd 002594 1211"],
+  ctrip:["港股 · 09961","xiecheng xc ctrip trip tcom 9961 qunar"],
+  li:["港股 · 02015","lixiangqiche lixiang lxqc li auto 2015"],
+  geely:["港股 · 00175","jiliqiche jili jlqc geely 0175 lingke jike"],
+  xpeng:["港股 · 09868","xiaopengqiche xiaopeng xpqc xpeng xpev 9868"],
+  nio:["港股 · 09866","weilai wl nio 9866"],
+  tencent:["港股 · 00700","tengxunkonggu tengxun txkg tencent 0700 weixin wechat"],
+  netease:["港股 · 09999","wangyi wy netease ntes 9999"],
+  popmart:["港股 · 09992","paopaomate ppmt popmart 9992 labubu molly"],
+  ks:["港股 · 01024","kuaishou ks 1024"],
+  tme:["港股 · 01698","tengxunyinle txyl tme 1698 qqyinyue kugou"],
+  bili:["港股 · 09626","bilibili blbl bzhan bili 9626"],
+  mango:["A股 · 300413","mangguochaomei mangguo mgcm mango 300413"],
+  xiaomi:["港股 · 01810","xiaomijituan xiaomi xm xmjt 1810"],
+  smic:["港股 · 00981","zhongxinguoji zxgj smic 0981 688981"],
+  hik:["A股 · 002415","haikangweishi haikang hkws hikvision 002415"],
+  midea:["A股 · 000333","meidijituan meidi mdjt midea 000333 0300"],
+  gree:["A股 · 000651","geli gldq gree 000651"],
+  haier:["A股 · 600690","haierzhijia haier hezj 600690 6690"],
+  cmb:["A股 · 600036","zhaoshangyinhang zhaohang zsyh cmb 600036 3968"],
+  pingan:["A股 · 601318","zhongguopingan pingan zgpa 601318 2318"],
+  nvda:["美股 · NVDA","yingweida ywd nvidia nvda"],
+  aapl:["美股 · AAPL","pingguo apple aapl iphone"],
+  msft:["美股 · MSFT","weiruan wr microsoft msft"],
+  googl:["美股 · GOOGL","guge gg google alphabet googl goog youtube"],
+  amzn:["美股 · AMZN","yamaxun ymx amazon amzn"],
+  meta:["美股 · META","meta facebook lianshu instagram whatsapp"],
+  tsla:["美股 · TSLA","tesila tsl tesla tsla"],
+  ant:["美股 · ANT","anthropic claude ant"],
+  spcx:["美股 · SPCX","spacex spcx starlink"],
+  brkb:["美股 · BRK.B","bokexier berkshire hathaway brk brkb babeifeite buffett"],
+  mo:["美股 · MO","aochiya acy altria mo marlboro wanbaolu"],
+  cola:["美股 · KO","kekoukele kkkl cocacola coke ko"],
+  mcd:["美股 · MCD","maidanglao mdl mcdonalds mcd"],
+  sbux:["美股 · SBUX","xingbake xbk starbucks sbux"],
+  nke:["美股 · NKE","naike nike nke"],
+  unh:["美股 · UNH","lianhejiankang lhjk unitedhealth unh"],
+  hermes:["欧洲 · RMS","aimashi ams hermes rms"],
+  loreal:["欧洲 · OR","ouleiya oly loreal lancome lankou"],
+  dis:["美股 · DIS","dishini dsn disney dis"],
+  ntdo:["日股 · 7974","rentiantang rtt nintendo ntdoy 7974 switch"]
+};
+// 地图外、常被问到的公司：[名字, 上市地 · 代码, 拼音/英文/代码, 它做什么]
+const EXTRA=[
+  ["中国移动","港股 · 00941","zhongguoyidong zgyd chinamobile 0941 600941","手机通信和宽带"],
+  ["工商银行","A股 · 601398","gongshangyinhang gonghang gsyh icbc 601398 1398","存钱、贷款等银行业务"],
+  ["建设银行","A股 · 601939","jiansheyinhang jianhang jsyh ccb 601939 0939","存钱、贷款等银行业务"],
+  ["中国石油","A股 · 601857","zhongguoshiyou zgsy petrochina 601857 0857","开采和销售石油、天然气"],
+  ["长江电力","A股 · 600900","changjiangdianli cjdl 600900 sanxia","经营三峡等水电站发电"],
+  ["紫金矿业","A股 · 601899","zijinkuangye zjky zijin 601899 2899","开采金矿和铜矿"],
+  ["恒瑞医药","A股 · 600276","hengruiyiyao hryy hengrui 600276","研发和生产药品"],
+  ["迈瑞医疗","A股 · 300760","mairuiyiliao mryl mindray 300760","做医院用的医疗设备"],
+  ["药明康德","A股 · 603259","yaomingkangde ymkd wuxiapptec 603259 2359","替药企做研发外包"],
+  ["顺丰控股","A股 · 002352","shunfengkonggu shunfeng sfkg sf 002352","做快递物流"],
+  ["中国中免","A股 · 601888","zhongguozhongmian zhongmian zgzm 601888 1880","经营免税店"],
+  ["海底捞","港股 · 06862","haidilao hdl 6862","开火锅连锁店"],
+  ["李宁","港股 · 02331","lining ln 2331","做运动鞋服"],
+  ["华润啤酒","港股 · 00291","huarunpijiu hrpj xuehua 0291","酿啤酒，比如雪花"],
+  ["周大福","港股 · 01929","zhoudafu zdf chowtaifook 1929","做黄金珠宝首饰"],
+  ["百度","港股 · 09888","baidu bd bidu 9888","做搜索和 AI"],
+  ["京东方","A股 · 000725","jingdongfang jdf boe 000725","做手机、电视的显示屏"],
+  ["立讯精密","A股 · 002475","lixunjingmi lxjm luxshare 002475","替手机品牌做零部件和组装"],
+  ["联想集团","港股 · 00992","lianxiangjituan lianxiang lxjt lenovo 0992","做电脑"],
+  ["长城汽车","A股 · 601633","changchengqiche changcheng ccqc greatwall 601633 2333 hafu","造汽车，比如哈弗、坦克"],
+  ["赛力斯","A股 · 601127","sailisi sls seres 601127 wenjie","造电动车，比如问界"],
+  ["零跑汽车","港股 · 09863","lingpaoqiche lingpao lpqc leapmotor 9863","造电动车"],
+  ["蒙牛乳业","港股 · 02319","mengniuruye mengniu mnry 2319","做牛奶和酸奶"],
+  ["康师傅","港股 · 00322","kangshifu ksf 0322","做方便面和饮料"],
+  ["山西汾酒","A股 · 600809","shanxifenjiu fenjiu sxfj 600809","酿白酒"],
+  ["泸州老窖","A股 · 000568","luzhoulaojiao lzlj 000568 guojiao","酿白酒，比如国窖 1573"],
+  ["片仔癀","A股 · 600436","pianzaihuang pzh 600436","做中成药"],
+  ["古茗","港股 · 01364","guming gm 1364","开奶茶店"],
+  ["茶百道","港股 · 02555","chabaidao cbd 2555","开奶茶店"],
+  ["沪上阿姨","港股 · 02589","hushangayi hsay 2589","开奶茶店"],
+  ["奈雪的茶","港股 · 02150","naixuedecha naixue nxdc 2150","开茶饮店"],
+  ["霸王茶姬","美股 · CHA","bawangchaji bwcj chagee cha","开茶饮店"],
+  ["瑞幸咖啡","美股场外 · LKNCY","ruixingkafei ruixing rxkf luckin lkncy","开咖啡店"],
+  ["巨子生物","港股 · 02367","juzishengwu jzsw 2367 kefumei","做胶原蛋白护肤品"],
+  ["毛戈平","港股 · 01318","maogeping mgp 1318","做彩妆"],
+  ["同花顺","A股 · 300033","tonghuashun ths 300033","做炒股软件"],
+  ["东方财富","A股 · 300059","dongfangcaifu dfcf 300059","做财经网站，也开券商"],
+  ["中信证券","A股 · 600030","zhongxinzhengquan zxzq citic 600030 6030","券商，帮人买卖股票"],
+  ["台积电","美股 · TSM","taijidian tjd tsmc tsm 2330","替别人制造芯片"],
+  ["博通","美股 · AVGO","botong broadcom avgo","做芯片和企业软件"],
+  ["AMD","美股 · AMD","amd chaowei","做电脑芯片和显卡"],
+  ["英特尔","美股 · INTC","yingteer yte intel intc","做电脑芯片"],
+  ["甲骨文","美股 · ORCL","jiaguwen jgw oracle orcl","做数据库软件和云服务"],
+  ["奈飞","美股 · NFLX","naifei netflix nflx","做视频订阅平台"],
+  ["Palantir","美股 · PLTR","palantir pltr","做数据分析软件"],
+  ["沃尔玛","美股 · WMT","woerma wem walmart wmt","开超市"],
+  ["好市多","美股 · COST","haoshiduo kaishike costco cost","开会员制超市"],
+  ["礼来","美股 · LLY","lilai elililly lly","研发药品，包括减肥药"],
+  ["诺和诺德","美股 · NVO","nuohenuode nhnd novonordisk nvo","研发糖尿病和减肥药"],
+  ["强生","美股 · JNJ","qiangsheng johnson jnj","做药品和医疗器械"],
+  ["宝洁","美股 · PG","baojie procter pg","做洗护日用品，比如海飞丝、帮宝适"],
+  ["百事","美股 · PEP","baishi pepsico pepsi pep","做饮料和零食"],
+  ["Visa","美股 · V","visa weisa","做银行卡支付网络"],
+  ["万事达","美股 · MA","wanshida mastercard ma","做银行卡支付网络"],
+  ["摩根大通","美股 · JPM","mogendatong mgdt jpmorgan jpm","银行"],
+  ["三星电子","韩股 · 005930","sanxingdianzi sanxing samsung 005930","做手机、芯片和家电"],
+  ["索尼","美股 · SONY","suoni sony playstation","做游戏机、相机和影视音乐"],
+  ["丰田汽车","美股 · TM","fengtianqiche fengtian toyota tm 7203","造汽车"],
+  ["LVMH","欧洲 · MC","lvmh luweimingxuan lv louisvuitton","做奢侈品，比如 LV、迪奥"],
+  ["阿斯麦","美股 · ASML","asimai asml","做造芯片用的光刻机"],
+  ["优步","美股 · UBER","youbu uber","做打车和外卖平台"],
+  ["爱彼迎","美股 · ABNB","aibiying airbnb abnb","做民宿预订平台"],
+  ["高通","美股 · QCOM","gaotong qualcomm qcom","做手机芯片"],
+  ["露露乐蒙","美股 · LULU","lululemon lulu","做瑜伽和运动服"],
+  ["迅销（优衣库）","日股 · 9983","xunxiao youyiku uniqlo fastretailing 9983","开服装店，比如优衣库"],
+  ["雅诗兰黛","美股 · EL","yashilandai ysld esteelauder el","做护肤品和化妆品"],
+  ["字节跳动","未上市","zijietiaodong zijie zjtd bytedance douyin tiktok jinritoutiao","做抖音、今日头条"],
+  ["华为","未上市","huawei hw","做手机、通信设备"],
+  ["小红书","未上市","xiaohongshu xhs rednote","做种草社区"],
+  ["OpenAI","未上市","openai chatgpt","做 ChatGPT"]
+];
+const WANT_KEY="tangfen-wants";
+let wants=[];try{wants=JSON.parse(localStorage.getItem(WANT_KEY)||"[]")}catch(e){}
+function saveWants(){try{localStorage.setItem(WANT_KEY,JSON.stringify(wants))}catch(e){}}
+function wanted(name){return wants.includes(name)}
+function toggleWant(name){if(wanted(name))wants=wants.filter(w=>w!==name);else wants.unshift(name);wants=wants.slice(0,20);saveWants();return wanted(name)}
+const SEARCH_POOL=[];
+Object.values(ALL).forEach(c=>{const a=ALIAS[c.id]||["",""];SEARCH_POOL.push({id:c.id,name:c.name,mkt:a[0],keys:a[1],does:c.does,seen:c.seen})});
+EXTRA.forEach(r=>SEARCH_POOL.push({id:null,name:r[0],mkt:r[1],keys:r[2],does:r[3],seen:""}));
+const normQ=s=>s.toLowerCase().replace(/[\s.·'’&\-_]/g,"");
+const unzero=s=>/^\d+$/.test(s)?s.replace(/^0+/,""):s;
+function searchCompanies(raw){
+  const q=normQ(raw);if(!q)return [];
+  const qn=unzero(q),latin=/^[a-z0-9]+$/.test(q);
+  const out=[];
+  SEARCH_POOL.forEach(it=>{
+    let s=0;const nm=normQ(it.name);
+    if(nm===q)s=100;else if(nm.startsWith(q))s=80;else if(nm.includes(q))s=60;
+    if(latin){const toks=it.keys.toLowerCase().split(/\s+/).concat((it.mkt.split("·")[1]||"").trim().toLowerCase());
+      toks.forEach(t=>{t=unzero(normQ(t));if(!t)return;if(t===qn)s=Math.max(s,95);else if(t.startsWith(qn)&&(qn.length>=2||!/\d/.test(qn)))s=Math.max(s,70-Math.min(20,t.length-qn.length))})}
+    if(!s&&!latin&&q.length>=2&&(normQ(it.does).includes(q)||normQ(it.seen).includes(q)))s=30;
+    if(s){if(it.id&&CARDS[it.id])s+=5;out.push([s,it])}
+  });
+  return out.sort((a,b)=>b[0]-a[0]).slice(0,8).map(x=>x[1]);
+}
+let searchQ="";
+const SEARCH_IC=`<svg class="s-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5" fill="currentColor"/><circle cx="10.5" cy="10.5" r="4.2" fill="var(--surface)"/><path d="m16.2 16.2 5 5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>`;
+function searchBoxHTML(){
+  return `<div class="search" role="search">${SEARCH_IC}<input id="coSearch" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="搜公司：名字、拼音或代码" aria-label="搜公司：名字、拼音或代码" value="${esc(searchQ)}"><button class="s-clear" id="coClear" aria-label="清空搜索"${searchQ?"":" hidden"}>×</button></div><div id="searchOut" aria-live="polite"></div>`;
+}
+function wantBtn(name){const on=wanted(name);return `<button class="want" data-want="${esc(name)}" aria-pressed="${on}">${on?"已想喝":"想喝这杯"}</button>`}
+function searchRow(it){
+  const logo=`<div class="logo" style="background:${logoColor(it.id||it.name)}">${esc(it.name[0])}</div>`;
+  const meta=`<span class="sr-m"><b>${esc(it.name)}</b> <span class="tag">${esc(it.mkt||"")}</span><small>${esc(it.does)}</small></span>`;
+  if(it.id&&CARDS[it.id]){const sc=stepCount(it.id);
+    return `<a class="sr" href="#c-${it.id}">${logo}${meta}<span class="sr-r">${sealed(it.id)?"已封口 ›":sc?`做到第 ${sc} 步 ›`:"去做这杯 ›"}</span></a>`}
+  if(it.mkt==="未上市")return `<div class="sr">${logo}${meta}<span class="sr-r mute">还没上市</span></div>`;
+  return `<div class="sr">${logo}${meta}${wantBtn(it.name)}</div>`;
+}
+function renderSearchOut(){
+  const box=$("#searchOut");if(!box)return;
+  const grid=document.querySelector("#cards .list-grid");
+  const q=searchQ.trim();
+  if(grid)grid.hidden=!!q;
+  const clr=$("#coClear");if(clr)clr.hidden=!searchQ;
+  const wl=wants.length?`<p class="s-wants">我想喝的：<b>${wants.slice(0,6).map(esc).join("、")}</b>${wants.length>6?" 等":""}</p>`:"";
+  if(!q){box.innerHTML=`<p class="s-hint">试试 ${["tengxun","0700","古茗","nvda"].map(s=>`<button data-try="${s}">${s}</button>`).join("")}</p>${wl}`;return}
+  const rs=searchCompanies(q);
+  const noCard=rs.filter(it=>!(it.id&&CARDS[it.id])&&it.mkt!=="未上市").length;
+  box.innerHTML=`<div class="s-res">${rs.map(searchRow).join("")}${rs.length?"":`<div class="sr none"><p>还没收录「${esc(q)}」。试试换个写法、股票代码或拼音；也可以先点「想喝这杯」记下来。</p>${wantBtn(q)}</div>`}</div>
+    ${noCard?`<p class="s-hint">没有「›」的公司还没做成图解卡，点「想喝这杯」先记下来。</p>`:""}${wl}`;
+}
+
 const quizStep={};
 function renderLearnList(){
   const n=CARD_ORDER.filter(sealed).length;
-  $("#learnHead").innerHTML=`<h1>每家公司，都是一杯奶茶</h1><p class="sub">看懂它的茶底、配料、糖分和杯型。每看懂一段，杯子里就多一样东西；最后答对 3 题封口，这杯才能放上奶茶架。已封口 <b>${n}</b> / ${CARD_ORDER.length} 杯。</p><div class="tools"><a class="btn ghost compare-link" href="#compare">公司对比</a></div>`;
+  $("#learnHead").innerHTML=`<h1>每家公司，都是一杯奶茶</h1><p class="sub">看懂它的茶底、配料、糖分和杯型。每看懂一段，杯子里就多一样东西；最后答对 3 题封口，这杯才能放上奶茶架。已封口 <b>${n}</b> / ${CARD_ORDER.length} 杯。</p>${searchBoxHTML()}<div class="tools"><a class="btn ghost compare-link" href="#compare">公司对比</a></div>`;
   $("#cards").innerHTML=`<div class="list-grid">${CARD_ORDER.map(id=>{const k=CARDS[id];const sc=stepCount(id);
     return `<a class="lc" href="#c-${id}"><div class="lc-top"><div><b>${esc(k.name)}</b><br><span class="tag">${k.mkt}</span></div></div>${cupSVG(id,108,{uniformSize:true,full:true,hideRiskBadge:true})}
       <span class="lc-sw${sealed(id)?" full":""}">${sealed(id)?"已封口，看懂了":sc?`做到第 ${sc} / 6 步`:"还没开始做"}</span></a>`}).join("")}</div>`;
+  renderSearchOut();
 }
 function quizHTML(id){
   const k=CARDS[id];
@@ -1626,7 +1845,7 @@ $("#compareOptions").addEventListener("change",event=>{
 
 function renderCardDetail(id){
   const k=CARDS[id],c=ALL[id],d=secsDone(id),sg=sugarOf(k),sz=sizeOf(k);
-  $("#learnHead").innerHTML=`<a class="back" href="#learn">‹ 全部奶茶</a>`;
+  $("#learnHead").innerHTML=`<div class="back-row"><a class="back" href="#learn">‹ 全部奶茶</a><a class="s-link" href="#learn" data-focus-search>${SEARCH_IC.replace('class="s-ic"','')}搜别的公司</a></div>`;
   const unit=k.currency||"块";
   $("#cards").innerHTML=`<article class="card" id="card-${id}">
     <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
@@ -1688,6 +1907,14 @@ $("#cards").addEventListener("click",e=>{
 });
 function renderCards(){renderLearn()}
 
+$("#learnHead").addEventListener("input",e=>{if(e.target.id==="coSearch"){searchQ=e.target.value;renderSearchOut()}});
+$("#learnHead").addEventListener("keydown",e=>{if(e.target.id==="coSearch"&&e.key==="Enter"){const a=document.querySelector("#searchOut a.sr");if(a){e.preventDefault();location.hash=a.getAttribute("href")}}});
+$("#learnHead").addEventListener("click",e=>{
+  const t=e.target.closest("[data-try]");if(t){searchQ=t.dataset.try;const i=$("#coSearch");i.value=searchQ;renderSearchOut();i.focus();return}
+  if(e.target.closest("#coClear")){searchQ="";const i=$("#coSearch");i.value="";renderSearchOut();i.focus();return}
+  const w=e.target.closest("[data-want]");if(w){const on=toggleWant(w.dataset.want);renderSearchOut();toast(on?"记下了，这杯想喝":"取消想喝了")}
+});
+
 /* ---------------- 我的奶茶架 ---------------- */
 let pendingDrop=0;
 function addToJar(id){if(S.items.some(i=>i.id===id))return;S.items.push({id,weeks:0,path:[100]});addLog(ALL[id].name+"放上了奶茶架",0);save();toast("放好了，陪它几周看看");go("jar")}
@@ -1747,6 +1974,7 @@ function show(h){
   if(v==="map")drawMap();if(v==="learn")renderLearn();if(v==="compare")renderCompare();if(v==="jar")renderJar();
   scrollTo(0,0);
 }
+document.addEventListener("click",e=>{if(e.target.closest("[data-focus-search]"))setTimeout(()=>{const i=$("#coSearch");if(i)i.focus()},60)});
 function go(v,id){const h=id?"c-"+id:v;if(location.hash!=="#"+h)location.hash=h;else show(h)}
 addEventListener("hashchange",()=>show(location.hash.slice(1)));
 updateExampleQuotes();
