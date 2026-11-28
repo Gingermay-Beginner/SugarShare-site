@@ -56,7 +56,8 @@ p{margin:0 0 12px;max-width:68ch}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .eq{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:start;text-align:center;margin-top:18px}
-.eq .op{font-family:Manrope;font-size:32px;font-weight:800;color:var(--ink2);height:76px;display:flex;align-items:center;justify-content:center}
+.eq .op{font-family:Manrope;font-size:32px;font-weight:800;color:var(--ink2);margin-top:82px;height:calc(clamp(22px,3vw,30px)*1.2);display:flex;align-items:center;justify-content:center;line-height:1}
+.eq2 .op{margin-top:0}
 .eq b{display:block;font-family:Manrope;font-size:clamp(22px,3vw,30px);font-weight:800;line-height:1.2}
 .eq span{font-size:13.5px;color:var(--ink2)}
 .eq svg{width:76px;height:76px;display:block;margin:0 auto 6px}
@@ -83,7 +84,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 .warn{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
 .warn:first-child{border-top:0}
 .warn svg{width:52px;height:52px}
-.scroll{overflow-x:auto}.eq2{margin-top:14px}.eq2 .op{height:auto}
+.scroll{overflow-x:auto}.eq2{margin-top:14px}
 .ftab{margin-top:6px}.ftab td.when{white-space:nowrap}.ftab th{font-weight:700;color:var(--ink);text-align:left;vertical-align:bottom;padding:6px 8px}.ftab td{padding:6px 8px;border-bottom:1px solid var(--line)}.ftab th span{font-weight:400;font-size:12.5px;color:var(--ink2)}.ftab td:nth-child(odd):not(:first-child),.ftab th:nth-child(odd):not(:first-child){color:var(--ink2);text-align:center;width:1.5em}.ftab td.hl{color:var(--roseInk);font-weight:700}.ftab tr.sep td{border-top:2px solid var(--line)}
 .tool{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:14px;align-items:center}
 .tool svg{width:96px;height:72px}
@@ -103,7 +104,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 .lay{transform-box:fill-box;transform-origin:bottom;animation:pour .35s ease-out both}
 @media(prefers-reduced-motion:reduce){.lay,.pop{animation:none}}
 @media(max-width:820px){.calc,.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:560px){.eq{gap:4px}.eq svg{width:48px;height:48px}.eq .op{font-size:20px;height:48px}.eq b{font-size:17px}.eq span{font-size:12px;line-height:1.35;display:block}.cupcard .how{font-size:12px}.tool{grid-template-columns:minmax(0,1fr) 72px}.tool svg{width:72px}}
+@media(max-width:560px){.eq{gap:4px}.eq svg{width:48px;height:48px}.eq .op{font-size:20px;margin-top:54px;height:calc(17px*1.2)}.eq2 .op{margin-top:0}.eq b{font-size:17px}.eq span{font-size:12px;line-height:1.35;display:block}.cupcard .how{font-size:12px}.tool{grid-template-columns:minmax(0,1fr) 72px}.tool svg{width:72px}}
 </style>
 
 <style>.tbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}.tbar>div{max-width:760px;margin:0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;height:52px;padding:0 8px}.tbar a{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);border-radius:999px}.tbar a:focus-visible{outline:2px solid var(--accent)}.tbar svg{width:22px;height:22px}.tbar b{text-align:center;font-size:16px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style>
@@ -122,24 +123,25 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <p>股价是买一股要多少钱，单看它看不出贵不贵。先把股价乘上股数，得到<b>市值</b>，也就是买下整家店的价钱；再用市值除以一年净赚，得到<b>几年回本</b>。这个数就是市盈率，也就是这页说的「估值」。</p>
   <p class="tiny" style="margin:18px 0 0;font-weight:700;color:var(--ink)">① 先算买下整家店要多少钱</p>
   <div class="eq" style="margin-top:8px">
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="26" fill="var(--sugar)" stroke="var(--accent)" stroke-width="2"/><text x="38" y="49" text-anchor="middle" font-size="26" font-weight="800" fill="var(--accent)">$</text></svg><b class="num">$149.30</b><span>股价（11 月 25 日收盘）</span></div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="26" fill="var(--sugar)" stroke="var(--accent)" stroke-width="2"/><text x="38" y="49" text-anchor="middle" font-size="26" font-weight="800" fill="var(--accent)">$</text></svg><b class="num">$149.30</b><span>股价</span></div>
     <div class="op">×</div>
     <div><svg viewBox="0 0 76 76" aria-hidden="true"><g stroke="var(--accent)" stroke-width="2"><rect x="16" y="18" width="40" height="28" rx="4" fill="var(--surface2)"/><rect x="20" y="26" width="40" height="28" rx="4" fill="var(--glass)"/><rect x="24" y="34" width="40" height="28" rx="4" fill="var(--milk)"/></g><line x1="30" x2="56" y1="44" y2="44" stroke="var(--ink2)" stroke-width="2"/><line x1="30" x2="48" y1="52" y2="52" stroke="var(--ink2)" stroke-width="2"/></svg><b class="num">≈ 241 亿股</b><span>股数</span></div>
     <div class="op">=</div>
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">$3.6 万亿</b><span>市值（买下整家店）</span></div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(30 40) rotate(-8)"><rect width="44" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="22" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6万亿</text></g></svg><b class="num">$3.6 万亿</b><span>市值<br>（买下整家店）</span></div>
   </div>
   <p class="tiny" style="margin:22px 0 0;font-weight:700;color:var(--ink)">② 再看靠利润几年回本</p>
   <div class="eq" style="margin-top:8px">
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(36 40) rotate(-8)"><rect width="36" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="18" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6T</text></g></svg><b class="num">$3.6 万亿</b><span>市值（买下整家店）</span></div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M18 22 L58 22 L53.8 64 Q53.2 70 47.5 70 L28.5 70 Q22.8 70 22.2 64 Z" fill="var(--glass)" stroke="var(--ink2)" stroke-width="2"/><line x1="15.5" x2="60.5" y1="22" y2="22" stroke="var(--ink2)" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(30 40) rotate(-8)"><rect width="44" height="17" rx="4" fill="var(--milk)" stroke="var(--accent)"/><text x="22" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="var(--accent)">$3.6万亿</text></g></svg><b class="num">$3.6 万亿</b><span>市值<br>（买下整家店）</span></div>
     <div class="op">÷</div>
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><g fill="var(--rose)" stroke="var(--ink2)" stroke-width="2"><ellipse cx="38" cy="62" rx="24" ry="8"/><ellipse cx="38" cy="52" rx="24" ry="8"/><ellipse cx="38" cy="42" rx="24" ry="8"/><ellipse cx="38" cy="32" rx="24" ry="8"/><ellipse cx="38" cy="22" rx="24" ry="8" fill="var(--rose2)"/></g></svg><b class="num">$2,263 亿</b><span>一年净赚（近 12 个月）</span></div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><g fill="var(--rose)" stroke="var(--ink2)" stroke-width="2"><ellipse cx="38" cy="62" rx="24" ry="8"/><ellipse cx="38" cy="52" rx="24" ry="8"/><ellipse cx="38" cy="42" rx="24" ry="8"/><ellipse cx="38" cy="32" rx="24" ry="8"/><ellipse cx="38" cy="22" rx="24" ry="8" fill="var(--rose2)"/></g></svg><b class="num">$2,263 亿</b><span>一年净赚<br>（近 12 个月）</span></div>
     <div class="op">=</div>
-    <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="28" fill="var(--surface2)" stroke="var(--ink2)" stroke-width="2"/><path d="M38 40 L38 12 A28 28 0 1 1 13 52 Z" fill="var(--rose)" stroke="var(--ink2)" stroke-width="2" stroke-linejoin="round"/><circle cx="38" cy="40" r="4" fill="var(--ink2)"/></svg><b class="num">≈ 16 年</b><span>几年回本（市盈率 P/E）</span></div>
+    <div><svg viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="40" r="28" fill="var(--surface2)" stroke="var(--ink2)" stroke-width="2"/><path d="M38 40 L38 12 A28 28 0 1 1 13 52 Z" fill="var(--rose)" stroke="var(--ink2)" stroke-width="2" stroke-linejoin="round"/><circle cx="38" cy="40" r="4" fill="var(--ink2)"/></svg><b class="num">≈ 16 年</b><span>几年回本<br>（市盈率 P/E）</span></div>
   </div>
+  <p class="tiny" style="margin:12px 0 0">股价按 2026 年 11 月 25 日收盘价 $149.30 算。</p>
   <div class="panel" style="margin-top:22px"><h3 style="margin-top:0">另一种算法：用一股的股价，除以一股一年赚的钱，也是 16 年</h3>
     <p class="small">上面是把整家店买下来算。只算一股也一样：公司一年的净赚平均分到每一股上，就是「每股收益」；用一股的股价除以它，得到的还是同一个回本年数。</p>
-    <div class="eq eq2"><div><b class="num">$149.30</b><span>每股价格（11 月 25 日收盘）</span></div><div class="op">÷</div><div><b class="num">$9.31</b><span>每股一年净赚（每股收益 EPS）</span></div><div class="op">=</div><div><b class="num">≈ 16 年</b><span>几年回本（市盈率 P/E）</span></div></div>
-    <p class="tiny" style="margin:12px 0 0">$9.31 = 2026 财年 Q4 的 $1.76 + 2027 财年前三季度的 $7.55，按 GAAP 口径。149.30 ÷ 9.31 ≈ 16.0。</p></div>
+    <div class="eq eq2"><div><b class="num">$149.30</b><span>每股价格</span></div><div class="op">÷</div><div><b class="num">$9.31</b><span>每股一年净赚<br>（每股收益 EPS）</span></div><div class="op">=</div><div><b class="num">≈ 16 年</b><span>几年回本<br>（市盈率 P/E）</span></div></div>
+    <p class="tiny" style="margin:12px 0 0">$149.30 是 2026 年 11 月 25 日收盘价。$9.31 = 2026 财年 Q4 的 $1.76 + 2027 财年前三季度的 $7.55，按 GAAP 口径。149.30 ÷ 9.31 ≈ 16.0。</p></div>
   <div class="grid2" style="margin-top:28px;align-items:center"><div>  <h3>倒过来说：每花 100 块，一年赚回几块</h3>
   <p class="small">16 年回本，也可以说成每花 100 块，公司一年替你赚回 100 ÷ 16 ≈ 6.2 块。两种说法是同一个数，只是一个讲"要几年"，一个讲"每年多少"。后一种更像存款利息，方便和熟悉的东西比较。</p>
     </div><div class="panel">
