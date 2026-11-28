@@ -1470,17 +1470,17 @@ function sizeOf(k){const n=k.rev.length;const g=Math.pow(k.rev[n-1]/k.rev[0],1/(
 function sugarOf(k){const p=k.per100[2];const b=p<3?0:p<8?1:p<15?2:p<30?3:4;return {p,b,name:SUGAR_BANDS[b][0]}}
 function secsDone(id){return (S.secs&&S.secs[id])||[]}
 function sealed(id){return S.understood.includes(id)}
-/* 三步走：看懂公司 → 看懂股价 → 股价在赌什么。暂不按顺序锁定；还没有页面的一步显示为淡色、不能点。 */
+/* 三步走：看懂公司 → 看懂贵不贵 → 这个价在赌什么。暂不按顺序锁定；还没有页面的一步显示为淡色、不能点。 */
 const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:null}};
 function stepDone(id,k){return !!(S.steps&&S.steps[id]&&S.steps[id][k])}
 function stepsHTML(id){
   const pg=STEP_PAGES[id]||{},d=[sealed(id),stepDone(id,"price"),stepDone(id,"bet")];
   const cell=(n,title,href,soon)=>`<li class="${soon?"lock":(d[n]?"done":"")}${n===0?" now":""}">${href&&!soon?`<a href="${href}">`:""}<b>${d[n]?"✓ ":""}${title}</b>${href&&!soon?"</a>":""}</li>`;
-  return `<ol class="steps" aria-label="这杯的三步">${cell(0,"看懂公司")}${cell(1,"看懂股价",pg.price,!pg.price)}${cell(2,"股价在赌什么",pg.bet,!pg.bet)}</ol>`;
+  return `<ol class="steps" aria-label="这杯的三步">${cell(0,"看懂公司")}${cell(1,"看懂贵不贵",pg.price,!pg.price)}${cell(2,"这个价在赌什么",pg.bet,!pg.bet)}</ol>`;
 }
 function nextHTML(id){const pg=STEP_PAGES[id]||{};
   if(!pg.price)return "";
-  return `<div class="next"><a href="${pg.price}">下一步：看懂股价 →</a></div>`}
+  return `<div class="next"><a href="${pg.price}">下一步：看懂贵不贵 →</a></div>`}
 function stepCount(id){return secsDone(id).length+(sealed(id)?1:0)}
 function hashN(s){let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0;return h}
 let cupSeq=0;
