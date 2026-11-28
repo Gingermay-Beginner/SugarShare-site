@@ -302,9 +302,9 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
   const TC=document.getElementById('thenCups');
   const CUPS=[{when:'10 月初',price:57700,profit:1929,y:30,v:'≈30 年'},{when:'假设',price:57700,profit:2263,y:25.5,v:'≈25.5 年',hypo:1},{when:'11 月 25 日',price:36000,profit:2263,y:16,v:'16 年'}];
   const BH=190,BT=152,BB=120;
-  const pack=(c,s,r,fill)=>{const H=BH*s,tw=BT*s,bw=BB*s,y=c.y,full=Math.floor(y+1e-9),frac=y-full,n=full+(frac>.05?1:0),d=2*r+2,ps=[];
+  const pack=(c,s,r,fill)=>{const H=BH*s,tw=BT*s,bw=BB*s,y=c.y,full=Math.floor(y+1e-9),frac=y-full,n=full+(frac>.05?1:0),d=2*r+1,ps=[];
     const half=yy=>(bw+(tw-bw)*(yy/H))/2;let row=0;const rows=[];
-    while(ps.length<n&&row<60){const cy=r+2+row*d,hw=half(cy-r)-r-3,cnt=Math.min(n-ps.length,Math.max(1,Math.floor(2*hw/d)+1));rows.push(cnt);for(let q=0;q<cnt;q++)ps.push(0);row++}
+    while(ps.length<n&&row<60){const cy=r+2+row*d,hw=half(cy-r)-r-1.5,cnt=Math.min(n-ps.length,Math.max(1,Math.floor(2*hw/d)+1));rows.push(cnt);for(let q=0;q<cnt;q++)ps.push(0);row++}
     const top=row?(row-1)*d+2*r+2:0,step=fill&&row>1?Math.max(d,(H-8-2*r-2)/(row-1)):d,out=[];
     rows.forEach((cnt,ri)=>{const w=(cnt-1)*d;for(let q=0;q<cnt;q++)out.push({x:-w/2+q*d,y:r+2+ri*step,h:1})});
     if(frac>.05)out[n-1].h=.5;return {ps:out,top,H};};
@@ -315,7 +315,7 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
       if(!xs.length)xs.push(0);xs.sort((a,b)=>Math.abs(a)-Math.abs(b)||a-b);const take=xs.slice(0,n-ps.length).sort((a,b)=>a-b);
       take.forEach(x=>ps.push({x,y:cy,h:1}));row++}
     if(frac>.05&&ps.length)ps[ps.length-1].h=.5;return {ps,top:cy+r+2,H}};
-  const best=(c,S)=>{const f=(fn)=>{let lo=1,hi=60;for(let it=0;it<30;it++){const r=(lo+hi)/2,p=fn(c,S,r);p.top<=p.H-8?lo=r:hi=r}return lo};const rg=f(pack),rh=f(hexPack);return rh>rg*1.02?{r:rh,hex:1}:{r:rg,hex:0}};
+  const best=(c,S)=>{const f=(fn)=>{let lo=1,hi=60;for(let it=0;it<30;it++){const r=(lo+hi)/2,p=fn(c,S,r);p.top<=p.H-8?lo=r:hi=r}return lo};const rg=f(pack),rh=f(hexPack);return {r:rg,hex:0}};
   const drawT=()=>{
     const W=TC.clientWidth,narrow=W<560,gap=narrow?10:44;
     const sBig=Math.min(1,(W-2*gap)/3/(BT+18)),sc=CUPS.map(c=>sBig*Math.sqrt(c.price/57700));
