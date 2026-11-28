@@ -172,8 +172,8 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <p>一年净赚越多，珍珠越大，需要的颗数越少，回本越快。</p>
   <div class="panel calc">
     <div>
-      <div class="tiny">未来每年的利润，是过去 12 个月的</div>
-      <div class="num" style="font-size:28px;font-weight:800" id="mult">1.0 倍</div>
+      <div class="tiny">假设以后每年赚的钱，是过去一年的</div>
+      <div class="num" style="font-size:28px;font-weight:800;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 10px"><span id="mult">1.0 倍</span><span style="color:var(--ink2);font-weight:600;font-size:22px">→ 约 <span id="years" style="color:var(--roseInk);font-size:28px;font-weight:800">16</span> 年回本</span></div>
       <input type="range" id="slider" min="0.5" max="2.5" step="0.05" value="1" aria-label="未来利润倍数">
       <div class="presets" id="presets">
         <button data-m="0.5">利润腰斩</button>
@@ -181,7 +181,6 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
         <button data-m="1.7">分析师的明年预估</button>
         <button data-m="2.2">继续猛涨</button>
       </div>
-      <div style="margin-top:18px"><span class="big" id="years">16</span> <span style="font-size:20px">年回本</span></div>
       <p class="small" id="calcNote" style="margin:6px 0 0"></p>
     </div>
     <div><div id="calcCup"></div><p class="tiny" style="text-align:center;margin:6px auto 0;max-width:none">一颗<i style="display:inline-block;width:12px;height:12px;border:1.5px solid var(--ink2);border-radius:50%;box-sizing:border-box;margin:0 4px;vertical-align:-1px" aria-label="珍珠"></i>= 一年净赚的钱</p></div>
@@ -420,7 +419,7 @@ const draw=()=>{
   M.textContent=m.toFixed(2).replace(/0$/,'')+' 倍';
   Y.textContent=y<10?y.toFixed(1):Math.round(y);
   if(!PC)pcInit(C);pcTo(y,m);
-  N.textContent=y>17.1?'比大盘的约 17 年还慢：这时 $3.6 万亿就显得不便宜了。':y>12?'和大盘差不多，或略快一点。':'倒得很快：前提是每年赚这么多真的能保持住。';
+  const past=Math.abs(m-1)<.01,base=past?22.9:17.1,lab=past?'大盘按过去 12 个月算的约 23 年':'大盘按明年预估算的约 17 年';N.textContent=y>base*1.1?`比${lab}还慢。`:y>=base*.9?`和${lab}差不多。`:y>=base*.6?`比${lab}快。`:`比${lab}快很多：前提是以后每年真能赚这么多。`;
   P.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',Math.abs(+b.dataset.m-m)<.01));
 };
 s.addEventListener('input',draw);
