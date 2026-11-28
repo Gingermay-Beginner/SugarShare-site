@@ -105,9 +105,10 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 @media(max-width:560px){.eq{gap:4px}.eq svg{width:48px;height:48px}.eq .op{font-size:20px;height:48px}.eq b{font-size:17px}.eq span{font-size:12px;line-height:1.35;display:block}.cupcard .how{font-size:12px}.tool{grid-template-columns:minmax(0,1fr) 72px}.tool svg{width:72px}}
 </style>
 
+<style>.tbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}.tbar>div{max-width:760px;margin:0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;height:52px;padding:0 8px}.tbar a{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);border-radius:999px}.tbar a:focus-visible{outline:2px solid var(--accent)}.tbar svg{width:22px;height:22px}.tbar b{text-align:center;font-size:16px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style>
+<header class="tbar"><div><a id="tbBack" href="./index.html#c-nvda" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a><b>英伟达 · 看懂贵不贵</b><span></span></div></header>
+<script>document.getElementById('tbBack').addEventListener('click',e=>{try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){e.preventDefault();history.back()}}catch(_){}});</script>
 <section class="band hero"><div class="wrap">
-  <p class="tiny" style="margin:0 0 10px"><a href="./index.html#c-nvda" style="color:var(--accent)">← 回到英伟达这杯</a></p>
-  <p class="tiny" style="margin:0 0 6px">糖分 · 英伟达 · 看懂贵不贵</p>
   <p class="lead" style="margin:0 0 10px">一股多少钱，看不出贵不贵。要看的是：把整家店买下来，靠它每年赚的钱，几年能回本。</p>
   <h1>英伟达这杯，大约 16 年回本</h1>
   <div class="straws" id="heroStraws"></div>

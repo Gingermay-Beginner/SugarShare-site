@@ -38,6 +38,13 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--grape);out
 .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.titlebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:grid;grid-template-columns:44px 1fr 44px;align-items:center;height:52px;padding-block:0}
+.titlebar h1{margin:0;text-align:center;font-size:16px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titlebar .tb-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:999px;color:var(--ink);text-decoration:none;background:none;border:0;padding:0;cursor:pointer}
+.titlebar .tb-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.titlebar .tb-btn svg{width:22px;height:22px}
+.titlebar .tb-r{justify-self:end}.titlebar .tb-r svg{width:19px;height:19px}
+body.in-card .topbar{display:none}
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:8px}
 .brand svg{width:30px;height:30px;flex:none}
@@ -335,6 +342,7 @@ section[hidden]{display:none}
 .back-row .s-link svg{width:15px;height:15px}
 
 /* ---------- bottom ---------- */
+body.in-card .bottom .tabs{display:none}body.in-card .app{padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
 .bottom{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .disc{max-width:480px;margin:0 auto;font-size:11px;color:var(--ink-2);text-align:center;padding:5px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 .tabs{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);padding:2px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px))}
@@ -361,6 +369,12 @@ section[hidden]{display:none}
 <circle cx="47" cy="98" r="3.6" fill="#A09487"/><circle cx="59" cy="93.5" r="3.6" fill="#A09487"/><circle cx="71" cy="97.5" r="3.6" fill="#A09487"/>
 </g><path d="M30 40H90L82.94 98Q82 106 74 106H46Q38 106 37.06 98Z" fill="none" stroke="#A09487" stroke-width="2.6" stroke-linejoin="round"/></svg><b>糖分</b><span>先看懂，再持有</span></div>
     <span class="chip" id="dayChip">示例行情</span>
+  </header>
+
+  <header class="titlebar wrap" id="titleBar" hidden>
+    <a class="tb-btn" id="tbBack" href="#learn" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a>
+    <h1 id="tbTitle"></h1>
+    <a class="tb-btn tb-r" href="#learn" data-focus-search aria-label="搜别的公司"></a>
   </header>
 
   <!-- ============ MAP ============ -->
@@ -1839,7 +1853,7 @@ $("#compareOptions").addEventListener("change",event=>{
 
 function renderCardDetail(id){
   const k=CARDS[id],c=ALL[id],d=secsDone(id),sg=sugarOf(k),sz=sizeOf(k);
-  $("#learnHead").innerHTML=`<div class="back-row"><a class="back" href="#learn">‹ 全部奶茶</a><a class="s-link" href="#learn" data-focus-search>${SEARCH_IC.replace('class="s-ic"','')}搜别的公司</a></div>`;
+  $("#learnHead").innerHTML="";$("#tbTitle").textContent=k.name;$("#titleBar .tb-r").innerHTML=SEARCH_IC.replace('class="s-ic"','');
   const unit=k.currency||"块";
   $("#cards").innerHTML=`<article class="card" id="card-${id}">
     <div class="card-top"><div class="logo" style="background:${logoColor(id)}">${esc(k.name[0])}</div><div><h2 style="margin:0">${esc(k.name)} <span class="tag">${k.mkt}</span></h2><div class="sub">${esc(c.sec)} · 市值${esc(fmtCap(c))}</div></div></div>
@@ -1966,11 +1980,14 @@ function show(h){
   VIEWS.forEach(x=>{$("#v-"+x).hidden=x!==v});
   document.querySelectorAll(".tabs a").forEach(a=>{if(a.dataset.v===(v==="compare"?"learn":v))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(v==="map")drawMap();if(v==="learn")renderLearn();if(v==="compare")renderCompare();if(v==="jar")renderJar();
+  document.body.classList.toggle("in-card",!!learnDetail);
+  $("#titleBar").hidden=!learnDetail;
   scrollTo(0,0);
 }
 document.addEventListener("click",e=>{if(e.target.closest("[data-focus-search]"))setTimeout(()=>{const i=$("#coSearch");if(i)i.focus()},60)});
 function go(v,id){const h=id?"c-"+id:v;if(location.hash!=="#"+h)location.hash=h;else show(h)}
-addEventListener("hashchange",()=>show(location.hash.slice(1)));
+let inAppNav=0;addEventListener("hashchange",()=>{inAppNav++;show(location.hash.slice(1))});
+$("#tbBack").addEventListener("click",e=>{if(inAppNav>0){e.preventDefault();history.back()}});
 updateExampleQuotes();
 show(location.hash.slice(1));
 })();
