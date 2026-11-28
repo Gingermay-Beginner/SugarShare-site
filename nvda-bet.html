@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>英伟达 · 这个价在赌什么</title>
+<style>
+:root{color-scheme:light;--bg:#f5f1ea;--surface:#fffdf9;--surface-2:#ede7dd;--ink:#4a423b;--ink-2:#766a5e;--line:#e2dacd;--accent:#7a5f4b;--accent-soft:#efe6dc;--btn:#6e6357;--rose:#d99aa0;--tea:#dcc59c;--sage:#a7b08c;--mist:#b5c0c9;--shadow:0 4px 18px rgba(74,66,59,.07);--body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;--display:"Noto Serif SC","Songti SC","STSong",serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body)}
+main{max-width:480px;margin:auto;padding:14px 16px 28px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+header strong{font:800 23px/1 var(--display);letter-spacing:.08em}.wordmark{display:flex;gap:8px;align-items:center}.wordmark small{font-size:.82rem}
+.meta,small{color:var(--ink-2);font-size:.875rem}.ticker{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 9px;white-space:nowrap}
+.back-link{display:inline-block;margin-top:12px;color:var(--accent);font-size:.875rem}
+.sheet{display:grid;gap:14px;margin-top:14px}.sheet section{background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:18px}
+h1,h2{font-weight:800;line-height:1.32;margin:0 0 12px;font-size:1.35rem}p{margin:0 0 12px}
+.step{display:inline-block;font-size:.8rem;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}
+button{font:700 .875rem/1.5 var(--body);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer}
+button:hover{background:var(--accent-soft)}button[aria-pressed=true]{background:var(--btn);border-color:var(--btn);color:#fff}button[aria-pressed=true]:hover{background:var(--accent)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+a{color:var(--accent)}[hidden]{display:none!important}
+.box{background:var(--surface-2);border-radius:10px;padding:12px;margin:12px 0}
+.box>small{display:block;margin-bottom:8px}
+.row{margin-bottom:10px}.row:last-child{margin-bottom:0}.row.gap{margin-top:16px}
+.row-label{display:flex;justify-content:space-between;align-items:baseline;gap:2px 10px;flex-wrap:wrap;font-size:.875rem}
+.row-label b{color:var(--accent);font-variant-numeric:tabular-nums}
+.track{height:16px;background:var(--line);border-radius:4px;margin-top:4px;overflow:hidden}
+.track span{display:block;height:100%;width:var(--value);background:var(--sage);border-radius:4px;transition:width .25s}
+.track.gold span{background:var(--tea)}.track.rose span{background:var(--rose)}.track.ink span{background:var(--accent)}.track.mist span{background:var(--mist)}
+.track.est span{background-image:repeating-linear-gradient(135deg,transparent 0 6px,rgba(255,255,255,.45) 6px 12px)}
+.chain{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:6px;align-items:stretch;margin:12px 0}
+.chain div{background:var(--surface-2);border-radius:10px;padding:10px 8px;text-align:center;font-size:.875rem;line-height:1.4}
+.chain div b{display:block;font-size:1rem;color:var(--accent)}
+.chain i{align-self:center;font-style:normal;font-weight:800;color:var(--ink-2)}
+.ask{font-weight:700;margin:14px 0 8px}
+.verdict{font-size:1.05rem;font-weight:800;line-height:1.55;margin:14px 0 6px}
+.verdict em{font-style:normal;color:var(--accent);font-size:1.25rem}
+.note{color:var(--ink-2);font-size:.875rem}
+.lock{background:var(--accent-soft);border-radius:10px;padding:10px 12px;font-size:.875rem}
+.saved{margin-top:12px;color:var(--accent);font-weight:700}.saved:empty{display:none}
+ul.says{margin:0 0 12px;padding-left:1.2em}ul.says li{margin-bottom:6px}
+details{margin-top:12px}summary{cursor:pointer;color:var(--accent);font-size:.875rem}details p{font-size:.875rem;margin-top:8px}
+.tbl{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums;margin:12px 0}
+.tbl th,.tbl td{padding:6px 1px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left;white-space:normal;color:var(--ink-2);font-weight:400;padding-right:6px}
+.tbl thead th{color:var(--ink-2);font-weight:700}.tbl tr.sum td{font-weight:800;color:var(--accent);border-bottom:0}.tbl tr.sum td:first-child{color:var(--accent)}
+.pair{margin-bottom:12px}.pair:last-child{margin-bottom:0}.pair .track{height:12px;margin-top:3px}
+.fixed{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.fixed div{background:var(--surface-2);border-radius:10px;padding:10px;font-size:.875rem;line-height:1.45}.fixed b{display:block;color:var(--accent);font-size:1.15rem}
+.steps{list-style:none;margin:0 0 12px;padding:0;counter-reset:s}.steps li{counter-increment:s;position:relative;padding:0 0 12px 34px}.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:.85rem;display:grid;place-items:center}.steps b{color:var(--accent)}
+.chain.four{grid-template-columns:1fr auto 1fr auto 1fr}.eq{background:var(--accent-soft);border-radius:10px;padding:10px 12px;text-align:center;font-weight:800;margin:0 0 12px}.eq b{color:var(--accent)}
+@media(max-width:420px){.tbl{font-size:.7rem}.tbl th:first-child,.tbl td:first-child{max-width:74px}}
+@media(max-width:380px){.wordmark small{display:none}.sheet section{padding:14px}.chain{grid-template-columns:1fr}.chain i{justify-self:center}}
+</style>
+<style>.tbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}.tbar>div{max-width:760px;margin:0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;height:52px;padding:0 8px}.tbar a{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);border-radius:999px}.tbar svg{width:22px;height:22px}.tbar b{text-align:center;font-size:16px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.snav,.tbar>div{max-width:480px!important}</style>
+<header class="tbar"><div><a id="tbBack" href="./index.html#c-nvda" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a><b>英伟达 · 这个价在赌什么</b><span></span></div></header>
+<script>document.getElementById('tbBack').addEventListener('click',e=>{try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){e.preventDefault();history.back()}}catch(_){}});</script>
+<style>.snav{max-width:760px;margin:0 auto;padding:14px 16px 4px}.snav ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}.snav li{border:1.5px solid light-dark(#E2DACD,#403A35);border-radius:10px;background:light-dark(#FFFDF9,#2A2623);text-align:center}.snav li.now{border-color:light-dark(#7A5F4B,#D9BFA8);background:light-dark(#EFE6DC,#3D342D)}.snav a{display:block;padding:9px 6px;font-size:14px;font-weight:700;line-height:1.35;color:light-dark(#4A423B,#F3EEE6);text-decoration:none}.snav a:focus-visible{outline:2px solid light-dark(#7A5F4B,#D9BFA8);outline-offset:3px;border-radius:8px}@media(max-width:420px){.snav a{padding:7px 4px;font-size:13px}}</style><nav class="snav" aria-label="这杯的三步"><ol><li><a href="./index.html#c-nvda">看懂公司</a></li><li><a href="./nvda-payback.html">看懂贵不贵</a></li><li class=now><a href="./nvda-bet.html" aria-current=page>这个价在赌什么</a></li></ol></nav>
+<main>
+<article class="sheet">
+
+<section>
+<h1>这个价在赌什么？</h1>
+<p>「看懂公司」看的是这杯奶茶里有什么，「<a href="./nvda-payback.html">看懂贵不贵</a>」看的是几年回本。这一页看的是：<b>愿意出今天这个价的人，心里默认了哪几个数字。</b></p>
+<p>先用一家奶茶店把道理讲清楚，再用同样的四步看英伟达。</p>
+<p class="note">这一页不预测股价，也不说贵或便宜，不构成买卖建议。</p>
+</section>
+
+<section>
+<span class="step">先看一家奶茶店</span>
+<h2>开价 100 万元，这个价在说什么？</h2>
+<ol class="steps">
+<li><b>价格</b>：有人把一家奶茶店整个卖给你，开价 100 万元。</li>
+<li><b>你要的回报</b>：钱放在别处投资，长期大约每年能有 9%。所以这 100 万，你也希望每年带回 9%。</li>
+<li><b>需要的利润</b>：100 万 × 9% ＝ 这家店每年要净赚 <b>9 万元</b>，而且年年如此。赚不到，这个价就出高了。</li>
+<li><b>利润从哪来</b>：三个数相乘。</li>
+</ol>
+<div class="chain" aria-label="奶茶店的利润">
+<div><b>100 万元</b>镇上一年喝掉的奶茶</div><i>×</i>
+<div><b>30%</b>其中在这家店买的</div><i>×</i>
+<div><b>30 元</b>每卖 100 元留下的</div>
+</div>
+<p class="eq">＝ 每年净赚 <b>9 万元</b></p>
+<p>所以「100 万元」这个开价，其实是在说三句话：镇上的人会一直喝这么多奶茶，这家店一直占三成，每 100 元一直留下 30 元。</p>
+<p><b>你不用判断价格，只用判断这三个数你信不信。</b></p>
+</section>
+
+<section>
+<span class="step">英伟达 · 同样四步</span>
+<h2>约 3.60 万亿美元，这个价在说什么？</h2>
+<ol class="steps">
+<li><b>价格</b>：按今天的股价，买下整家英伟达约 <b>3.60 万亿美元</b>。</li>
+<li><b>你要的回报</b>：这里为了好讲，先和奶茶店一样用每年 9%。9% 大致是整个大盘常用的数。英伟达的股价比大盘晃得厉害，很多估算给它的要求回报更高，大约 10% 到 13%。<a href="./discount.html">为什么要打折</a><br><span class="choices" data-dial="r" aria-label="要求回报" style="margin-top:8px"><button data-v="0.09" aria-pressed="true">每年 9%</button><button data-v="0.12">每年 12%</button></span></li>
+<li><b>需要的利润</b>：<span id="needLine"></span>过去 12 个月它赚了约 2,263 亿。</li>
+<li><b>利润从哪来</b>：还是三个数相乘。后两个先按今天的样子填。</li>
+</ol>
+<div class="chain" aria-label="英伟达的利润">
+<div><b>？</b>全世界一年花多少钱买 AI 芯片</div><i>×</i>
+<div><b>75%</b>其中给了英伟达的</div><i>×</i>
+<div><b>63 美元</b>每卖 100 美元留下的</div>
+</div>
+<p class="eq" id="eqLine"></p>
+<p id="backLine"></p>
+<p class="verdict" id="mainVerdict" aria-live="polite"></p>
+<p class="note">份额 75% 是外部非官方估算（七到八成）的中间值，没有官方数字。「每 100 美元留下 63 美元」是过去 12 个月全公司的净利润 ÷ 收入，这里用全公司的利润率近似 AI 芯片业务的，其中可能含投资收益。</p>
+</section>
+
+<section>
+<span class="step">和大家的预测放在一起</span>
+<h2 id="cmpTitle"></h2>
+<div class="box"><small>全世界一年买 AI 芯片花的钱 · 单位：亿美元 · 同一把尺子 · 灰蓝斜纹是预测，深色是今天的价格需要的</small><div id="cmpChart"></div></div>
+<ul class="says" id="cmpSays"></ul>
+<p class="note"><b>这个结论对「要的回报」很敏感。</b>按 9% 算，价格需要的市场比明年的预测低；按 12% 算，比明年的预测高。上面第 2 步可以切换。</p>
+<p id="cmpAsk"></p>
+<p class="note">「过去 12 个月」由英伟达数据中心收入 3,341 亿美元 ÷ 75% 倒推，不含游戏显卡等其他业务。「明年预测」由分析师对英伟达明年利润的预估（按约 9.5 年回本倒推）÷ 63% ÷ 75% 得到；它和「今天的价格需要的」都把英伟达的全部利润近似算作来自 AI 芯片（数据中心业务占收入九成以上）。「2030 年预测」来自 AMD 首席执行官，她自己也是卖芯片的。</p>
+</section>
+
+<section>
+<span class="step">换一换另外两个数</span>
+<h2>如果英伟达守不住今天的份额和利润呢？</h2>
+<p>上面假设份额和利润率一直和今天一样。对手变多、大客户自己做芯片以后，这两个数可能变小。它们变小，同样的价格就需要更大的市场。</p>
+<p class="ask">英伟达的份额</p>
+<div class="choices" data-dial="sh" aria-label="份额假设"><button data-v="0.75" aria-pressed="true">75%（和今天一样）</button><button data-v="0.6">60%</button><button data-v="0.5">50%</button></div>
+<p class="ask">每 100 美元收入留下</p>
+<div class="choices" data-dial="mg" aria-label="利润率假设"><button data-v="62.5" aria-pressed="true">约 63 美元（和今天一样）</button><button data-v="55">55 美元</button><button data-v="50">50 美元</button></div>
+<p class="verdict" id="verdict" aria-live="polite"></p>
+<div class="box"><small>单位：亿美元 · 同一把尺子</small><div id="whatIf"></div></div>
+<details><summary>看看这三个数过去怎么走的</summary>
+<p class="ask">市场：大客户的开支</p>
+<div class="box"><small>微软、谷歌、亚马逊、Meta 四家合计的年度资本开支 · 单位：亿美元 · 斜纹为公司指引，尚未发生</small><div id="capexChart"></div></div>
+<p class="note">约数，按各公司财报的第三方汇总整理。资本开支不只买芯片，还包括机房、电力和土地。</p>
+<p class="ask">份额：大客户在自己做芯片</p>
+<div class="box"><small>AI 相关收入 · 单位：亿美元 · 同一把尺子 · 斜纹为公司指引</small><div id="shareChart"></div></div>
+<p class="note">英伟达为数据中心业务收入，博通为 AI 芯片收入（替大客户代工自研芯片），两家财年起止不同，只看量级。</p>
+<p class="ask">留下：利润率的起落</p>
+<div class="box"><small>每 100 美元收入留下的净利润 · 单位：美元 · 按财年（每年 1 月底结束）</small><div id="marginChart"></div></div>
+<p class="note">GAAP 净利润 ÷ 收入。过去 12 个月可能含投资收益等非经营项目，会把数字抬高一些。</p>
+</details>
+<details><summary>别人怎么预测 2030 年</summary>
+<ul class="says note">
+<li>英伟达管理层（2025 年 8 月财报会）：到 2030 年前后，全球每年 AI 基础设施开支 3 到 4 万亿美元。<a href="https://s201.q4cdn.com/141608511/files/doc_financials/2026/q2/NVDA-Q2-2026-Earnings-Call-27-August-2025-5_00-PM-ET.pdf">来源</a></li>
+<li>AMD 首席执行官苏姿丰（2026 年 7 月）：2030 年数据中心 AI 芯片市场超过 1.4 万亿美元。<a href="https://www.nextplatform.com/compute/2026/07/24/the-money-amd-is-chasing-with-its-rackscale-ai-system-roadmaps/5278510">来源</a></li>
+<li>研究机构 Dell'Oro（2026 年 8 月）：2030 年全球数据中心资本开支超过 3 万亿美元。<a href="https://www.delloro.com/news/ai-buildout-maintains-momentum-as-data-center-capex-surpasses-3-trillion-by-2030/">来源</a></li>
+</ul>
+<p>统计范围各不相同，其中两家自己就是卖芯片的。2024 年有机构预测 2025 年 AI 芯片市场约 920 亿美元，实际超过 2,000 亿，预测往哪边错都有可能。</p>
+</details>
+<details><summary>「年年如此」这个假设有多要紧</summary>
+<p id="growNote"></p>
+<p id="growRange"></p>
+</details>
+</section>
+
+<section>
+<h2>最后一步：你怎么看？</h2>
+<p id="beliefQ"></p>
+<div class="choices" id="stance" aria-label="你的判断"><button data-s="会更多">会更多</button><button data-s="差不多">差不多</button><button data-s="会更少">会更少</button><button data-s="不确定">不确定</button></div>
+<p class="saved" id="saved" role="status"></p>
+<p class="note" style="margin-top:14px">没有标准答案，这也不代表价格会怎么走。把你的判断记下来，过几个季度回来对照新数据，比猜今天涨跌更有用。</p>
+</section>
+
+<section style="text-align:center">
+<a id="stepNext" href="./index.html#c-nvda" style="display:inline-block;background:var(--accent);color:var(--bg);border-radius:999px;padding:12px 22px;font-weight:700;text-decoration:none">看完了，回到英伟达这杯 →</a>
+</section>
+
+<section>
+<details><summary>日期、口径与来源</summary>
+<p><b>价格与回本年数</b>：2026 年 11 月 25 日收盘价 149.30 美元 × 约 241 亿股，估算市值约 3.60 万亿美元；过去 12 个月每股收益 9.31 美元（GAAP），约 16 年回本。标普 500 过去 12 个月市盈率 25.4 倍、远期 18.3 倍，来自 <a href="https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_111326.pdf">FactSet Earnings Insight（2026 年 11 月 13 日）</a>。英伟达远期市盈率约 9 到 10 倍为分析师估计，与<a href="./nvda-payback.html">估值页</a>口径一致。</p>
+<p><b>英伟达</b>：过去 12 个月（截至 2026 年 10 月 25 日）收入约 3,618 亿美元、数据中心收入约 3,341 亿美元、GAAP 净利润 2,262.57 亿美元；最近一季净利润 652.87 亿美元。<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27pr.htm">FY2027 第三季</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026">FY2026 全年</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2025">FY2025 全年</a> · <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581024000028/q4fy24cfocommentary.htm">FY2023、FY2024</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2022">FY2022</a></p>
+<p><b>四家资本开支</b>：2023 至 2025 年为第三方按财报汇总的约数，2026 年为各公司全年指引合计，待逐家核对财报。<a href="https://platformonomics.com/2026/02/follow-the-capex-2025-retrospective/">Platformonomics</a> · <a href="https://www.omnicalculator.com/insights/technology/four-tech-giants-spent-13-trillion-dollars-since-2023">Omni Calculator</a></p>
+<p><b>博通</b>：AI 芯片收入 FY2025 约 200 亿美元、FY2026 指引 580 亿美元。<a href="https://investors.broadcom.com/news-releases/news-release-details/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2025">FY2025 公告</a> · <a href="https://www.sec.gov/Archives/edgar/data/0001730168/000173016826000076/avgo-08022026x8kxex99.htm">2026 年 8 月公告</a></p>
+<p><b>教学假设</b>：每年 9% 或 12% 的回报、利润长期保持不变、英伟达份额 75%，都是为了讲清楚而设定的，不是事实，也不是任何机构的预测。奶茶店是虚构的例子。</p>
+<p>数字四舍五入。仅供理解公司，不构成任何投资建议。</p>
+</details>
+</section>
+
+</article>
+</main>
+<script>
+// ---- 事实与估计（来源见页面底部）。金额单位：亿美元 ----
+const CAP = 149.30 * 241;          // 估算市值，与估值页一致
+const REV = 3618, PROFIT = 2262.57;
+const MARGIN_NOW = PROFIT / REV * 100;   // ≈ 62.5
+const SHARE_NOW = 0.75;            // 非官方估算的中间值
+const DC_REV = 3341;               // 过去 12 个月数据中心收入
+const MK_NOW = DC_REV / SHARE_NOW; // ≈ 4,450，AI 芯片口径
+const MK_NEXT = CAP / 9.5 / (MARGIN_NOW / 100) / SHARE_NOW;   // 明年预估利润（约 9.5 年回本）倒推 ≈ 8,100
+const MK_2030 = 14000;             // AMD 预测
+const capex = [["2023 年", 1500], ["2024 年", 2500], ["2025 年", 3760], ["2026 年（指引）", 7300, "est"]];
+const share = [
+  ["英伟达 · FY2025", 1152, "ink"], ["英伟达 · FY2026", 1937, "ink"], ["英伟达 · 过去 12 个月", 3341, "ink"],
+  ["博通 AI 芯片 · FY2025", 200, "gold"], ["博通 AI 芯片 · FY2026（指引）", 580, "gold est"]
+];
+const margin = [["FY2022", 36], ["FY2023", 16], ["FY2024", 49], ["FY2025", 56], ["FY2026", 56], ["过去 12 个月", 63]];
+
+const $ = s => document.querySelector(s);
+const fmt = new Intl.NumberFormat("zh-CN");
+const yi = n => "约 " + fmt.format(Math.round(n / 50) * 50) + " 亿";
+const yi10 = n => "约 " + fmt.format(Math.round(n / 10) * 10) + " 亿";
+const yi1 = n => "约 " + fmt.format(Math.round(n)) + " 亿";
+const pct = n => Math.round(n * 100) + "%";
+
+function bars(el, rows, max, show) {
+  $(el).innerHTML = rows.map(([label, value, cls, rowCls]) =>
+    '<div class="row ' + (rowCls || "") + '"><div class="row-label"><span>' + label + '</span><b>' + show(value) +
+    '</b></div><div class="track ' + (cls || "") + '" aria-hidden="true" style="--value:' +
+    Math.min(100, value / max * 100) + '%"><span></span></div></div>').join("");
+}
+bars("#capexChart", capex, 7300, yi1);
+bars("#shareChart", share, 3341, yi1);
+bars("#marginChart", margin.map(r => [r[0], r[1], "rose"]), 100, v => v + " 美元");
+const cmp = need => [["过去 12 个月", MK_NOW, "gold"], ["今天的价格需要的", need, "ink"],
+  ["明年的预测", MK_NEXT, "mist est"], ["2030 年的预测", MK_2030, "mist est"]];
+
+// ---- 你的假设 ----
+const pick = { r: 0.09, sh: 0.75, mg: 62.5 };
+const mg = () => pick.mg === 62.5 ? MARGIN_NOW : pick.mg;
+const profitNeed = () => CAP * pick.r;                       // 今天的价格需要的年利润
+const need = () => profitNeed() / (mg() / 100) / pick.sh;
+const needBase = () => profitNeed() / (MARGIN_NOW / 100) / SHARE_NOW;   // 份额、利润率和今天一样时
+const KEY = "tangguan-v4";            // 与主页共用同一份本地存档
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+function store(S) { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { return false; } }
+
+const vs = (a, b) => Math.abs(a / b - 1) < 0.05 ? "差不多" : a < b ? "少 " + pct(1 - a / b) : "多 " + pct(a / b - 1);
+function render() {
+  const rp = Math.round(pick.r * 100) + "%", pn = profitNeed(), nb = needBase();
+  $("#needLine").innerHTML = "3.60 万亿 × " + rp + " ＝ 每年净赚<b>" + yi10(pn) + "美元</b>，年年如此。";
+  $("#eqLine").innerHTML = "＝ 每年净赚 <b>" + yi10(pn).slice(2) + "美元</b>";
+  $("#backLine").innerHTML = "倒着算回去：" + yi10(pn).slice(2) + " ÷ 63% ÷ 75% ≈ <b>" + yi(nb).slice(2) + "美元</b>。";
+  $("#mainVerdict").innerHTML = "所以按 " + rp + " 的回报，今天的价格在说：全世界每年花<em>" + yi(nb) + "</em>美元买 AI 芯片，并且一直保持下去。";
+  $("#cmpTitle").textContent = yi(nb).slice(2) + "，是多还是少？";
+  bars("#cmpChart", cmp(nb), Math.max(MK_2030, nb), yi);
+  $("#cmpSays").innerHTML = "<li>比过去 12 个月<b>" + vs(nb, MK_NOW) + "</b>：价格相信 AI 开支还会再涨一截。</li>" +
+    (nb < MK_NEXT * 0.95
+      ? "<li>比明年的预测<b>" + vs(nb, MK_NEXT) + "</b>，约是 2030 年预测的 <b>" + pct(nb / MK_2030) + "</b>：价格不相信预测里那么大的数字能长期保持。</li>"
+      : "<li>比明年的预测<b>" + vs(nb, MK_NEXT) + "</b>，约是 2030 年预测的 <b>" + pct(nb / MK_2030) + "</b>：价格需要 AI 开支达到并保持在明年的预测以上，但不需要到 2030 年预测那么高。</li>");
+  $("#cmpAsk").innerHTML = "<b>这就是要你判断的那个数：长期来看，全世界每年买 AI 芯片的钱，会比 " + yi(nb).slice(2) + "多，还是少？</b>";
+  const g = 0.03, pg = CAP * (pick.r - g), ng = pg / (MARGIN_NOW / 100) / SHARE_NOW;
+  $("#growNote").innerHTML = "上面假设利润永远不涨也不跌。如果换成「利润以后每年跟着经济涨 3%」，起步时需要的利润就少一些：3.60 万亿 × （" + rp + " − 3%）≈ " +
+    yi10(pg).slice(2) + "美元，对应的市场" + yi(ng) + "美元。";
+  $("#growRange").innerHTML = "所以更完整的说法是：按 " + rp + " 的回报，今天的价格需要 AI 芯片市场长期在 <b>" + yi(ng).slice(2) + " 到 " + yi(nb).slice(2) +
+    "美元</b>之间，看你觉得以后还涨不涨。明年的预测约 8,100 亿。";
+  const n = need(), same = pick.sh === 0.75 && pick.mg === 62.5;
+  $("#verdict").innerHTML = (same ? "份额和利润都和今天一样：" : "份额 " + pct(pick.sh) + "、每 100 美元留下 " + Math.round(mg()) + " 美元：") +
+    "按 " + rp + " 的回报，今天的价格需要全世界每年花<em>" + yi(n) + "</em>美元买 AI 芯片，比明年的预测" + vs(n, MK_NEXT) + "。";
+  bars("#whatIf", cmp(n), Math.max(MK_2030, n), yi);
+  $("#beliefQ").innerHTML = "按 " + rp + " 的回报，今天的价格在说：<b>全世界每年花" + yi(n) + "美元买 AI 芯片，英伟达拿走 " + pct(pick.sh) +
+    "，每 100 美元留下 " + Math.round(mg()) + " 美元，并且一直保持。</b>长期来看，你觉得全世界每年买 AI 芯片的钱：";
+  document.querySelectorAll("#stance button").forEach(b => b.removeAttribute("aria-pressed"));
+  $("#saved").textContent = "";
+}
+
+document.querySelectorAll("[data-dial]").forEach(group => {
+  const buttons = [...group.querySelectorAll("button")];
+  buttons.forEach(b => b.addEventListener("click", () => {
+    buttons.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    pick[group.dataset.dial] = Number(b.dataset.v);
+    render();
+  }));
+});
+
+document.querySelectorAll("#stance button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#stance button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  const S = load();
+  S.beliefs = S.beliefs || {};
+  S.beliefs.nvda = Object.assign({ stance: b.dataset.s, market: Math.round(need()), at: new Date().toLocaleDateString("sv") }, pick);
+  $("#saved").textContent = store(S) ? "记下了：「" + b.dataset.s + "」。回到图解卡能看到。" : "你选了「" + b.dataset.s + "」。这台设备没法保存，记在心里也行。";
+}));
+
+// 三步里的第三步：点了「看完了」就记为完成，和估值页的做法一样
+$("#stepNext").addEventListener("click", () => { const S = load(); S.steps = S.steps || {}; S.steps.nvda = Object.assign({}, S.steps.nvda, { bet: true }); store(S); });
+
+// 恢复上次的选择
+(function () {
+  const S = load(), prev = S.beliefs && S.beliefs.nvda;
+  if (prev) {
+    ["r", "sh", "mg"].forEach(k => {
+      const btn = [...document.querySelectorAll('[data-dial="' + k + '"] button')].find(x => Number(x.dataset.v) === prev[k]);
+      if (!btn) return;
+      btn.parentNode.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === btn)));
+      pick[k] = prev[k];
+    });
+  }
+  render();
+  if (prev) {
+    const btn = document.querySelector('#stance button[data-s="' + prev.stance + '"]');
+    if (btn) { btn.setAttribute("aria-pressed", "true"); $("#saved").textContent = "上次（" + prev.at + "）你选了「" + prev.stance + "」。"; }
+  }
+})();
+</script>
+</html>

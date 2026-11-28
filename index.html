@@ -1483,7 +1483,7 @@ function sugarOf(k){const p=k.per100[2];const b=p<3?0:p<8?1:p<15?2:p<30?3:4;retu
 function secsDone(id){return (S.secs&&S.secs[id])||[]}
 function sealed(id){return S.understood.includes(id)}
 /* 三步走：看懂公司 → 看懂贵不贵 → 这个价在赌什么。三格样式一样，只高亮当前页；还没有页面的一步不能点。 */
-const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:null}};
+const STEP_PAGES={nvda:{price:"./nvda-payback.html",bet:"./nvda-bet.html"}};
 function stepDone(id,k){return !!(S.steps&&S.steps[id]&&S.steps[id][k])}
 function stepsHTML(id){
   const pg=STEP_PAGES[id]||{},d=[sealed(id),stepDone(id,"price"),stepDone(id,"bet")];

@@ -111,6 +111,7 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 <style>.tbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}.tbar>div{max-width:760px;margin:0 auto;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;height:52px;padding:0 8px}.tbar a{width:40px;height:40px;display:grid;place-items:center;color:var(--ink);border-radius:999px}.tbar a:focus-visible{outline:2px solid var(--accent)}.tbar svg{width:22px;height:22px}.tbar b{text-align:center;font-size:16px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style>
 <header class="tbar"><div><a id="tbBack" href="./index.html#c-nvda" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg></a><b>英伟达 · 看懂贵不贵</b><span></span></div></header>
 <script>document.getElementById('tbBack').addEventListener('click',e=>{try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){e.preventDefault();history.back()}}catch(_){}});</script>
+<style>.snav{max-width:760px;margin:0 auto;padding:14px 16px 4px}.snav ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}.snav li{border:1.5px solid light-dark(#E2DACD,#403A35);border-radius:10px;background:light-dark(#FFFDF9,#2A2623);text-align:center}.snav li.now{border-color:light-dark(#7A5F4B,#D9BFA8);background:light-dark(#EFE6DC,#3D342D)}.snav a{display:block;padding:9px 6px;font-size:14px;font-weight:700;line-height:1.35;color:light-dark(#4A423B,#F3EEE6);text-decoration:none}.snav a:focus-visible{outline:2px solid light-dark(#7A5F4B,#D9BFA8);outline-offset:3px;border-radius:8px}@media(max-width:420px){.snav a{padding:7px 4px;font-size:13px}}</style><nav class="snav" aria-label="这杯的三步"><ol><li><a href="./index.html#c-nvda">看懂公司</a></li><li class=now><a href="./nvda-payback.html" aria-current=page>看懂贵不贵</a></li><li><a href="./nvda-bet.html">这个价在赌什么</a></li></ol></nav>
 <section class="band hero"><div class="wrap">
   <p class="lead" style="margin:0 0 10px">一股多少钱，看不出贵不贵。要看的是：把整家店买下来，靠它每年赚的钱，几年能回本。买下一家店，买的是它以后每年赚的钱，所以价钱是一年净赚的好多倍。</p>
   <h1>英伟达这杯，大约 16 年回本</h1>
@@ -238,8 +239,8 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 </div></section>
 
 <section class="band alt"><div class="wrap" style="text-align:center">
-  <p class="tiny" style="margin:0 auto 10px;max-width:none">下一步「这个价在赌什么」还在准备中</p>
-  <a id="stepNext" href="./index.html#c-nvda" style="display:inline-block;background:var(--accent);color:var(--bg);border-radius:999px;padding:12px 22px;font-weight:700;text-decoration:none">看完了，回到英伟达这杯 →</a>
+  
+  <a id="stepNext" href="./nvda-bet.html" style="display:inline-block;background:var(--accent);color:var(--bg);border-radius:999px;padding:12px 22px;font-weight:700;text-decoration:none">下一步：这个价在赌什么 →</a>
 </div></section>
 <script>
 document.getElementById('stepNext').addEventListener('click',()=>{try{const K='tangguan-v4',S=JSON.parse(localStorage.getItem(K)||'{}');S.steps=S.steps||{};S.steps.nvda=Object.assign({},S.steps.nvda,{price:true});localStorage.setItem(K,JSON.stringify(S))}catch(e){}});
