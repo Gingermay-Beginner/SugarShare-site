@@ -269,7 +269,7 @@ const cup=(years,o={})=>{
   ${ticks}</svg>`;
 };
 const card=(y,who,how,tone,shown,maxY)=>`<div class="cupcard">${cup(y,{tone,anim:true,label:who,maxY})}<div class="yr" style="color:${tone==='sp'?'var(--ink)':'var(--roseInk)'}">${shown}<small> 年</small></div><div class="who">${who}</div><div class="how">${how}</div></div>`;
-const SR=[{y:25.4,who:'美股大盘',how:'标普 500，按过去 12 个月',t:'sp',v:'25'},{y:16,who:'英伟达',how:'按过去 12 个月',t:'nv',v:'16'},{y:18.3,who:'美股大盘',how:'标普 500，按明年预估',t:'sp',v:'18'},{y:9.5,who:'英伟达',how:'按分析师明年预估',t:'nv',v:'9–10'}];
+const SR=[{y:25.4,who:'美股大盘',how:'标普 500，按过去 12 个月',t:'sp',v:'25'},{y:16,who:'英伟达',how:'按过去 12 个月',t:'nv',v:'16'}];
 const makeStraws=(HS,SR,MAX)=>{
 HS.innerHTML=SR.map((r,i)=>`<div class="srow"><div class="slab"><b>${r.who}</b><span>${r.how}</span></div><div class="sfig" data-i="${i}"></div><div class="sval ${r.t}">${r.v}<small> 年</small></div></div>`).join('')+'<div class="srow"><div class="slab"></div><div class="sfig axis"></div><div></div></div>';
 const drawHS=()=>{
