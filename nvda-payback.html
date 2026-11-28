@@ -74,11 +74,10 @@ input[type=range]{width:100%;accent-color:var(--accent);height:44px}
 .fig{position:relative;min-height:300px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
 svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
 .coins{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:220px}
-.coins i{aspect-ratio:1;border-radius:50%;background:var(--surface2)}
-.coins i.on{background:var(--rose)}
-.coins i.half{background:linear-gradient(90deg,var(--rose) 30%,var(--surface2) 30%)}
-.coins.sp i.on{background:var(--pearlSp)}
-.coins.sp i.half{background:linear-gradient(90deg,var(--pearlSp) 50%,var(--surface2) 50%)}
+.coins i{aspect-ratio:1;border-radius:2px;background:transparent;border:1px solid var(--line);box-sizing:border-box;--c:var(--pearlNv)}
+.coins.sp i{--c:var(--pearlSp)}
+.coins i.on{background:var(--c);border-color:var(--ink2)}
+.coins i.half{background:linear-gradient(90deg,var(--c) var(--f),transparent var(--f));border-color:var(--ink2)}
 .coinrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:12px}
 .coinrow b{font-family:Manrope;font-size:28px;font-weight:800}
 .dcf{display:flex;align-items:flex-end;gap:5px;flex-wrap:nowrap;margin:16px 0 6px;overflow:hidden}
@@ -159,10 +158,10 @@ svg text{font-family:Manrope,"Noto Sans SC",sans-serif}
   <div class="grid2" style="margin-top:28px;align-items:center"><div>  <h3>倒过来说：每花 100 块，一年赚回几块</h3>
   <p class="small">16 年回本，也可以说成每花 100 块，公司一年替你赚回 100 ÷ 16 ≈ 6.2 块。两种说法是同一个数，只是一个讲"要几年"，一个讲"每年多少"。后一种更像存款利息，方便和熟悉的东西比较。</p>
     </div><div class="panel">
-      <div class="tiny" style="margin-bottom:4px">英伟达 vs 美股大盘（按过去 12 个月）</div>
+      <div class="tiny" style="margin-bottom:6px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span>英伟达 vs 美股大盘（按过去 12 个月）</span><span>一格<i style="display:inline-block;width:11px;height:11px;border:1.5px solid var(--ink2);border-radius:2px;margin:0 4px;vertical-align:-1px"></i>= 1 块钱</span></div>
       <div class="coinrow">
-        <div><div class="coins" id="coinNv"></div><b class="num" style="color:var(--roseInk)">6.2 块</b><div class="tiny">英伟达（1 ÷ 16）</div></div>
-        <div><div class="coins sp" id="coinSp"></div><b class="num">4.4 块</b><div class="tiny">美股大盘（1 ÷ 22.9）</div></div>
+        <div><div class="coins" id="coinNv"></div><b class="num" style="color:var(--roseInk)">6.2 块</b><div class="tiny">英伟达（100 ÷ 16）</div></div>
+        <div><div class="coins sp" id="coinSp"></div><b class="num">4.4 块</b><div class="tiny">美股大盘（100 ÷ 22.9）</div></div>
       </div>
       <p class="tiny" style="margin-top:10px">这叫盈利收益率。利润大部分留在公司里，并不会真的分到你手上。</p>
     </div></div>
@@ -332,7 +331,7 @@ makeStraws(document.getElementById('heroStraws'),SR,27);
   new ResizeObserver(drawT).observe(TC);
 }
 
-const coins=(el,v)=>{let h='';for(let i=0;i<100;i++)h+=`<i class="${i<Math.floor(v)?'on':(i<v?'half':'')}"></i>`;document.getElementById(el).innerHTML=h};
+const coins=(el,v)=>{let h='';const f=Math.round((v%1)*100);for(let i=0;i<100;i++)h+=i<Math.floor(v)?'<i class="on"></i>':(i<v?`<i class="half" style="--f:${f}%"></i>`:'<i></i>');document.getElementById(el).innerHTML=h};
 coins('coinNv',6.2);coins('coinSp',4.4);
 
 const D=document.getElementById('dcf');
