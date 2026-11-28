@@ -317,11 +317,14 @@ const drawR=()=>{
   const W=R.clientWidth,H=R.clientHeight,ml=8,mr=8,mt=26,mb=40,cw=(W-ml-mr)/rev.length,bw=Math.min(70,cw*.62),sc=(H-mt-mb)/1300;
   let s='';
   rev.forEach((r,i)=>{
-    const x=ml+i*cw+(cw-bw)/2,h=r[1]*sc,y=H-mb-h,g=r[2]===null;
-    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="6" fill="${g?'none':'var(--sugar)'}" ${g?'stroke="var(--accent)" stroke-dasharray="5 4" stroke-width="1.5"':''}/>`;
-    if(!g){const nh=r[2]*sc;s+=`<rect x="${x}" y="${H-mb-nh}" width="${bw}" height="${nh}" rx="6" fill="var(--rose)"/>`;
+    const x=ml+i*cw+(cw-bw)/2,h=r[1]*sc,y=H-mb-h,g=r[2]===null,b0=H-mb,tp=bw*.07,cid='rv'+i;
+    // 每根柱子画成一杯奶茶：杯口一条线，杯身略收，底角圆
+    const shape=cupD(x,x+bw,y,x+tp,x+bw-tp,b0,Math.min(8,bw*.16));
+    if(g)s+=`<path d="${shape}" fill="none" stroke="var(--accent)" stroke-dasharray="5 4" stroke-width="1.5"/><line x1="${x-3}" x2="${x+bw+3}" y1="${y}" y2="${y}" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 4" stroke-linecap="round"/>`;
+    else s+=`<clipPath id="${cid}"><path d="${shape}"/></clipPath><path d="${shape}" fill="var(--sugar)"/><line x1="${x-3}" x2="${x+bw+3}" y1="${y}" y2="${y}" stroke="var(--sugar)" stroke-width="3.5" stroke-linecap="round"/>`;
+    if(!g){const nh=r[2]*sc;s+=`<rect x="${x-1}" y="${H-mb-nh}" width="${bw+2}" height="${nh+1}" fill="var(--rose)" clip-path="url(#${cid})"/>`;
       if(W>460)s+=`<text x="${x+bw/2}" y="${H-mb-nh/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#3b2326">${r[2]}</text>`}
-    s+=`<text x="${x+bw/2}" y="${y-8}" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)">${r[1].toLocaleString()}${g?' 指引':''}</text>`;
+    s+=`<text x="${g?Math.min(x+bw/2,W-mr-38):x+bw/2}" y="${y-8}" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)">${r[1].toLocaleString()}${g?' 指引':''}</text>`;
     s+=`<text x="${x+bw/2}" y="${H-mb+20}" text-anchor="middle" font-size="${W<460?11:13}" fill="var(--ink2)">${W<460?r[0].replace('FY','').replace(' ',''):r[0]}</text>`;
   });
   s+=`<line x1="${ml}" x2="${W-mr}" y1="${H-mb}" y2="${H-mb}" stroke="var(--line)"/>`;
